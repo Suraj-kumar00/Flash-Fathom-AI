@@ -25,10 +25,10 @@ export default function Home() {
         </p>
 
         <Link
-          className={buttonVariants({
+          className={`bg-purple-700 text-white px-4 py-2 rounded ${buttonVariants({
             size: 'lg',
             className: 'mt-5',
-          })}
+          })}`}
           href='/dashboard'
           target='_blank'>
           Get started{' '}
