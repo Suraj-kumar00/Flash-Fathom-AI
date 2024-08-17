@@ -23,7 +23,7 @@ const Navbar = () => {
               Pricing
             </Link>
             <Link
-              href='/login'
+              href='/sign-in'
               className={buttonVariants({
                 variant: 'ghost',
                 size: 'sm',
@@ -32,7 +32,7 @@ const Navbar = () => {
               Sign in
             </Link>
             <Link
-              href='/register'
+              href='/sign-up'
               className={`bg-purple-700 text-white px-4 py-2 rounded ${buttonVariants({
                 size: 'sm',
               })}`}

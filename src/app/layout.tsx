@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
+import { ClerkProvider } from "@clerk/nextjs";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,10 +19,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn('min-h-screen font-sans antialiased grainy',inter.className
-        )}>
+      <body className={cn('min-h-screen font-sans antialiased grainy',inter.className)}>
+
+      <ClerkProvider>
           <Navbar />
-          {children}</body>
+          {children}
+      </ClerkProvider>
+      </body>
     </html>
+  
   );
 }
