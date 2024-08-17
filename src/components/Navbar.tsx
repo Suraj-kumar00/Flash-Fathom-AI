@@ -37,7 +37,7 @@ const Navbar = () => {
                 size: 'sm',
               })}`}
             >
-              Get started
+              Sign Up
               <ArrowRight className='ml-1.5 h-5 w-5' />
             </Link>
           </div>
