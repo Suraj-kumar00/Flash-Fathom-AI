@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
 import { ClerkProvider, UserButton } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider"
+import Footer from "@/components/Footer";
 // import { dark } from "@clerk/theme";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -39,6 +40,7 @@ export default function RootLayout({
       >
           <Navbar />
           {children}
+          <Footer />
       </ThemeProvider>
     </ClerkProvider>
 
