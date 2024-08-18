@@ -204,19 +204,25 @@ const Page = () => {
                       {plan === 'Free' ? (
                         <Link
                           href='/sign-in'
-                          className={buttonVariants({
-                            className: 'w-full',
-                            variant: 'secondary',
-                          })}>
+                          className={`bg-purple-700 text-purple-600 px-4 py-2 rounded ${buttonVariants(
+                            {
+                              className: 'w-full',
+                              variant: 'secondary',
+                            }
+                          )}`}
+                          >
                           Sign up
                           <ArrowRight className='h-5 w-5 ml-1.5' />
                         </Link>
                       ) : (
                         <Link
                           href='/sign-in'
-                          className={buttonVariants({
-                            className: 'w-full,',
-                          })}>
+                          className={`bg-purple-700 text-white px-4 py-2 rounded ${buttonVariants(
+                            {
+                              className: "w-full",
+                            }
+                          )}`}
+                          >
                           Sign up
                           <ArrowRight className='h-5 w-5 ml-1.5' />
                         </Link>
