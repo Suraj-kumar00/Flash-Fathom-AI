@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
-import { ClerkProvider } from "@clerk/nextjs";
+import { ClerkProvider, UserButton } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider"
 // import { dark } from "@clerk/theme";
 
@@ -22,25 +22,25 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn('min-h-screen font-sans antialiased grainy',inter.className)}>
+        <ClerkProvider
+        appearance={{
+          // baseTheme: dark,
+          variables: {
+            colorPrimary: "#3371ff",
+            fontSize:'16px'
+          },
+        }}
+        >
       <ThemeProvider
       attribute="class"
       defaultTheme="dark"
       enableSystem
       disableTransitionOnChange
       >
-      <ClerkProvider
-      appearance={{
-        // baseTheme: dark,
-        variables: {
-          colorPrimary: "#3371ff",
-          fontSize:'16px'
-        },
-      }}
-      >
           <Navbar />
           {children}
-      </ClerkProvider>
       </ThemeProvider>
+    </ClerkProvider>
 
       </body>
     </html>

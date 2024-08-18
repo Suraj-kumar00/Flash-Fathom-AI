@@ -13,11 +13,13 @@ import {
   DropdownMenuTrigger,
 } from "../components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { UserButton } from "@clerk/nextjs";
 
 const Navbar = () => {
   const { setTheme } = useTheme();
 
   return (
+    
     <nav className="sticky h-14 inset-x-0 top-0 z-30 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all">
       <MaxWidthWrapper>
         <div className="flex h-14 items-center justify-between border-b border-zinc-200">
@@ -82,6 +84,9 @@ const Navbar = () => {
                 <ArrowRight className="ml-1.5 h-5 w-5" />
               </Link>
             </div>
+            <header className="flex justify-between">
+            <UserButton showName />
+            </header>  
           </div>
         </div>
       </MaxWidthWrapper>
