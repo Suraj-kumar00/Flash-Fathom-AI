@@ -4,6 +4,8 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
 import { ClerkProvider } from "@clerk/nextjs";
+import { ThemeProvider } from "@/components/theme-provider"
+// import { dark } from "@clerk/theme";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,11 +22,26 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn('min-h-screen font-sans antialiased grainy',inter.className)}>
-
-      <ClerkProvider>
+      <ThemeProvider
+      attribute="class"
+      defaultTheme="dark"
+      enableSystem
+      disableTransitionOnChange
+      >
+      <ClerkProvider
+      appearance={{
+        // baseTheme: dark,
+        variables: {
+          colorPrimary: "#3371ff",
+          fontSize:'16px'
+        },
+      }}
+      >
           <Navbar />
           {children}
       </ClerkProvider>
+      </ThemeProvider>
+
       </body>
     </html>
   
