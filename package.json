@@ -16,6 +16,7 @@
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-tooltip": "^1.1.2",
     "@tailwindcss/typography": "^0.5.14",
+    "@types/stripe": "^8.0.417",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "dropdown-menu": "^0.1.1",
@@ -24,8 +25,10 @@
     "next-themes": "^0.3.0",
     "react": "^18",
     "react-dom": "^18",
+    "stripe": "^16.8.0",
     "tailwind-merge": "^2.5.2",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "link:@hookform/resolvers/zod"
   },
   "devDependencies": {
     "@types/node": "^20",
