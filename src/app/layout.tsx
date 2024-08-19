@@ -4,8 +4,9 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
 import { ClerkProvider, UserButton } from "@clerk/nextjs";
-import { ThemeProvider } from "@/components/theme-provider"
+import { ThemeProvider } from "..//components/ThemeProvider"
 import Footer from "@/components/Footer";
+import FAQ from "@/components/FAQ";
 // import { dark } from "@clerk/theme";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -34,12 +35,13 @@ export default function RootLayout({
         >
       <ThemeProvider
       attribute="class"
-      defaultTheme="dark"
+      defaultTheme="system"
       enableSystem
       disableTransitionOnChange
       >
           <Navbar />
           {children}
+          <FAQ />
           <Footer />
       </ThemeProvider>
     </ClerkProvider>

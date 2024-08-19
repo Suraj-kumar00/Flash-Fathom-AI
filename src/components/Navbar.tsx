@@ -6,14 +6,16 @@ import MaxWidthWrapper from "./MaxWidthWrapper";
 import { buttonVariants } from "./ui/button";
 import { ArrowRight, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuItem,
+//   DropdownMenuTrigger,
+// } from "../components/ui/dropdown-menu";
+// import { Button } from "@/components/ui/button";
 import { UserButton } from "@clerk/nextjs";
+import { ThemeToggle } from "./DarkToggle";
+
 
 const Navbar = () => {
   const { setTheme } = useTheme();
@@ -31,7 +33,7 @@ const Navbar = () => {
 
           <div className="flex items-center space-x-4">
             {/* Dark Mode Toggle */}
-            <DropdownMenu>
+            {/* <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="icon">
                   <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
@@ -50,7 +52,7 @@ const Navbar = () => {
                   System
                 </DropdownMenuItem>
               </DropdownMenuContent>
-            </DropdownMenu>
+            </DropdownMenu> */}
 
             {/* Other Nav Links */}
             <div className="hidden sm:flex items-center space-x-4">
@@ -84,9 +86,10 @@ const Navbar = () => {
                 <ArrowRight className="ml-1.5 h-5 w-5" />
               </Link>
             </div>
-            <header className="flex justify-between">
+            {/* <header className="flex justify-between">
             <UserButton showName />
-            </header>  
+            </header>   */}
+            <ThemeToggle />
           </div>
         </div>
       </MaxWidthWrapper>
