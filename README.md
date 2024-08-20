@@ -17,6 +17,11 @@ Introducing **FlashFathom AI** – the ultimate flashcard generator. Effortlessl
 - Automation(CI/CD) using GitHub Actions
 
 
+## Project WorkFlow
+![](./public/Flash-Fathom-ai-workflow.png)
+
+
+
 ## Features
 - **Clerk Authentication**: Secure, seamless user access.
 - **SaaS UI & Landing Page**: Polished, user-friendly design.
