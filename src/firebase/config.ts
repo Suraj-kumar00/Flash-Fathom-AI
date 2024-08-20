@@ -5,13 +5,14 @@ import { getApps, getApp, initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCUjIhYI42din9-eNfrEnZe91ESSJCo-kg",
-    authDomain: "tier3-ecommerce-app.firebaseapp.com",
-    projectId: "tier3-ecommerce-app",
-    storageBucket: "tier3-ecommerce-app.appspot.com",
-    messagingSenderId: "928284196206",
-    appId: "1:928284196206:web:bf2606b256dc6e5d16157f",
-    measurementId: "G-R553PE3NLD"
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId:process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
+
 };
 
 // // Initialize Firebase
