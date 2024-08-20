@@ -7,7 +7,6 @@ import { ClerkProvider, UserButton } from "@clerk/nextjs";
 import { ThemeProvider } from "..//components/ThemeProvider"
 import Footer from "@/components/Footer";
 import FAQ from "@/components/FAQ";
-// import { dark } from "@clerk/theme";
 
 const inter = Inter({ subsets: ["latin"] });
 
