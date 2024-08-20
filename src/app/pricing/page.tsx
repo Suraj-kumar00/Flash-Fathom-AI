@@ -8,11 +8,13 @@ import { ArrowRight, Check, HelpCircle, Minus } from 'lucide-react'
 import Link from 'next/link'
 import { useAuth } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import getStripe from '@/utils/get-stripe' // Import the getStripe utility
 
 const Page = () => {
   const { isSignedIn } = useAuth()
   const router = useRouter()
+  const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly')
 
   const handleSignUp = async (plan: string) => {
     if (!isSignedIn) {
@@ -25,7 +27,7 @@ const Page = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ plan }),
+          body: JSON.stringify({ plan, billingCycle }),
         })
         const sessionId = await response.json()
 
@@ -39,10 +41,10 @@ const Page = () => {
     {
       plan: 'Free',
       tagline: 'For small side projects.',
-      quota: 100,
+      quota: 10,
       features: [
         {
-          text: '100 flashcards',
+          text: '10 flashcards',
           footnote: 'The maximum amount of flashcards.',
         },
         {
@@ -62,15 +64,19 @@ const Page = () => {
           negative: true,
         },
       ],
+      price: {
+        monthly: '0',
+        yearly: '0',
+      },
     },
     {
       plan: 'Pro',
       tagline: 'For larger projects with higher needs.',
-      quota: 10000,
+      quota: 100,
       features: [
         {
-          text: 'Unlimited flashcards',
-          footnote: 'The maximum amount of flashcard & content.',
+          text: '100 flashcards',
+          footnote: 'The maximum amount of flashcards.',
         },
         {
           text: 'Advanced study modes',
@@ -87,6 +93,39 @@ const Page = () => {
           text: 'Priority support',
         },
       ],
+      price: {
+        monthly: '5',
+        yearly: '50', // Discounted yearly price
+      },
+    },
+    {
+      plan: 'Organizational',
+      tagline: 'For organizations with extensive needs.',
+      quota: 500,
+      features: [
+        {
+          text: '500 flashcards',
+          footnote: 'The maximum amount of flashcards.',
+        },
+        {
+          text: 'All study modes',
+          footnote: 'Access to all advanced study modes.',
+        },
+        {
+          text: 'Comprehensive analytics',
+        },
+        {
+          text: 'Premium-quality responses',
+          footnote: 'Top-tier algorithmic responses for optimal content quality',
+        },
+        {
+          text: '24/7 Priority support',
+        },
+      ],
+      price: {
+        monthly: '15',
+        yearly: '150', // Discounted yearly price
+      },
     },
   ]
 
@@ -100,9 +139,30 @@ const Page = () => {
           </p>
         </div>
 
-        <div className='pt-12 grid grid-cols-1 gap-10 lg:grid-cols-2'>
+        <div className='flex justify-center space-x-4 mb-8'>
+          <button
+            onClick={() => setBillingCycle('monthly')}
+            className={cn(
+              'px-4 py-2 rounded-3xl text-sm font-medium',
+              billingCycle === 'monthly' ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-600'
+            )}
+          >
+            Monthly
+          </button>
+          <button
+            onClick={() => setBillingCycle('yearly')}
+            className={cn(
+              'px-4 py-2 rounded-3xl text-sm font-medium',
+              billingCycle === 'yearly' ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-600'
+            )}
+          >
+            Yearly
+          </button>
+        </div>
+
+        <div className='pt-12 grid grid-cols-1 gap-10 lg:grid-cols-3'>
           <TooltipProvider>
-            {pricingItems.map(({ plan, tagline, quota, features }) => {
+            {pricingItems.map(({ plan, tagline, quota, features, price }) => {
               return (
                 <div
                   key={plan}
@@ -124,9 +184,9 @@ const Page = () => {
                     <h3 className='my-3 text-center font-display text-3xl font-bold'>{plan}</h3>
                     <p className='text-gray-500'>{tagline}</p>
                     <p className='my-5 font-display text-6xl font-semibold'>
-                      ${plan === 'Free' ? '0' : '10'}
+                      ${price[billingCycle]}
                     </p>
-                    <p className='text-gray-500'>per month</p>
+                    <p className='text-gray-500'>per {billingCycle}</p>
                   </div>
 
                   <div className='flex h-20 items-center justify-center border-b border-t border-gray-200 bg-gray-50'>
@@ -196,7 +256,7 @@ const Page = () => {
                           variant: 'secondary',
                         })}`}
                       >
-                        Sign up
+                        Get Started
                         <ArrowRight className='h-5 w-5 ml-1.5' />
                       </Link>
                     ) : (
@@ -206,7 +266,7 @@ const Page = () => {
                           className: 'w-full',
                         })}`}
                       >
-                        Sign up
+                        Become Pro
                         <ArrowRight className='h-5 w-5 ml-1.5' />
                       </button>
                     )}

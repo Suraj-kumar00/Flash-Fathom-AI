@@ -194,10 +194,9 @@ export default function Flashcard() {
                                 render={({ field }) => (
                                     <FormItem>
                                         <Label htmlFor="text">Enter text:</Label>
-                                        <FormControl>
+                                        <FormControl className="border-purple-600">
                                             <Textarea
-                                                id="text"
-                                                placeholder="Enter text to generate flashcards"
+                                                id="text"                                                placeholder="Enter text to generate flashcards"
                                                 {...field}
                                                 rows={4}
                                             />
