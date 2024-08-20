@@ -256,9 +256,19 @@ const Page = () => {
                           variant: 'secondary',
                         })}`}
                       >
-                        Get Started
+                        Sign up
                         <ArrowRight className='h-5 w-5 ml-1.5' />
                       </Link>
+                    ) : plan === 'Organizational' ? (
+                      <button
+                        onClick={() => handleSignUp(plan)}
+                        className={`bg-purple-700 hover:bg-purple-500 text-white px-4 py-2 rounded ${buttonVariants({
+                          className: 'w-full',
+                        })}`}
+                      >
+                        Sign up for Organization
+                        <ArrowRight className='h-5 w-5 ml-1.5' />
+                      </button>
                     ) : (
                       <button
                         onClick={() => handleSignUp(plan)}
@@ -266,7 +276,7 @@ const Page = () => {
                           className: 'w-full',
                         })}`}
                       >
-                        Become Pro
+                        Sign up
                         <ArrowRight className='h-5 w-5 ml-1.5' />
                       </button>
                     )}
