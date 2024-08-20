@@ -32,7 +32,7 @@ First [fork the reqpository](https://github.com/Suraj-kumar00/Flash-Fathom-AI/fo
 git clone https://github.com/your-username/Flash-Fathom-AI/
 cd Flash-Fathom-AI
 ```
-## Install the dependecies
+## Install the dependencies
 **The package manager**
 ```sh
 npm install -g pnpm
@@ -72,7 +72,7 @@ docker pull surajkumar00/flashfathom-ai
 ```bash
 docker run -it -p 3000:3000 surajkumar00/flashfathom-ai
 ```
-On you browser check:
+On your browser check:
 ```sh
 localhost:3000
 ```
@@ -83,5 +83,5 @@ Want to contribute? Great!
 
 ## License
 
-[MIT]()
+[MIT](https://github.com/Suraj-kumar00/Flash-Fathom-AI/blob/main/LICENSE)
 ## Support via giving a ⭐ star 
