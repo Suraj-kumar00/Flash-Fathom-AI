@@ -1,3 +1,5 @@
+// app/flashcards/[id]/page.tsx
+
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -7,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { RefreshCw, ArrowRight, ArrowLeft, ChevronLeft, Loader2, Trash } from 'lucide-react';
 import type { Flashcard } from '@/types';
+import { useUser } from '@clerk/clerk-react';
 
 export default function FlashcardSetPage() {
     const [flashcards, setFlashcards] = useState<Flashcard[]>([]);
@@ -15,12 +18,13 @@ export default function FlashcardSetPage() {
     const [flip, setFlip] = useState<boolean>(false);
     const router = useRouter();
     const { id } = useParams();
+    const { user, isLoaded } = useUser(); // Add isLoaded to check if user data is loaded
 
     useEffect(() => {
-        if (id) {
+        if (id && isLoaded && user) {
             const fetchData = async () => {
                 try {
-                    const userId = "user-id"; // Replace with actual userId
+                    const userId = user.id; // Get the actual userId from Clerk
                     const fetchedFlashcards = await fetchFlashcardsBySet(userId, id as string);
                     setFlashcards(fetchedFlashcards);
                 } catch (error) {
@@ -32,7 +36,7 @@ export default function FlashcardSetPage() {
 
             fetchData();
         }
-    }, [id]);
+    }, [id, isLoaded, user]);
 
     const currentCard = flashcards[currentIndex];
 
@@ -68,8 +72,6 @@ export default function FlashcardSetPage() {
         };
     },);
 
-
-
     if (loading) return (
         <div className="min-h-screen flex justify-center">
             <Loader2 className="w-16 h-16 animate-spin text-primary" />
@@ -78,9 +80,11 @@ export default function FlashcardSetPage() {
 
     const handleDeleteSet = async () => {
         try {
-            const userId = "user-id"; // Replace with actual userId
-            await deleteFlashcardSet(userId, id as string);
-            router.push('/flashcards'); // Redirect to flashcard sets page after deletion
+            if (isLoaded && user) {
+                const userId = user.id; // Get the actual userId from Clerk
+                await deleteFlashcardSet(userId, id as string);
+                router.push('/flashcards'); // Redirect to flashcard sets page after deletion
+            }
         } catch (error) {
             console.error('Error deleting flashcard set:', error);
         }

@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { RefreshCw, ArrowRight, ArrowLeft } from "lucide-react"
-import { SetStateAction, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { ToastAction } from "@/components/ui/toast"
 import { useToast } from "@/components/ui/use-toast"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
@@ -52,14 +52,11 @@ export default function Flashcard() {
         return () => {
             document.removeEventListener('keydown', handleKeyDown);
         };
-    },);
-
-
-
+    }, []);
 
     const handleSaveSet = async () => {
+        console.log('Save button clicked'); // Debugging log
         try {
-            // Assuming `flashcards` is an array of objects with `question` and `answer`
             const flashcardsWithIds: Flashcard[] = flashcards.map((flashcard, index) => ({
                 ...flashcard,
                 flashcardId: `flashcard-${index}`, // Generate a unique ID for each flashcard
@@ -69,6 +66,8 @@ export default function Flashcard() {
             }));
 
             await saveFlashcardSet('user-id', setName, flashcardsWithIds); // Replace 'user-id' with actual user ID
+
+            console.log('Flashcards saved successfully'); // Debugging log
             toast({
                 variant: "default",
                 title: "Success",
@@ -87,7 +86,6 @@ export default function Flashcard() {
             });
         }
     };
-
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -151,8 +149,8 @@ export default function Flashcard() {
     const currentCard = flashcards[currentIndex]
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen p-4">
-            <Card className="w-full max-w-3xl">
+        <div className="flex flex-col items-center justify-center min-h-screen p-10">
+            <Card className="w-full max-w-7xl">
                 <CardHeader className="flex flex-row items-center justify-between">
                     <CardTitle>Flashcard App</CardTitle>
                     {currentCard && (
@@ -210,33 +208,21 @@ export default function Flashcard() {
                             />
                             <Button
                                 type="submit"
-                                className="w-full"
+                                className="w-full bg-purple-700 hover:bg-purple-500"
                                 disabled={loading}
                             >
                                 {loading ? 'Generating...' : 'Generate Flashcards'}
                             </Button>
-                            {/* {currentCard && (
-                                <Button
-                                    variant="outline"
-                                    className="w-full"
-                                    onClick={() => {
-                                        navigator.clipboard.writeText(currentCard.question)
-                                    }}
-                                >
-                                    Copy Question
-                                </Button>
-                            )} */}
-
                         </form>
                     </Form>
                     {flashcards.length > 0 && (
                         <>
                             <Button
                                 variant="outline"
-                                className="w-full"
-                                onClick={() => setDialogOpen(true)}
+                                className="w-full text-white hover:text-white  bg-purple-700 hover:bg-purple-500"
+                                onClick={handleOpenDialog}
                             >
-                                Save Set
+                                Save it
                             </Button>
 
                             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -249,12 +235,13 @@ export default function Flashcard() {
                                         <Input
                                             id="setName"
                                             value={setName}
-                                            onChange={(e: { target: { value: SetStateAction<string> } }) => setSetName(e.target.value)}
+                                            className="boarder-purple-600"
+                                            onChange={(e) => setSetName(e.target.value)}
                                             placeholder="Enter flashcard set name"
                                         />
                                     </div>
                                     <DialogFooter>
-                                        <Button onClick={handleSaveSet}>Save</Button>
+                                        <Button onClick={handleSaveSet} className=" text-white hover:text-white  bg-purple-700 hover:bg-purple-500">Save</Button>
                                     </DialogFooter>
                                 </DialogContent>
                             </Dialog>

@@ -38,11 +38,11 @@ export default function FlashcardsPage() {
 
     return (
         <div className="min-h-screen p-8 max-w-5xl mx-auto">
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold">Flashcard Sets</h1>
+            <div className="flex justify-between items-center mb-6 ">
+                <h1 className="text-3xl font-bold">Your Flashcards </h1>
                 <Link href="/generate">
-                    <Button size="icon">
-                        <Plus className="h-4 w-4" />
+                    <Button size="icon" className=' bg-purple-600 h-10 w-32 hover:bg-purple-500'>
+                        <Plus className="h-7 w-7 " />
                     </Button>
                 </Link>
             </div>

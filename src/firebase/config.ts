@@ -1,5 +1,5 @@
 // import { initializeApp } from "firebase/app";
-// import { getAnalytics } from "firebase/analytics";
+import { getAnalytics } from "firebase/analytics";
 import { getApps, getApp, initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
@@ -14,12 +14,12 @@ const firebaseConfig = {
 
 };
 
-// // Initialize Firebase
-// const app = initializeApp(firebaseConfig);
-// const analytics = getAnalytics(app);
-// const db = getFirestore(app);
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const db = getFirestore(app);
 
-// export { db }
+export { db }
 
 export const initializeFirebase = async () => {
   const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
