@@ -3,6 +3,7 @@ import MaxWidthWrapper from "../components/MaxWidthWrapper";
 import Link from "next/link";
 import { ArrowRight } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/button'
+import FAQ from "@/components/FAQ";
 
 export default function Home() {
   return (
@@ -162,6 +163,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <FAQ />
     </>   
   );
 }
