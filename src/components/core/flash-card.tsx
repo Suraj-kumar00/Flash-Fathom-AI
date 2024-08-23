@@ -30,9 +30,17 @@ export default function Flashcard() {
 
     const [setName, setSetName] = useState('');
     const [dialogOpen, setDialogOpen] = useState(false);
+    const [saveSuccessDialogOpen, setSaveSuccessDialogOpen] = useState(false);
+    const [shouldRedirect, setShouldRedirect] = useState(false);
 
     const handleOpenDialog = () => setDialogOpen(true);
     const handleCloseDialog = () => setDialogOpen(false);
+
+    useEffect(() => {
+        if (shouldRedirect) {
+            window.location.href = '/flashcards';
+        }
+    }, [shouldRedirect]);
 
     // Key Events    
     useEffect(() => {
@@ -48,35 +56,28 @@ export default function Flashcard() {
 
         document.addEventListener('keydown', handleKeyDown);
 
-        // Cleanup function
         return () => {
             document.removeEventListener('keydown', handleKeyDown);
         };
     }, []);
 
     const handleSaveSet = async () => {
-        console.log('Save button clicked'); // Debugging log
+        console.log('Save button clicked');
         try {
             const flashcardsWithIds: Flashcard[] = flashcards.map((flashcard, index) => ({
                 ...flashcard,
-                flashcardId: `flashcard-${index}`, // Generate a unique ID for each flashcard
-                setId: 'set-id', // Replace with the actual set ID
+                flashcardId: `flashcard-${index}`,
+                setId: 'set-id',
                 createdAt: new Date(),
                 updatedAt: new Date(),
             }));
 
-            await saveFlashcardSet('user-id', setName, flashcardsWithIds); // Replace 'user-id' with actual user ID
+            await saveFlashcardSet('user-id', setName, flashcardsWithIds);
 
-            console.log('Flashcards saved successfully'); // Debugging log
-            toast({
-                variant: "default",
-                title: "Success",
-                description: "Flashcards saved successfully!",
-                action: <ToastAction altText="View Sets"><a href="/flashcards">View Sets</a></ToastAction>,
-            });
+            console.log('Flashcards saved successfully');
             handleCloseDialog();
             setSetName('');
-            setFlashcards([]); // Clear the flashcards state if needed
+            setSaveSuccessDialogOpen(true);
         } catch (error) {
             console.error("Error saving flashcards:", error);
             toast({
@@ -183,7 +184,6 @@ export default function Flashcard() {
                             <Button onClick={handleNext} variant="ghost" size="icon" disabled={!currentCard}>
                                 <ArrowRight className="h-6 w-6" />
                             </Button>
-
                         </div>
                     </div>
                     <Form {...form}>
@@ -196,7 +196,8 @@ export default function Flashcard() {
                                         <Label htmlFor="text">Enter text:</Label>
                                         <FormControl className="border-purple-600">
                                             <Textarea
-                                                id="text"                                                placeholder="Enter text to generate flashcards"
+                                                id="text"
+                                                placeholder="Enter text to generate flashcards"
                                                 {...field}
                                                 rows={4}
                                             />
@@ -248,6 +249,26 @@ export default function Flashcard() {
                     )}
                 </CardContent>
             </Card>
+
+            {/* New Success Dialog */}
+            <Dialog open={saveSuccessDialogOpen} onOpenChange={setSaveSuccessDialogOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Flashcards Saved Successfully!</DialogTitle>
+                    </DialogHeader>
+                    <div className="py-4">
+                        <p>Your flashcards have been saved. Would you like to view them now?</p>
+                    </div>
+                    <DialogFooter>
+                        <Button onClick={() => {
+                            setSaveSuccessDialogOpen(false);
+                            setShouldRedirect(true);
+                        }} className="text-white hover:text-white bg-purple-700 hover:bg-purple-500">
+                            View Flashcards
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </div>
     )
 }

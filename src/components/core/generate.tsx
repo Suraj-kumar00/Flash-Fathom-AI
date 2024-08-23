@@ -16,6 +16,7 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/use-toast"
 import { useState } from "react"
+// import router from "next/router"
 
 const FormSchema = z.object({
     text: z
@@ -113,6 +114,16 @@ export default function Generate() {
                     ))}
                 </div>
             )}
+
+            {/* <div className="flex justify-center mt-8">
+                <Button 
+                    className="w-full max-w-xs" 
+                    onClick={() => router.push('/flashcards')}
+                >
+                    See your Flashcards
+                </Button>
+            </div> */}
+
         </Form>
     )
 }
