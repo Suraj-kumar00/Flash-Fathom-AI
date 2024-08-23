@@ -84,7 +84,8 @@ localhost:3000
 
 ## Development
 Want to contribute? Great!
-[**Read the Contribution Guidlines**](https://github.com/Suraj-kumar00/Flash-Fathom-AI/CONTRIBUTING.md)
+
+[**Read the Contribution Guidlines**](https://github.com/Suraj-kumar00/Flash-Fathom-AI/blob/main/CONTRIBUTING.md)
 
 ## License
 
