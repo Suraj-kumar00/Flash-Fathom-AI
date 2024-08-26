@@ -18,7 +18,7 @@ Introducing **FlashFathom AI** – the ultimate flashcard generator. Effortlessl
 
 
 ## Project WorkFlow
-![](./public/Flash-Fathom-ai-workflow.png)
+![](./public/Flash-Fathom-AI-WorkFlow.png)
 
 
 
