@@ -3,7 +3,7 @@
 ![Build Status]()
 
 Introducing **FlashFathom AI** – the ultimate flashcard generator. Effortlessly create and study personalized flashcards with AI precision, while enjoying seamless user experiences and secure payments. 
-[**Get started today**](), track your learning progress, and join a growing community of satisfied users. Ready to elevate your study game? Sign up now and unlock your learning potential!
+[**Get started today**](https://flash-fathom-ai.vercel.app/), track your learning progress, and join a growing community of satisfied users. Ready to elevate your study game? Sign up now and unlock your learning potential!
 
 ## Build with
 - Next.js
