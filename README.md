@@ -1,9 +1,20 @@
 ![flashfathom-ai](./public//Flash-Fathom-AI-Banner.png)
 
-![Build Status]()
+<div align="center">
+  
+</br>
+    <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/Suraj-kumar00/Flash-Fathom-AI?logo=github"> </img>
+    <img alt="GitHub License" src="https://img.shields.io/github/license/Suraj-kumar00/Flash-Fathom-AI"></img>
+    <img alt="X (formerly Twitter) Follow" src="https://img.shields.io/twitter/follow/surajk_umar01"></img
+                                                                                                       
+[![CI Pipeline](https://github.com/Suraj-kumar00/Flash-Fathom-AI/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Suraj-kumar00/Flash-Fathom-AI/actions/workflows/ci.yml)
+<br>
+</div>
+<br>
+  
 
 Introducing **FlashFathom AI** – the ultimate flashcard generator. Effortlessly create and study personalized flashcards with AI precision, while enjoying seamless user experiences and secure payments. 
-[**Get started today**](https://flash-fathom-ai.vercel.app/), track your learning progress, and join a growing community of satisfied users. Ready to elevate your study game? Sign up now and unlock your learning potential!
+[**Get started today**](https://flash-fathom-ai.vercel.app/), track your learning progress, and join a growing community of satisfied users. Would you be ready to elevate your study game? Sign up now and unlock your learning potential!
 
 ## Build with
 - Next.js
