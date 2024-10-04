@@ -53,6 +53,11 @@ cd Flash-Fathom-AI
 ```sh
 npm install -g pnpm
 ```
+**Install pnpm pakcage manager**
+```sh
+pnpm install
+```
+
 If required for you: 
 **Installing clerk**
 ```bash
