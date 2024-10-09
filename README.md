@@ -93,10 +93,9 @@ docker pull surajkumar00/flashfathom-ai
 ```bash
 docker run -it -p 3000:3000 surajkumar00/flashfathom-ai
 ```
-On your browser check:
-```sh
-localhost:3000
-```
+**Check localhost**
+[localhost:3000](localhost:3000)
+
 
 ## Development
 Want to contribute? Great!
