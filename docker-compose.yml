@@ -25,17 +25,5 @@ services:
     depends_on:
       - postgres
 
-  backend:
-    build:
-      context: ./backend  # Adjust the path to your backend Dockerfile
-    container_name: backend_service
-    environment:
-      DATABASE_URL: postgres://${DB_USER}:${DB_PASSWORD}@postgres:5432/${DB_NAME}
-    ports:
-      - "4000:4000"  # Adjust based on your backend service port
-    depends_on:
-      - postgres
-      - supabase
-
 volumes:
   postgres_data:
