@@ -1,4 +1,4 @@
-![flashfathom-ai](./public//Flash-Fathom-AI-Banner.png)
+d![flashfathom-ai](./public//Flash-Fathom-AI-Banner.png)
 
 <div align="center">
   
@@ -97,12 +97,39 @@ docker run -it -p 3000:3000 surajkumar00/flashfathom-ai
 [localhost:3000](localhost:3000)
 
 
-## Development
+## Issue Reporting 🐛✨
+If you encounter any bugs or have feature requests, please follow this format when opening an issue:
+
+- Issue Title: 📝 A concise and descriptive title.
+- Description: 🔍 Clear and detailed description of the issue or feature request.
+- Steps to Reproduce (if applicable): 🚶Detailed steps to reproduce the issue.
+- Expected Behavior: ✅What you expected to happen.
+- Actual Behavior: ❌What actually happened.
+
+## Development 👨‍💻
 Want to contribute? Great!
+We welcome contributions from the community! Please check our Contributing Guidelines for more details on how you can help improve Jarvis.
+
+## 👀 Our Valuable Contributors 💖✨
+
+<div align="center">
+  <a href="https://github.com/Suraj-kumar00/Flash-Fathom-AI/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=Suraj-kumar00/Flash-Fathom-AI&max=100" />
+  </a>
+</div>
+ 
+## 📬 Contact
+For questions or feedback, feel free to reach out via GitHub issues or contact the project maintainers. ✉️
 
 [**Read the Contribution Guidlines**](https://github.com/Suraj-kumar00/Flash-Fathom-AI/blob/main/CONTRIBUTING.md)
 
 ## License
 
-[MIT](https://github.com/Suraj-kumar00/Flash-Fathom-AI/blob/main/LICENSE)
+This project is licensed under the [MIT License!](https://github.com/Suraj-kumar00/Flash-Fathom-AI/blob/main/LICENSE)
+
 ## Support via giving a ⭐ star 
+
+If you like this project, please give it a ⭐ star. Your support means a lot to us!
+
+<h2 align="center"> Happy Coding🚀✨</h2>
+
