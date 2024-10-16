@@ -1,4 +1,4 @@
-d![flashfathom-ai](./public//Flash-Fathom-AI-Banner.png)
+![flashfathom-ai](./public//Flash-Fathom-AI-Banner.png)
 
 <div align="center">
   
