@@ -1,9 +1,9 @@
-name: Build and Push Docker Image
+name: Build and Push Docker Image to GCR
 
 on:
   push:
     branches:
-      - '**'  # This triggers on every push to any branch
+      - "**" # This triggers on every push to any branch
 
 jobs:
   build:
@@ -18,12 +18,12 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.PAT_TOKEN }}  # Use your Personal Access Token here
+          password: ${{ secrets.PAT_TOKEN }} # Use your Personal Access Token here
 
       - name: Build the Docker image
         run: |
-          docker build . -t ghcr.io/suraj-kumar00/flashfathomai:latest
+          docker build . -t ghcr.io/suraj-kumar00/flash-fathom-ai:latest
 
       - name: Push the Docker image
         run: |
-          docker push ghcr.io/suraj-kumar00/flashfathomai:latest
+          docker push ghcr.io/suraj-kumar00/flash-fathom-ai:latest
