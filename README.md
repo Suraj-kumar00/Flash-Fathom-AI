@@ -109,7 +109,7 @@ If you encounter any bugs or have feature requests, please follow this format wh
 ## Development 👨‍💻
 Want to contribute? Great!
 We welcome contributions from the community! Please check our Contributing Guidelines for more details on how you can help improve Jarvis.
-[**Guidlines**](https://github.com/Suraj-kumar00/Flash-Fathom-AI/blob/main/CONTRIBUTING.md)
+[**Read the Contribution Guidlines**](https://github.com/Suraj-kumar00/Flash-Fathom-AI/blob/main/CONTRIBUTING.md)
 
 ## 👀 Our Valuable Contributors 💖✨
 
@@ -121,8 +121,6 @@ We welcome contributions from the community! Please check our Contributing Guide
  
 ## 📬 Contact
 For questions or feedback, feel free to reach out via GitHub issues or contact the project maintainers. ✉️
-
-[**Read the Contribution Guidlines**](https://github.com/Suraj-kumar00/Flash-Fathom-AI/blob/main/CONTRIBUTING.md)
 
 ## License
 
