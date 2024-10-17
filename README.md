@@ -6,6 +6,8 @@
     <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/Suraj-kumar00/Flash-Fathom-AI?logo=github"> </img>
     <img alt="GitHub License" src="https://img.shields.io/github/license/Suraj-kumar00/Flash-Fathom-AI"></img>
     <img alt="X (formerly Twitter) Follow" src="https://img.shields.io/twitter/follow/surajk_umar01"></img
+                                                                                                       
+[![Build and Push Docker Image to DockerHub](https://github.com/Suraj-kumar00/Flash-Fathom-AI/actions/workflows/publish-to-dockerhub.yml/badge.svg?branch=main)](https://github.com/Suraj-kumar00/Flash-Fathom-AI/actions/workflows/publish-to-dockerhub.yml)
                                                                                                       
 [![CI Pipeline of GCR](https://github.com/Suraj-kumar00/Flash-Fathom-AI/actions/workflows/pulish-to-gcr.yml/badge.svg)](https://github.com/Suraj-kumar00/Flash-Fathom-AI/actions/workflows/pulish-to-gcr.yml)
 
@@ -16,6 +18,12 @@
 
 Introducing **FlashFathom AI** – the ultimate flashcard generator. Effortlessly create and study personalized flashcards with AI precision, while enjoying seamless user experiences and secure payments. 
 [**Get started today**](https://flash-fathom-ai.vercel.app/), track your learning progress, and join a growing community of satisfied users. Would you be ready to elevate your study game? Sign up now and unlock your learning potential!
+
+## Demo
+<div align="center">
+  <img src="./public/Flash-Fathom-AI-Signin-And-Card.gif" alt="Tutorial to demonstrate signin and generating flash cards" width="1000" ></img>
+</div>
+
 
 ## Build with
 - Next.js
@@ -112,13 +120,19 @@ Want to contribute? Great!
 We welcome contributions from the community! Please check our Contributing Guidelines for more details on how you can help improve us.
 [**Read the Contribution Guidlines**](https://github.com/Suraj-kumar00/Flash-Fathom-AI/blob/main/CONTRIBUTING.md)
 
+
+
+
+
 ## 👀 Our Valuable Contributors 💖✨
 
-<div align="center">
-  <a href="https://github.com/Suraj-kumar00/Flash-Fathom-AI/graphs/contributors">
-    <img src="https://contrib.rocks/image?repo=Suraj-kumar00/Flash-Fathom-AI&max=100" />
-  </a>
-</div>
+Thanks to these wonderful people:
+<br/>
+<br/>
+<a href="https://github.com/Suraj-kumar00/Flash-Fathom-AI/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Suraj-kumar00/Flash-Fathom-AI" />
+</a>
+
  
 ## 📬 Contact
 For questions or feedback, feel free to reach out via GitHub issues or contact the project maintainers. ✉️
