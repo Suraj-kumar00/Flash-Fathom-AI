@@ -6,6 +6,8 @@
     <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/Suraj-kumar00/Flash-Fathom-AI?logo=github"> </img>
     <img alt="GitHub License" src="https://img.shields.io/github/license/Suraj-kumar00/Flash-Fathom-AI"></img>
     <img alt="X (formerly Twitter) Follow" src="https://img.shields.io/twitter/follow/surajk_umar01"></img
+                                                                                                       
+[![Build and Push Docker Image to DockerHub](https://github.com/Suraj-kumar00/Flash-Fathom-AI/actions/workflows/publish-to-dockerhub.yml/badge.svg?branch=main)](https://github.com/Suraj-kumar00/Flash-Fathom-AI/actions/workflows/publish-to-dockerhub.yml)
                                                                                                       
 [![CI Pipeline of GCR](https://github.com/Suraj-kumar00/Flash-Fathom-AI/actions/workflows/pulish-to-gcr.yml/badge.svg)](https://github.com/Suraj-kumar00/Flash-Fathom-AI/actions/workflows/pulish-to-gcr.yml)
 
