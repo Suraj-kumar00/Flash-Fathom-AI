@@ -20,7 +20,9 @@ Introducing **FlashFathom AI** – the ultimate flashcard generator. Effortlessl
 [**Get started today**](https://flash-fathom-ai.vercel.app/), track your learning progress, and join a growing community of satisfied users. Would you be ready to elevate your study game? Sign up now and unlock your learning potential!
 
 ## Demo
-[Signing In and Generating Flashcards](https://github.com/user-attachments/assets/76d0609d-0c1f-4006-b009-64051473c7da)
+<div align="center">
+  <img src="./public/Flash-Fathom-AI-Signin-And-Card.gif" alt="Tutorial to demonstrate signin and generating flash cards" width="800" ></img>
+</div>
 
 
 ## Build with
