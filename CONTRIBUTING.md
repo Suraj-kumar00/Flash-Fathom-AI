@@ -213,6 +213,12 @@ git push -u origin <your_branch_name>
 
 <br>
 
+# For Open-Source And Git & Github Learning 🎯
+
+**Open-Source Blog** :- [Opensource](https://blog.devsuraj.me/what-is-open-source-beginners-guide-how-to-get-started)
+
+**Git And Github** :- [Git and Github](https://blog.devsuraj.me/getting-to-know-git-and-github-your-codes-best-friends)
+
 <br>
 
 # Good Coding Practices 🧑‍💻
