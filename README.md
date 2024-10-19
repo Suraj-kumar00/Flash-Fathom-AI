@@ -120,13 +120,19 @@ Want to contribute? Great!
 We welcome contributions from the community! Please check our Contributing Guidelines for more details on how you can help improve us.
 [**Read the Contribution Guidlines**](https://github.com/Suraj-kumar00/Flash-Fathom-AI/blob/main/CONTRIBUTING.md)
 
+
+
+
+
 ## 👀 Our Valuable Contributors 💖✨
 
-<div align="center">
-  <a href="https://github.com/Suraj-kumar00/Flash-Fathom-AI/graphs/contributors">
-    <img src="https://contrib.rocks/image?repo=Suraj-kumar00/Flash-Fathom-AI&max=100" />
-  </a>
-</div>
+Thanks to these wonderful people:
+<br/>
+<br/>
+<a href="https://github.com/Suraj-kumar00/Flash-Fathom-AI/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Suraj-kumar00/Flash-Fathom-AI" />
+</a>
+
  
 ## 📬 Contact
 For questions or feedback, feel free to reach out via GitHub issues or contact the project maintainers. ✉️
