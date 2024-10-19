@@ -123,7 +123,9 @@ We welcome contributions from the community! Please check our Contributing Guide
 Thanks to these wonderful people:
 <br/>
 <br/>
-![Contributors](https://contrib.rocks/image?repo=Suraj-kumar00/Flash-Fathom-AI)
+<a href="https://github.com/Suraj-kumar00/Flash-Fathom-AI/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Suraj-kumar00/Flash-Fathom-AI" />
+</a>
 
  
 ## 📬 Contact
