@@ -8,6 +8,7 @@ import { ArrowRight } from "lucide-react";
 import { useTheme } from "next-themes";
 import { UserButton, useUser } from "@clerk/nextjs";
 import { ThemeToggle } from "./DarkToggle";
+import Image from "next/image";
 
 const Navbar = () => {
   const { setTheme } = useTheme();
@@ -22,11 +23,18 @@ const Navbar = () => {
             href="/"
             className="flex items-center space-x-2 z-40 font-semibold"
           >
-            <img src="/flashfathomai.png" alt="Logo" className="h-8 w-8" />
-            <span>FlashFathom AI</span>
+            <Image
+              src="/Flash-Fathom-AI-Logo.png"
+              width={32}
+              height={32}
+              alt="Logo"
+              className="h-8 w-8"
+            />{" "}
+            {/* Adjust size as needed */}
+            <span>FlashFathom AI.</span>
           </Link>
 
-          <div className="flex items-center space-x-4">
+          <div className="flex items-centFlash-Fathom-AI-LogoFlash-Fathom-AI-Logoer space-x-4">
             {/* Other Nav Links */}
             <div className="hidden sm:flex items-center space-x-4">
               <Link
