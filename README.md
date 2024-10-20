@@ -19,6 +19,27 @@
 Introducing **FlashFathom AI** – the ultimate flashcard generator. Effortlessly create and study personalized flashcards with AI precision, while enjoying seamless user experiences and secure payments. 
 [**Get started today**](https://flash-fathom-ai.vercel.app/), track your learning progress, and join a growing community of satisfied users. Would you be ready to elevate your study game? Sign up now and unlock your learning potential!
 
+<table align="center">
+    <thead align="center">
+        <tr border: 2px;>
+            <td><b>🌟 Stars</b></td>
+            <td><b>🍴 Forks</b></td>
+            <td><b>🐛 Issues</b></td>
+            <td><b>🔔 Open PRs</b></td>
+            <td><b>🔕 Close PRs</b></td>
+        </tr>
+     </thead>
+    <tbody>
+         <tr>
+            <td><img alt="Stars" src="https://img.shields.io/github/stars/jinx-vi-0/BlogLog?style=flat&logo=github"/></td>
+             <td><img alt="Forks" src="https://img.shields.io/github/forks/jinx-vi-0/BlogLog?style=flat&logo=github"/></td>
+            <td><img alt="Issues" src="https://img.shields.io/github/issues/jinx-vi-0/BlogLog?style=flat&logo=github"/></td>
+            <td><img alt="Open Pull Requests" src="https://img.shields.io/github/issues-pr/jinx-vi-0/BlogLog?style=flat&logo=github"/></td>
+           <td><img alt="Close Pull Requests" src="https://img.shields.io/github/issues-pr-closed/jinx-vi-0/BlogLog?style=flat&color=critical&logo=github"/></td>
+        </tr>
+    </tbody>
+</table>
+
 ## Demo
 <div align="center">
   <img src="./public/Flash-Fathom-AI-Signin-And-Card.gif" alt="Tutorial to demonstrate signin and generating flash cards" width="1000" ></img>
