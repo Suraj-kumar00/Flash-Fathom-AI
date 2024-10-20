@@ -30,14 +30,15 @@ Introducing **FlashFathom AI** – the ultimate flashcard generator. Effortlessl
         </tr>
      </thead>
     <tbody>
-         <tr>
-            <td><img alt="Stars" src="https://img.shields.io/github/stars/jinx-vi-0/BlogLog?style=flat&logo=github"/></td>
-             <td><img alt="Forks" src="https://img.shields.io/github/forks/jinx-vi-0/BlogLog?style=flat&logo=github"/></td>
-            <td><img alt="Issues" src="https://img.shields.io/github/issues/jinx-vi-0/BlogLog?style=flat&logo=github"/></td>
-            <td><img alt="Open Pull Requests" src="https://img.shields.io/github/issues-pr/jinx-vi-0/BlogLog?style=flat&logo=github"/></td>
-           <td><img alt="Close Pull Requests" src="https://img.shields.io/github/issues-pr-closed/jinx-vi-0/BlogLog?style=flat&color=critical&logo=github"/></td>
-        </tr>
+      <tr>
+          <td><img alt="Stars" src="https://img.shields.io/github/stars/Suraj-kumar00/Flash-Fathom-AI?style=flat&logo=github"/></td>
+          <td><img alt="Forks" src="https://img.shields.io/github/forks/Suraj-kumar00/Flash-Fathom-AI?style=flat&logo=github"/></td>
+          <td><img alt="Issues" src="https://img.shields.io/github/issues/Suraj-kumar00/Flash-Fathom-AI?style=flat&logo=github"/></td>
+          <td><img alt="Open Pull Requests" src="https://img.shields.io/github/issues-pr/Suraj-kumar00/Flash-Fathom-AI?style=flat&logo=github"/></td>
+          <td><img alt="Closed Pull Requests" src="https://img.shields.io/github/issues-pr-closed/Suraj-kumar00/Flash-Fathom-AI?style=flat&color=critical&logo=github"/></td>
+      </tr>
     </tbody>
+
 </table>
 
 ## Demo
