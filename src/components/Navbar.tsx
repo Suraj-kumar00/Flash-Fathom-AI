@@ -23,7 +23,13 @@ const Navbar = () => {
             href="/"
             className="flex items-center space-x-2 z-40 font-semibold"
           >
-            <img src="/flashfathomai.png" alt="Logo" className="h-8 w-8" />{" "}
+            <Image
+              src="/Flash-Fathom-AI-Logo.png"
+              width={32}
+              height={32}
+              alt="Logo"
+              className="h-8 w-8"
+            />{" "}
             {/* Adjust size as needed */}
             <span>FlashFathom AI.</span>
           </Link>
