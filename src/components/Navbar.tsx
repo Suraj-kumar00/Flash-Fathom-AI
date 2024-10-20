@@ -15,21 +15,15 @@ const Navbar = () => {
   const { isSignedIn } = useUser(); // Get user's sign-in state
 
   return (
-    <nav className="sticky h-14 inset-x-0 top-0 z-30 w-full border-b border-gray-200 bg-primary-foreground backdrop-blur-lg transition-all">
+    <nav className="sticky h-14 inset-x-0 top-0 z-30 w-full  bg-primary-foreground/60 backdrop-blur-3xl transition-all">
       <MaxWidthWrapper>
-        <div className="flex h-14 items-center justify-between border-b border-zinc-200">
+        <div className="flex h-14 items-center justify-between ">
           {/* Logo and Name */}
           <Link
             href="/"
             className="flex items-center space-x-2 z-40 font-semibold"
           >
-            <Image
-              src="/Flash-Fathom-AI-Logo.png"
-              width={32}
-              height={32}
-              alt="Logo"
-              className="h-8 w-8"
-            />{" "}
+            <img src="/flashfathomai.png" alt="Logo" className="h-8 w-8" />{" "}
             {/* Adjust size as needed */}
             <span>FlashFathom AI.</span>
           </Link>
