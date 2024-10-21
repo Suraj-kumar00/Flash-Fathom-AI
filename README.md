@@ -139,7 +139,7 @@ Want to contribute? Great!
 We welcome contributions from the community! Please check our Contributing Guidelines for more details on how you can help improve us.
 [**Read the Contribution Guidlines**](https://github.com/Suraj-kumar00/Flash-Fathom-AI/blob/main/CONTRIBUTING.md)
 
-### Contributors
+## Contributors
 
 <table>
 <tr>
