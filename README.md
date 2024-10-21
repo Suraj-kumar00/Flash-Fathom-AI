@@ -8,7 +8,7 @@
     <img alt="GitHub License" src="https://img.shields.io/github/license/Suraj-kumar00/Flash-Fathom-AI"></img>
     <img alt="GitHub Repo issues" src="https://img.shields.io/github/issues/Suraj-kumar00/Flash-Fathom-AI?logo=issues"> </img>
     <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/Suraj-kumar00/Flash-Fathom-AI?logo=github"></img>
-    <img alt="X (formerly Twitter) Follow" src="https://img.shields.io/twitter/follow/surajk_umar01"></img    
+    <img alt="Flash-Fathom-AI Release" src="https://img.shields.io/github/v/release/Suraj-kumar00/Flash-Fathom-AI?sort=semver"></img
                                                                                                        
 [![Build and Push Docker Image to DockerHub](https://github.com/Suraj-kumar00/Flash-Fathom-AI/actions/workflows/publish-to-dockerhub.yml/badge.svg?branch=main)](https://github.com/Suraj-kumar00/Flash-Fathom-AI/actions/workflows/publish-to-dockerhub.yml)
                                                                                                       
