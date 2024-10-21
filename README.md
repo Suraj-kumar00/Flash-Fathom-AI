@@ -28,7 +28,7 @@ Introducing **FlashFathom AI** – the ultimate flashcard generator. Effortlessl
 </div>
 
 <div align="center">
-  <img src="./public/Flash-Fathom-AI-Signin-And-Card(DarkMode).gif" alt="Tutorial to demonstrate signin and generating flash cards" width="1000" ></img>
+  <img src="./public/Flash-Fathom-AI-Signin-And-Card(DarkMode) .gif" alt="Tutorial to demonstrate signin and generating flash cards" width="1000" ></img>
 </div>
 ## Build with
 
