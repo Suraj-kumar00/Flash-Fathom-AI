@@ -4,20 +4,20 @@ import * as React from "react";
 import Link from "next/link";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import { buttonVariants } from "./ui/button";
-import { ArrowRight, Moon, Sun } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useTheme } from "next-themes";
-import { UserButton, useUser } from "@clerk/nextjs"; // Added useUser
+import { UserButton, useUser } from "@clerk/nextjs";
 import { ThemeToggle } from "./DarkToggle";
 import Image from "next/image";
 
 const Navbar = () => {
   const { setTheme } = useTheme();
-  const { isSignedIn } = useUser(); // Get user's sign-in state
+  const { isSignedIn, user } = useUser(); // Get user's sign-in state
 
   return (
-    <nav className="sticky h-14 inset-x-0 top-0 z-30 w-full  bg-primary-foreground/60 backdrop-blur-3xl transition-all">
+    <nav className="sticky h-14 inset-x-0 top-0 z-30 w-full bg-primary-foreground/60 backdrop-blur-3xl transition-all">
       <MaxWidthWrapper>
-        <div className="flex h-14 items-center justify-between ">
+        <div className="flex h-14 items-center justify-between">
           {/* Logo and Name */}
           <Link
             href="/"
@@ -46,6 +46,7 @@ const Navbar = () => {
               >
                 Pricing
               </Link>
+
               {/* Show Sign-in and Sign-up only if the user is not signed in */}
               {!isSignedIn && (
                 <>
@@ -72,8 +73,17 @@ const Navbar = () => {
                 </>
               )}
             </div>
+
             {/* User profile and logout button */}
-            {isSignedIn && <UserButton showName afterSignOutUrl="/" />}
+            {isSignedIn && (
+              <div className="flex items-center space-x-2 text-gray-800 dark:text-gray-200">
+                <span className="text-sm font-medium">
+                  {user.fullName || user.username}
+                </span>
+                <UserButton afterSignOutUrl="/" />
+              </div>
+            )}
+
             <ThemeToggle />
           </div>
         </div>
