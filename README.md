@@ -204,6 +204,13 @@ We welcome contributions from the community! Please check our Contributing Guide
             <sub style="font-size:14px"><b>t rahul prabhu</b></sub>
         </a>
     </td>
+    <td align="center" style="word-wrap: break-word; width: 150.0; height: 150.0">
+        <a href=https://github.com/zaheer-Khan3260>
+            <img src=https://avatars.githubusercontent.com/u/150288870?v=4 width="100;"  alt=Zaheer khan/>
+            <br />
+            <sub style="font-size:14px"><b>Zaheer khan</b></sub>
+        </a>
+    </td>
 </tr>
 </table>
 <br/>
