@@ -12,29 +12,25 @@ import Image from "next/image";
 
 const Navbar = () => {
   const { setTheme } = useTheme();
-  const { isSignedIn, user } = useUser(); // Get user's sign-in state
+  const { isSignedIn, user } = useUser();
 
   return (
-    <nav className="sticky h-14 inset-x-0 top-0 z-30 w-full bg-primary-foreground/60 backdrop-blur-3xl transition-all">
+    <nav className="sticky h-14 inset-x-0 top-0 z-30 w-full bg-gradient-to-r from-blue-500 to-purple-600 backdrop-blur-lg transition-all">
       <MaxWidthWrapper>
         <div className="flex h-14 items-center justify-between">
           {/* Logo and Name */}
-          <Link
-            href="/"
-            className="flex items-center space-x-2 z-40 font-semibold"
-          >
+          <Link href="/" className="flex items-center space-x-2 z-40 font-semibold">
             <Image
               src="/Flash-Fathom-AI-Logo.png"
               width={32}
               height={32}
               alt="Logo"
               className="h-8 w-8"
-            />{" "}
-            {/* Adjust size as needed */}
-            <span>FlashFathom AI.</span>
+            />
+            <span className="text-white">FlashFathom AI.</span>
           </Link>
 
-          <div className="flex items-centFlash-Fathom-AI-LogoFlash-Fathom-AI-Logoer space-x-4">
+          <div className="flex items-center space-x-4">
             {/* Other Nav Links */}
             <div className="hidden sm:flex items-center space-x-4">
               <Link
@@ -61,11 +57,9 @@ const Navbar = () => {
                   </Link>
                   <Link
                     href="/sign-up"
-                    className={`bg-purple-700 hover:bg-purple-500 text-white px-4 py-2 rounded ${buttonVariants(
-                      {
-                        size: "sm",
-                      }
-                    )}`}
+                    className={`bg-gradient-to-r from-purple-700 to-purple-500 hover:bg-gradient-to-l hover:from-purple-500 hover:to-purple-700 text-white px-4 py-2 rounded transition-all duration-300 ${buttonVariants({
+                      size: "sm",
+                    })}`}
                   >
                     Sign Up
                     <ArrowRight className="ml-1.5 h-5 w-5" />
