@@ -1,12 +1,12 @@
-
 "use client";
 import React, { useState } from "react";
 import axios from "axios";
+import { toast} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const StayUpdated = () => {
   const [email, setEmail] = useState<string>("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [message, setMessage] = useState<string>("");
   const apiUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -17,20 +17,30 @@ const StayUpdated = () => {
       const response = await axios.post(`${apiUrl}/api/subscribe`, { email });
 
       setStatus("success");
-      setMessage(response.data.message || "Thank you for subscribing!");
 
-      // Reset email input
+    
+      toast.success(response.data.message || "Thank you for subscribing!", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+
       setEmail("");
-    } catch (error : any) {
+    } catch (error: any) {
       setStatus("error");
-      setMessage(
-        error.response?.data?.message || "Failed to subscribe. Please try again."
+
+
+      toast.error(
+        error.response?.data?.message || "Failed to subscribe. Please try again.",
+        {
+          position: "top-right",
+          autoClose: 3000,
+        }
       );
     }
   };
 
   return (
-    <div className="w-full flex flex-col items-center ">
+    <div className="w-full flex flex-col items-center">
       <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
         <input
           type="email"
@@ -49,12 +59,7 @@ const StayUpdated = () => {
         </button>
       </form>
 
-      {/* Display success or error messages */}
-      {status !== "idle" && (
-        <p className={`text-sm ${status === "success" ? "text-green-600" : "text-red-600"} mt-2`}>
-          {message}
-        </p>
-      )}
+      
     </div>
   );
 };
