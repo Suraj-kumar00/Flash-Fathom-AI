@@ -275,7 +275,7 @@ const Page = () => {
                     {plan === "Free" ? (
                       <Link
                         href="/sign-in"
-                        className={`bg-purple-700 text-purple-600 px-4 py-2 rounded-lg w-full text-center text-white`}
+                        className={`bg-purple-700 px-4 py-2 rounded-lg w-full text-center text-white`}
                       >
                         Get Started
                       </Link>
@@ -283,7 +283,7 @@ const Page = () => {
                       <button
                         className={cn(
                           buttonVariants({ variant: "default" }),
-                          "w-full"
+                          "w-full dark:bg-purple-700 dark:text-white dark:hover:bg-white dark:hover:text-black"
                         )}
                         onClick={() => handleSignUp(plan)}
                       >
