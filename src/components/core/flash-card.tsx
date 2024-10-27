@@ -208,7 +208,7 @@ export default function Flashcard() {
                             />
                             <Button
                                 type="submit"
-                                className="w-full bg-purple-700 hover:bg-purple-500"
+                                className="w-full bg-purple-700 dark:text-white hover:bg-purple-500"
                                 disabled={loading}
                             >
                                 {loading ? 'Generating...' : 'Generate Flashcards'}
