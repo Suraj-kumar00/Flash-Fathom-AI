@@ -5,10 +5,13 @@ import { ArrowRight } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import FAQ from "@/components/FAQ";
 import Noise from "@/components/noise";
+import { ToastContainer } from "react-toastify";
 
 export default function Home() {
   return (
     <div className="relative w-full h-full overflow-hidden">
+      {/* Toast Notification Container */}
+      <ToastContainer />
       <Noise />
       <div className="z-10">
         <MaxWidthWrapper className="mb-12 mt-28 sm:mt-40 flex flex-col items-center justify-center text-center">
