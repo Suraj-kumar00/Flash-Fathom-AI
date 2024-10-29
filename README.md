@@ -182,26 +182,26 @@ We welcome contributions from the community! Please check our Contributing Guide
         </a>
     </td>
     <td align="center" style="word-wrap: break-word; width: 150.0; height: 150.0">
+        <a href=https://github.com/haseebzaki-07>
+            <img src=https://avatars.githubusercontent.com/u/147314463?v=4 width="100;"  alt=Haseeb Zaki/>
+            <br />
+            <sub style="font-size:14px"><b>Haseeb Zaki</b></sub>
+        </a>
+    </td>
+</tr>
+<tr>
+    <td align="center" style="word-wrap: break-word; width: 150.0; height: 150.0">
         <a href=https://github.com/Sachin2815>
             <img src=https://avatars.githubusercontent.com/u/100368589?v=4 width="100;"  alt=Sachin Singh/>
             <br />
             <sub style="font-size:14px"><b>Sachin Singh</b></sub>
         </a>
     </td>
-</tr>
-<tr>
     <td align="center" style="word-wrap: break-word; width: 150.0; height: 150.0">
         <a href=https://github.com/alok-mishra143>
             <img src=https://avatars.githubusercontent.com/u/100504874?v=4 width="100;"  alt=ALOK MISHRA/>
             <br />
             <sub style="font-size:14px"><b>ALOK MISHRA</b></sub>
-        </a>
-    </td>
-    <td align="center" style="word-wrap: break-word; width: 150.0; height: 150.0">
-        <a href=https://github.com/haseebzaki-07>
-            <img src=https://avatars.githubusercontent.com/u/147314463?v=4 width="100;"  alt=Haseeb Zaki/>
-            <br />
-            <sub style="font-size:14px"><b>Haseeb Zaki</b></sub>
         </a>
     </td>
     <td align="center" style="word-wrap: break-word; width: 150.0; height: 150.0">
