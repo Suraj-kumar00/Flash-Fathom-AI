@@ -150,8 +150,8 @@ export default function Flashcard() {
     const currentCard = flashcards[currentIndex]
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen p-10">
-            <Card className="w-full max-w-7xl">
+        <div className="flex flex-col items-center justify-center min-h-screen p-4 md:p-10 ">
+            <Card className="w-full lg:max-w-[70vw] "> {/* Set max-w-xl for smaller screens */}
                 <CardHeader className="flex flex-row items-center justify-between">
                     <CardTitle>Flashcard App</CardTitle>
                     {currentCard && (
@@ -162,14 +162,14 @@ export default function Flashcard() {
                 </CardHeader>
                 <CardContent>
                     <Card className="bg-secondary">
-                        <CardContent className="p-6 h-64 flex flex-col justify-center items-center">
+                        <CardContent className="p-4 md:p-6 h-64 flex flex-col justify-center items-center overflow-hidden"> {/* Adjust padding and add overflow-hidden */}
                             {currentCard ? (
                                 <>
-                                    <h2 className="text-xl font-semibold mb-4">{currentCard.question}</h2>
-                                    {flip && <p className="text-muted-foreground mx-auto text-lg">{currentCard.answer}</p>}
+                                    <h2 className="text-xl font-semibold mb-4 text-center">{currentCard.question}</h2>
+                                    {flip && <p className="text-muted-foreground mx-auto text-lg text-center">{currentCard.answer}</p>}
                                 </>
                             ) : (
-                                <p>No flashcards generated yet. Enter text and click &quot;Generate Flashcards&quot;.</p>
+                                <p className="text-center">No flashcards generated yet. Enter text and click &quot;Generate Flashcards&quot;.</p>
                             )}
                         </CardContent>
                     </Card>
@@ -219,7 +219,7 @@ export default function Flashcard() {
                         <>
                             <Button
                                 variant="outline"
-                                className="w-full text-white hover:text-white  bg-purple-700 hover:bg-purple-500"
+                                className="w-full text-white hover:text-white bg-purple-700 hover:bg-purple-500"
                                 onClick={handleOpenDialog}
                             >
                                 Save it
@@ -235,13 +235,13 @@ export default function Flashcard() {
                                         <Input
                                             id="setName"
                                             value={setName}
-                                            className="boarder-purple-600"
+                                            className="border-purple-600"
                                             onChange={(e) => setSetName(e.target.value)}
                                             placeholder="Enter flashcard set name"
                                         />
                                     </div>
                                     <DialogFooter>
-                                        <Button onClick={handleSaveSet} className=" text-white hover:text-white  bg-purple-700 hover:bg-purple-500">Save</Button>
+                                        <Button onClick={handleSaveSet} className="text-white hover:text-white bg-purple-700 hover:bg-purple-500">Save</Button>
                                     </DialogFooter>
                                 </DialogContent>
                             </Dialog>
