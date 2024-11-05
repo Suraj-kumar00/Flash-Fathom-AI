@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef, useState } from "react";
+import { motion } from "framer-motion";
 
 interface FaqsCardProps {
     faqsList: {
@@ -22,10 +23,13 @@ const FaqsCard = ({ faqsList, idx }: FaqsCardProps) => {
     };
 
     return (
-        <div
+        <motion.div
             className="space-y-3 mt-5 overflow-hidden border-b border-muted"
             key={idx}
             onClick={toggleAnswer}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: idx * 0.1 }}
         >
             <h4 className="cursor-pointer pb-5 flex items-center justify-between text-lg text-foreground font-medium">
                 {faqsList.q}
@@ -63,7 +67,7 @@ const FaqsCard = ({ faqsList, idx }: FaqsCardProps) => {
                     <p className="text-muted-foreground">{faqsList.a}</p>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 };
 
@@ -102,11 +106,15 @@ export default function FAQSection(): JSX.Element {
                     further assistance.
                 </p>
             </div>
-            <div className="mt-14 max-w-2xl mx-auto">
+            <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.5 }}
+                className="mt-14 max-w-2xl mx-auto">
                 {faqsList.map((item, idx) => (
                     <FaqsCard key={idx} idx={idx} faqsList={item} />
                 ))}
-            </div>
+            </motion.div>
         </section>
     );
 }
