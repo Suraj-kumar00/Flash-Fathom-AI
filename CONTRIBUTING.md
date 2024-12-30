@@ -1,6 +1,6 @@
 # Contributing Guidelines 🌍
 
-This documentation contains a set of guidelines to help you during the contribution process.   
+This documentation contains a set of guidelines to help you during the contribution process.  
 We are happy to welcome all the contributions from anyone willing to improve/add new projects (doesn't matter which language) to this Repository.
 
 <br>
@@ -28,31 +28,31 @@ If you're new to Git and GitHub, no worries! Here are some useful resources:
 ```bash
 FLASH-FATHOM-AI/
 ├── .github/                  # GitHub-related configurations such as workflows, issue templates, etc
-│   
+│
 ├── public/                   # Contains some images for the public purpose
-│   
+│
 ├── src/                      # Contains all the source components of the project
-│   
-├── .env.example      
-│     
-├── .eslintrc.json               
-│   
-├── .gitignore                 
-│   
+│
+├── .env.example
+│
+├── .eslintrc.json
+│
+├── .gitignore
+│
 ├── CODE_OF_CONDUCT.md         # Some rules for the contributors
-│   
+│
 ├── CONTRIBUTING.md            # Instructions about how to contribute
-│   
-├── Dockerfile          
-│   
+│
+├── Dockerfile
+│
 ├── LICENSE                    # Basically a permission to do something
-│   
+│
 ├── README.md                  # Some basic instructions to follow
 ├──
 ├── components.json
-├── 
+├──
 ├── docker-compose.yml
-├──                     
+├──
 ├── next.config.mjs
 ├──
 ├── package.json
@@ -70,7 +70,8 @@ FLASH-FATHOM-AI/
 
 # Before contributing to the repository, here are a few steps you can follow to understand the project
 
-## Installation 
+## Installation
+
 For Installation on local machine follow bellow steps:
 First [fork the reqpository](https://github.com/Suraj-kumar00/Flash-Fathom-AI/fork)
 
@@ -96,7 +97,7 @@ npm install -g pnpm
 pnpm install
 ```
 
-If required for you: 
+If required for you:
 
 **Installing clerk**
 
@@ -108,12 +109,6 @@ pnpm add @clerk/clerk-sdk @clerk/nextjs
 
 ```bash
 pnpm add openai
-```
-
-**Firebase**
-
-```bash
-pnpm add firebase
 ```
 
 **Stripe**
@@ -137,7 +132,7 @@ First Install [**Docker Desktop**](https://www.docker.com/products/docker-deskto
 **Pull the image**
 
 ```bash
-docker pull surajkumar00/flashfathom-ai 
+docker pull surajkumar00/flashfathom-ai
 ```
 
 **Run the Container**
@@ -159,17 +154,17 @@ We welcome contributions to enhance the AI Customer Support system! To contribut
 **Note:** To assign the issue to yourself type `.take` in the commant on the issue.
 
 1. **Star this repository**
-    Click on the top right corner marked as **Stars** at last.
+   Click on the top right corner marked as **Stars** at last.
 
 2. **Fork this repository**
-    Click on the top right corner marked as **Fork** at second last.
+   Click on the top right corner marked as **Fork** at second last.
 
 3. **Clone the forked repository**
 
 ```bash
 git clone https://github.com/<your-github-username>/Flash-Fathom-AI.git
 ```
-  
+
 4. **Navigate to the project directory**
 
 ```bash

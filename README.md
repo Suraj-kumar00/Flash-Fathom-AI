@@ -31,7 +31,6 @@ Introducing **FlashFathom AI** – the ultimate flashcard generator. Effortlessl
 
 - Next.js
 - Clerk
-- Firebase
 - OpenAI
 - Stripe.
 
@@ -49,7 +48,6 @@ Introducing **FlashFathom AI** – the ultimate flashcard generator. Effortlessl
 - **Clerk Authentication**: Secure, seamless user access.
 - **SaaS UI & Landing Page**: Polished, user-friendly design.
 - **AI Flashcards**: Instantly generate flashcards with OpenAI.
-- **Firebase CRUD**: Easy data management.
 - **Stripe Subscriptions**: Simple yearly and monthly payments.
 
 ## Installation
@@ -87,12 +85,6 @@ pnpm add @clerk/clerk-sdk @clerk/nextjs
 
 ```bash
 pnpm add openai
-```
-
-**Firebase**
-
-```bash
-pnpm add firebase
 ```
 
 **Stripe**
