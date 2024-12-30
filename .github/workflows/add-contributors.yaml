@@ -9,11 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: BobAnkh/add-contributors@master
+      - uses: BobAnkh/add-contributors@master  # Use the latest stable version
         with:
           CONTRIBUTOR: "## Contributors"
           COLUMN_PER_ROW: "6"
-          ACCESS_TOKEN: ${{secrets.PAT_TOKEN}}
+          ACCESS_TOKEN: ${{ secrets.PAT_TOKEN }}  # Ensure this matches the secret name in GitHub
           IMG_WIDTH: "100"
           FONT_SIZE: "14"
           PATH: "/README.md"
