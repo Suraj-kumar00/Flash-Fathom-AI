@@ -35,3 +35,22 @@ export type SiteConfig = {
   };
   
   export type { FlashcardSet, Flashcard, FlashcardSetWithCards };
+
+export interface Deck {
+  id: string;
+  name: string;
+  description?: string;
+  userId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  flashcards: Array<{
+    id: string;
+    question: string;
+    answer: string;
+  }>;
+}
+
+export interface FlashcardInput {
+  question: string;
+  answer: string;
+}

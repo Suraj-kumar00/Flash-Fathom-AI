@@ -30,56 +30,40 @@
 //   return data;
 // };
 
-import { Flashcard } from "@/types";
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from '@supabase/supabase-js'
+import { Database } from '@/types/supabase'
 
-// Load the Supabase URL and Anon Key from environment variables
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
-// Ensure the environment variables are set
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error("Supabase URL and Anon Key are required!");
-}
+export const supabase = createClient<Database>(supabaseUrl, supabaseKey)
 
-// Initialize Supabase client
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-export const saveFlashcardSetToSupabase = async (
+export async function saveFlashcardsToSupabase(
   userId: string,
-  setName: string,
-  flashcards: Flashcard[]
-) => {
+  deckId: string,
+  flashcards: Array<{ question: string; answer: string }>
+) {
   try {
-    // Insert flashcards into the "flashcards" table
     const { data, error } = await supabase
-      .from("flashcards")
+      .from('flashcards')
       .insert(
-        flashcards.map((flashcard) => ({
+        flashcards.map((card) => ({
           user_id: userId,
-          set_name: setName,
-          question: flashcard.question,
-          answer: flashcard.answer,
-          created_at: flashcard.createdAt,
-          updated_at: flashcard.updatedAt,
+          deck_id: deckId,
+          question: card.question,
+          answer: card.answer,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
         }))
       )
-      .select(); // Ensure you get the data back (if needed)
+      .select()
 
-    // Error handling: throw an error if insertion fails
-    if (error) {
-      throw new Error(error.message);
-    }
-
-    // Return the successfully inserted data
-    return data;
-  } catch (err: unknown) {
-    // Catch any other errors
-    const errorMessage =
-      err instanceof Error ? err.message : "Unknown error occurred";
-    console.error("Error saving flashcards:", errorMessage);
-    throw new Error(errorMessage);
+    if (error) throw error
+    return data
+  } catch (error) {
+    console.error('Error saving flashcards to Supabase:', error)
+    throw error
   }
-};
+}
 
 export default supabase;

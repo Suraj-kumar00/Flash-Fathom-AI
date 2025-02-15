@@ -1,9 +1,4 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
+// schema.prisma
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,26 +8,74 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// prisma/schema.prisma
-model FlashcardSet {
-  id        String     @id @default(uuid())
-  userId    String
-  name      String
-  flashcards Flashcard[]
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+model User {
+  id           String       @id @default(cuid())
+  clerkUserId  String       @unique
+  email        String       @unique
+  firstName    String?
+  lastName     String?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  flashcards   Flashcard[]
+  decks        Deck[]
+  studySessions StudySession[]
+}
+
+model Deck {
+  id          String      @id @default(cuid())
+  name        String
+  description String?
+  userId      String      // Direct field for user ID
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  flashcards  Flashcard[]
+  user        User        @relation(fields: [userId], references: [id])
 
   @@index([userId])
 }
 
 model Flashcard {
-  id          String   @id @default(uuid())
-  question    String
-  answer      String
-  flashcardSetId String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id            String      @id @default(cuid())
+  question      String
+  answer        String
+  userId        String      // Direct field for user ID
+  deckId        String      // Direct field for deck ID
+  difficulty    String      @default("MEDIUM")
+  lastReviewed  DateTime?
+  nextReview    DateTime?
+  repetitions   Int         @default(0)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  user          User        @relation(fields: [userId], references: [id])
+  deck          Deck        @relation(fields: [deckId], references: [id])
+  studyRecords  StudyRecord[]
 
-  flashcardSet FlashcardSet @relation(fields: [flashcardSetId], references: [id])
-  @@index([flashcardSetId])
+  @@index([userId])
+  @@index([deckId])
+}
+
+model StudySession {
+  id          String        @id @default(cuid())
+  userId      String
+  startTime   DateTime      @default(now())
+  endTime     DateTime?
+  records     StudyRecord[]
+  user        User          @relation(fields: [userId], references: [id])
+}
+
+model StudyRecord {
+  id            String       @id @default(cuid())
+  flashcardId   String
+  sessionId     String
+  isCorrect     Boolean
+  timeSpent     Int         // Time spent in seconds
+  createdAt     DateTime    @default(now())
+  flashcard     Flashcard   @relation(fields: [flashcardId], references: [id])
+  studySession  StudySession @relation(fields: [sessionId], references: [id])
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
 }

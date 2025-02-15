@@ -1,71 +1,72 @@
 import { NextResponse } from "next/server";
 import OpenAI from 'openai';
 
-// Initialize the OpenAI instance with Cloudflare’s OpenRouter API
+// Initialize the OpenAI instance with OpenAI's API
 const openai = new OpenAI({
-    baseURL: "https://openrouter.ai/api/v1",
-    apiKey: process.env.OPENROUTER_API_KEY, // Ensure this is stored in your environment variables
+    apiKey: process.env.OPENROUTER_API_KEY,
+    baseURL: "https://api.openai.com/v1",
     defaultHeaders: {
-        "HTTP-Referer": process.env.NEXT_PUBLIC_APP_URL, // Should be set in your .env.local
-        "X-Title": 'Flashcards App',
+        "HTTP-Referer": process.env.NEXT_PUBLIC_APP_URL,
+        "X-Title": "Flashcard Generator"
     },
 });
 
-// System prompt for flashcard generation
-const systemPrompt = `
-You are a helpful assistant that generates flashcards. You take in text and create exactly 10 flashcards from it. Both front and back should be one sentence long. You MUST return your response in the following JSON format, with no additional text before or after the JSON:
-
-{
-  "flashcards": [
-    {
-      "question": "Front of the card",
-      "answer": "Back of the card"
-    },
-    // ... (8 more flashcards)
-  ]
-}`;
-
 // POST method for handling incoming requests
-export async function POST(request: Request) {
+export async function POST(req: Request) {
     try {
-        const data = await request.text(); // Get the input text from the request
+        const text = await req.text();
+        console.log('Received text:', text);
 
-        // Call OpenRouter (Cloudflare's OpenAI-like API)
-        const completion = await openai.chat.completions.create({
-            model: "meta-llama/llama-3.1-8b-instruct:free", // Model choice
+        const prompt = `Create 5 flashcards from this text: "${text}". 
+        Each flashcard should have a question and answer. 
+        Format your response as a JSON array like this:
+        {
+          "flashcards": [
+            {"question": "What is X?", "answer": "X is Y"},
+            // more cards...
+          ]
+        }`;
+
+        const response = await openai.chat.completions.create({
+            model: "gpt-3.5-turbo",
             messages: [
-                { role: "system", content: systemPrompt },
-                { role: "user", content: data },
+                {
+                    role: "system",
+                    content: "You are a helpful assistant that creates educational flashcards."
+                },
+                {
+                    role: "user",
+                    content: prompt
+                }
             ],
-            response_format: { type: 'json_object' }, // Ensure response is JSON
+            temperature: 0.7,
+            max_tokens: 1000,
+            response_format: { type: "json_object" }
         });
 
-        const content = completion.choices[0]?.message?.content;
+        console.log('API Response:', response);
 
-        // Handle case where no content is returned
+        const content = response.choices[0]?.message?.content;
         if (!content) {
-            return NextResponse.json({ error: "Failed to generate flashcards." }, { status: 500 });
+            throw new Error('No content generated');
         }
 
-        // Try parsing the JSON content
         try {
-            const flashcards = JSON.parse(content);
-            
-            // Validate the structure of the flashcards object
-            if (flashcards?.flashcards && Array.isArray(flashcards.flashcards)) {
-                return NextResponse.json(flashcards); // Return flashcards in JSON response
-            } else {
-                throw new Error('Invalid flashcards format');
+            const parsedContent = JSON.parse(content);
+            if (!parsedContent.flashcards || !Array.isArray(parsedContent.flashcards)) {
+                throw new Error('Invalid response format');
             }
-        } catch (error) {
-            console.error('Error parsing JSON:', error);
-            console.log('Raw content:', content);
-            return NextResponse.json({ error: "Invalid response format" }, { status: 500 });
-        }
 
+            return NextResponse.json(parsedContent);
+        } catch (parseError) {
+            console.error('JSON Parse Error:', parseError, 'Content:', content);
+            throw new Error('Failed to parse AI response');
+        }
     } catch (error) {
-        // Catch any other errors and log them
         console.error('Error generating flashcards:', error);
-        return NextResponse.json({ error: "Failed to generate flashcards." }, { status: 500 });
+        return NextResponse.json(
+            { error: 'Failed to generate flashcards: ' + (error as Error).message },
+            { status: 500 }
+        );
     }
 }

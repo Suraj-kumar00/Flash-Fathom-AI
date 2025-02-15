@@ -26,8 +26,10 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Input } from "../ui/input";
-import { saveFlashcardSetToSupabase } from "@/lib/supabase";
+import { saveFlashcardsToSupabase } from '@/lib/supabase'
 import type { Flashcard } from "@/types";
+import { useUser } from "@clerk/nextjs";
+import Link from "next/link";
 
 const formSchema = z.object({
   text: z
@@ -37,6 +39,7 @@ const formSchema = z.object({
 });
 
 export default function Flashcard() {
+  const { user } = useUser();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [flip, setFlip] = useState<boolean>(false);
   const [flashcards, setFlashcards] = useState<Flashcard[]>([]);
@@ -77,31 +80,80 @@ export default function Flashcard() {
   }, []);
 
   const handleSaveSet = async () => {
-    console.log("Save button clicked");
+    if (!user) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Please sign in to save flashcards.",
+      });
+      return;
+    }
+
+    if (!setName) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Please enter a name for your flashcard set.",
+      });
+      return;
+    }
+
+    if (flashcards.length === 0) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Please generate some flashcards first.",
+      });
+      return;
+    }
+    
     try {
-      const flashcardsWithIds: Flashcard[] = flashcards.map(
-        (flashcard, index) => ({
-          ...flashcard,
-          flashcardId: `flashcard-${index}`,
-          setId: "set-id",
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        })
-      );
+      const payload = {
+        userId: user.id,
+        name: setName,
+        flashcards: flashcards.map(card => ({
+          question: card.question,
+          answer: card.answer
+        }))
+      };
 
-      // Save to Supabase
-      await saveFlashcardSetToSupabase("user-id", setName, flashcardsWithIds);
+      console.log('Sending payload:', payload);
 
-      console.log("Flashcards saved successfully");
+      const response = await fetch('/api/decks', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Server error:', errorData);
+        throw new Error(errorData.error || 'Failed to save flashcards');
+      }
+
+      const deck = await response.json();
+      console.log('Saved deck:', deck);
+
       handleCloseDialog();
       setSetName("");
       setSaveSuccessDialogOpen(true);
+      toast({
+        title: "Success",
+        description: "Flashcards saved successfully!",
+      });
+
+      setTimeout(() => {
+        window.location.href = '/flashcards';
+      }, 2000);
+
     } catch (error) {
       console.error("Error saving flashcards:", error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: "There was an error saving the flashcards.",
+        description: error instanceof Error ? error.message : "Failed to save flashcards",
       });
     }
   };
@@ -312,6 +364,14 @@ export default function Flashcard() {
               </Dialog>
             </>
           )}
+          <Link href="/flashcards">
+            <Button 
+              variant="outline" 
+              className="mt-4 w-full"
+            >
+              View Saved Flashcards
+            </Button>
+          </Link>
         </CardContent>
       </Card>
     </div>
