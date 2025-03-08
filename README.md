@@ -33,6 +33,8 @@ Introducing **FlashFathom AI** – the ultimate flashcard generator. Effortlessl
 - Clerk
 - OpenAI
 - Stripe.
+- Supabase (BaaS)
+- PostgreSQL with Prisma ORM
 
 ## DevOps Practices
 
