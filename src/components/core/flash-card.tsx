@@ -26,7 +26,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Input } from "../ui/input";
-import { saveFlashcardsToSupabase } from '@/lib/supabase'
+import { saveFlashcardsToSupabase } from "@/lib/supabase";
 import type { Flashcard } from "@/types";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
@@ -77,6 +77,7 @@ export default function Flashcard() {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSaveSet = async () => {
@@ -106,35 +107,35 @@ export default function Flashcard() {
       });
       return;
     }
-    
+
     try {
       const payload = {
         userId: user.id,
         name: setName,
-        flashcards: flashcards.map(card => ({
+        flashcards: flashcards.map((card) => ({
           question: card.question,
-          answer: card.answer
-        }))
+          answer: card.answer,
+        })),
       };
 
-      console.log('Sending payload:', payload);
+      console.log("Sending payload:", payload);
 
-      const response = await fetch('/api/decks', {
-        method: 'POST',
+      const response = await fetch("/api/decks", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.error('Server error:', errorData);
-        throw new Error(errorData.error || 'Failed to save flashcards');
+        console.error("Server error:", errorData);
+        throw new Error(errorData.error || "Failed to save flashcards");
       }
 
       const deck = await response.json();
-      console.log('Saved deck:', deck);
+      console.log("Saved deck:", deck);
 
       handleCloseDialog();
       setSetName("");
@@ -145,15 +146,15 @@ export default function Flashcard() {
       });
 
       setTimeout(() => {
-        window.location.href = '/flashcards';
+        window.location.href = "/flashcards";
       }, 2000);
-
     } catch (error) {
       console.error("Error saving flashcards:", error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: error instanceof Error ? error.message : "Failed to save flashcards",
+        description:
+          error instanceof Error ? error.message : "Failed to save flashcards",
       });
     }
   };
@@ -365,10 +366,7 @@ export default function Flashcard() {
             </>
           )}
           <Link href="/flashcards">
-            <Button 
-              variant="outline" 
-              className="mt-4 w-full"
-            >
+            <Button variant="outline" className="mt-4 w-full">
               View Saved Flashcards
             </Button>
           </Link>
