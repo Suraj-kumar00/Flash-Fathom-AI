@@ -1,20 +1,27 @@
-# Using the base image
-FROM node:18
+# Use a minimal base image
+FROM node:18-alpine AS builder
 
-# Installing pnpm globally
-RUN npm install -g pnpm
-
-# Setting up the working directory inside the container
 WORKDIR /app
 
-# Copy package.json and pnpm-lock.yaml to the working directory
 COPY package.json pnpm-lock.yaml ./
 
-# Copy the rest of the application code to the working directory
+RUN npm install -g pnpm \
+    && pnpm install --frozen-lockfile --prod 
+
 COPY . .
 
-# Expose the port the app runs on
+RUN pnpm build
+
+# Use a clean, minimal final image
+FROM node:18-alpine AS production
+
+WORKDIR /app
+
+# Copy only necessary files
+COPY --from=builder /app/node_modules /app/node_modules
+COPY --from=builder /app/.next /app/.next
+COPY package.json ./
+
 EXPOSE 3000
 
-# Start the Next.js application
 CMD ["pnpm", "dev"]
