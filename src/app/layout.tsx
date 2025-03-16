@@ -6,6 +6,8 @@ import Navbar from "@/components/Navbar";
 import { ClerkProvider, UserButton } from "@clerk/nextjs";
 import { ThemeProvider } from "..//components/ThemeProvider";
 import Footer from "@/components/Footer";
+import 'react-toastify/dist/ReactToastify.css'
+import { ToastContainer } from 'react-toastify'
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -42,6 +44,7 @@ export default function RootLayout({
             <Navbar />
             {children}
             <Footer />
+            <ToastContainer />
           </ThemeProvider>
         </ClerkProvider>
       </body>

@@ -1,27 +1,43 @@
-# Use a minimal base image
+# Stage 1: Build application
 FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
+# Install system dependencies for Prisma
+RUN apk add --no-cache openssl
 
-RUN npm install -g pnpm \
-    && pnpm install --frozen-lockfile --prod 
+# Copy package management files
+COPY package.json pnpm-lock.yaml* ./
+COPY prisma ./prisma  
 
+# Install dependencies
+RUN npm install -g pnpm && \
+    pnpm install --frozen-lockfile
+
+# Generate Prisma client
+RUN npx prisma generate
+
+# Copy remaining source files
 COPY . .
 
-RUN pnpm build
+# Build application
+RUN pnpm run build
 
-# Use a clean, minimal final image
-FROM node:18-alpine AS production
+# Stage 2: Production image
+FROM node:18-alpine
 
 WORKDIR /app
 
-# Copy only necessary files
-COPY --from=builder /app/node_modules /app/node_modules
-COPY --from=builder /app/.next /app/.next
-COPY package.json ./
+ENV NODE_ENV=production
+
+# Copy built assets and production dependencies
+COPY --from=builder /app/package.json /app/pnpm-lock.yaml ./
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+
+# Install PRODUCTION dependencies only (fixed typo)
+RUN pnpm install --frozen-lockfile --prod
 
 EXPOSE 3000
 
-CMD ["pnpm", "dev"]
+CMD ["pnpm", "start"]

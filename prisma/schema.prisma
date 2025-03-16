@@ -25,7 +25,7 @@ model Deck {
   id          String      @id @default(cuid())
   name        String
   description String?
-  userId      String      // Direct field for user ID
+  userId      String
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   flashcards  Flashcard[]
@@ -38,8 +38,8 @@ model Flashcard {
   id            String      @id @default(cuid())
   question      String
   answer        String
-  userId        String      // Direct field for user ID
-  deckId        String      // Direct field for deck ID
+  userId        String
+  deckId        String
   difficulty    String      @default("MEDIUM")
   lastReviewed  DateTime?
   nextReview    DateTime?

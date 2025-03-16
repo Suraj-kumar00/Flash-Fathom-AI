@@ -4,10 +4,10 @@ import OpenAI from 'openai';
 // Initialize the OpenAI instance with OpenAI's API
 const openai = new OpenAI({
     apiKey: process.env.OPENROUTER_API_KEY,
-    baseURL: "https://api.openai.com/v1",
+    baseURL: "https://openrouter.ai/api/v1",
     defaultHeaders: {
-        "HTTP-Referer": process.env.NEXT_PUBLIC_APP_URL,
-        "X-Title": "Flashcard Generator"
+        "HTTP-Referer": process.env.NEXT_PUBLIC_APP_URL as string,
+        "X-Title": "FlashFathom AI"
     },
 });
 
@@ -17,18 +17,18 @@ export async function POST(req: Request) {
         const text = await req.text();
         console.log('Received text:', text);
 
-        const prompt = `Create 5 flashcards from this text: "${text}". 
+        const prompt = `Create 10 flashcards from this text: "${text}". 
         Each flashcard should have a question and answer. 
         Format your response as a JSON array like this:
         {
           "flashcards": [
-            {"question": "What is X?", "answer": "X is Y"},
+            {"question": "What is X?","X", "answer": "X is Y"},
             // more cards...
           ]
         }`;
 
         const response = await openai.chat.completions.create({
-            model: "gpt-3.5-turbo",
+            model: "openai/gpt-3.5-turbo",
             messages: [
                 {
                     role: "system",
@@ -40,8 +40,7 @@ export async function POST(req: Request) {
                 }
             ],
             temperature: 0.7,
-            max_tokens: 1000,
-            response_format: { type: "json_object" }
+            max_tokens: 1000
         });
 
         console.log('API Response:', response);

@@ -90,7 +90,7 @@ export default function Flashcard() {
       return;
     }
 
-    if (!setName) {
+    if (!setName.trim()) {
       toast({
         variant: "destructive",
         title: "Error",
@@ -99,62 +99,54 @@ export default function Flashcard() {
       return;
     }
 
-    if (flashcards.length === 0) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Please generate some flashcards first.",
-      });
-      return;
-    }
-
     try {
-      const payload = {
-        userId: user.id,
-        name: setName,
-        flashcards: flashcards.map((card) => ({
-          question: card.question,
-          answer: card.answer,
-        })),
-      };
-
-      console.log("Sending payload:", payload);
-
-      const response = await fetch("/api/decks", {
-        method: "POST",
+      const response = await fetch('/api/decks/save', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          name: setName,
+          flashcards: flashcards.map(card => ({
+            question: card.question,
+            answer: card.answer
+          }))
+        }),
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        console.error("Server error:", errorData);
-        throw new Error(errorData.error || "Failed to save flashcards");
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to save flashcards');
       }
 
       const deck = await response.json();
-      console.log("Saved deck:", deck);
 
-      handleCloseDialog();
-      setSetName("");
+      // Save to Supabase as backup
+      await saveFlashcardsToSupabase(
+        user.id,
+        deck.id,
+        flashcards.map(card => ({
+          question: card.question,
+          answer: card.answer
+        }))
+      );
+
+      setDialogOpen(false);
       setSaveSuccessDialogOpen(true);
+      
       toast({
         title: "Success",
         description: "Flashcards saved successfully!",
       });
 
-      setTimeout(() => {
-        window.location.href = "/flashcards";
-      }, 2000);
+      setSetName("");
+      
     } catch (error) {
       console.error("Error saving flashcards:", error);
       toast({
         variant: "destructive",
         title: "Error",
-        description:
-          error instanceof Error ? error.message : "Failed to save flashcards",
+        description: error instanceof Error ? error.message : "Failed to save flashcards",
       });
     }
   };
@@ -318,13 +310,12 @@ export default function Flashcard() {
             </form>
           </Form>
           {flashcards.length > 0 && (
-            <>
+            <div className="mt-4 space-y-4">
               <Button
-                variant="outline"
-                className="w-full text-white hover:text-white bg-purple-700 hover:bg-purple-500"
-                onClick={handleOpenDialog}
+                onClick={() => setDialogOpen(true)}
+                className="w-full bg-purple-600 hover:bg-purple-500"
               >
-                Save it
+                Save Flashcards
               </Button>
 
               <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -333,37 +324,41 @@ export default function Flashcard() {
                     <DialogTitle>Save Flashcard Set</DialogTitle>
                   </DialogHeader>
                   <div className="grid gap-4 py-4">
-                    <Label htmlFor="setName">Set Name</Label>
-                    <Input
-                      id="setName"
-                      value={setName}
-                      className="border-purple-600"
-                      onChange={(e) => setSetName(e.target.value)}
-                      placeholder="Enter flashcard set name"
-                    />
+                    <div className="space-y-2">
+                      <Label htmlFor="name">Set Name</Label>
+                      <Input
+                        id="name"
+                        value={setName}
+                        onChange={(e) => setSetName(e.target.value)}
+                        placeholder="Enter a name for your flashcard set"
+                      />
+                    </div>
                   </div>
                   <DialogFooter>
-                    <Button onClick={handleSaveSet}>Save</Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
-
-              <Dialog
-                open={saveSuccessDialogOpen}
-                onOpenChange={setSaveSuccessDialogOpen}
-              >
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Flashcards Saved Successfully</DialogTitle>
-                  </DialogHeader>
-                  <DialogFooter>
-                    <Button onClick={() => setShouldRedirect(true)}>
-                      Go to Flashcards
+                    <Button
+                      onClick={handleSaveSet}
+                      className="bg-purple-600 hover:bg-purple-500"
+                    >
+                      Save
                     </Button>
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
-            </>
+
+              <Dialog open={saveSuccessDialogOpen} onOpenChange={setSaveSuccessDialogOpen}>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Success!</DialogTitle>
+                  </DialogHeader>
+                  <p>Your flashcards have been saved successfully.</p>
+                  <DialogFooter>
+                    <Button onClick={() => window.location.href = '/flashcards'}>
+                      View My Flashcards
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
           )}
           <Link href="/flashcards">
             <Button variant="outline" className="mt-4 w-full">

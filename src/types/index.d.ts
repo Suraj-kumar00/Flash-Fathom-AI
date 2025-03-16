@@ -54,3 +54,10 @@ export interface FlashcardInput {
   question: string;
   answer: string;
 }
+
+export interface SaveFlashcardInput {
+  question: string;
+  answer: string;
+  userId: string;
+  deckId: string;
+}
