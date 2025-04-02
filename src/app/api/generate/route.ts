@@ -1,71 +1,40 @@
 import { NextResponse } from "next/server";
-import OpenAI from 'openai';
+import axios from "axios";
 
-// Initialize the OpenAI instance with OpenAI's API
-const openai = new OpenAI({
-    apiKey: process.env.OPENROUTER_API_KEY,
-    baseURL: "https://openrouter.ai/api/v1",
-    defaultHeaders: {
-        "HTTP-Referer": process.env.NEXT_PUBLIC_APP_URL as string,
-        "X-Title": "FlashFathom AI"
-    },
-});
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
 
-// POST method for handling incoming requests
-export async function POST(req: Request) {
-    try {
-        const text = await req.text();
-        console.log('Received text:', text);
+export async function POST(req: any) {
+  try {
+    const text = await req.text();
+    console.log("Received text:", text);
 
-        const prompt = `Create 10 flashcards from this text: "${text}". 
+    const prompt = `Create 10 flashcards from this text: "${text}". 
         Each flashcard should have a question and answer. 
         Format your response as a JSON array like this:
         {
           "flashcards": [
-            {"question": "What is X?","X", "answer": "X is Y"},
+            {"question": "What is X?", "answer": "X is Y"},
             // more cards...
           ]
         }`;
 
-        const response = await openai.chat.completions.create({
-            model: "openai/gpt-3.5-turbo",
-            messages: [
-                {
-                    role: "system",
-                    content: "You are a helpful assistant that creates educational flashcards."
-                },
-                {
-                    role: "user",
-                    content: prompt
-                }
-            ],
-            temperature: 0.7,
-            max_tokens: 1000
-        });
+    const response = await axios.post(GEMINI_API_URL, {
+      contents: [{ role: "user", parts: [{ text: prompt }] }],
+    });
 
-        console.log('API Response:', response);
+    let content = response.data.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!content) throw new Error("Invalid response format from Gemini API");
 
-        const content = response.choices[0]?.message?.content;
-        if (!content) {
-            throw new Error('No content generated');
-        }
+    // Fix JSON parsing issue by removing markdown code block markers
+    content = content.replace(/```json|```/g, "").trim();
 
-        try {
-            const parsedContent = JSON.parse(content);
-            if (!parsedContent.flashcards || !Array.isArray(parsedContent.flashcards)) {
-                throw new Error('Invalid response format');
-            }
-
-            return NextResponse.json(parsedContent);
-        } catch (parseError) {
-            console.error('JSON Parse Error:', parseError, 'Content:', content);
-            throw new Error('Failed to parse AI response');
-        }
-    } catch (error) {
-        console.error('Error generating flashcards:', error);
-        return NextResponse.json(
-            { error: 'Failed to generate flashcards: ' + (error as Error).message },
-            { status: 500 }
-        );
-    }
+    return NextResponse.json(JSON.parse(content));
+  } catch (error) {
+    console.error("Error generating flashcards:", error);
+    return NextResponse.json(
+      { error: "Failed to generate flashcards" },
+      { status: 500 }
+    );
+  }
 }
