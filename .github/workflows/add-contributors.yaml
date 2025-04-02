@@ -4,16 +4,19 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+
 jobs:
   add-contributors:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: BobAnkh/add-contributors@master  # Use the latest stable version
+      - uses: BobAnkh/add-contributors@v0.2.2
         with:
           CONTRIBUTOR: "## Contributors"
           COLUMN_PER_ROW: "6"
-          ACCESS_TOKEN: ${{ secrets.PAT_TOKEN }}  # Ensure this matches the secret name in GitHub
+          ACCESS_TOKEN: ${{ secrets.PAT_TOKEN }}
           IMG_WIDTH: "100"
           FONT_SIZE: "14"
           PATH: "/README.md"
