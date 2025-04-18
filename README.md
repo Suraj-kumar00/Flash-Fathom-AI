@@ -49,8 +49,9 @@ Introducing **FlashFathom AI** – the ultimate flashcard generator. Effortlessl
 
 - **Clerk Authentication**: Secure, seamless user access.
 - **SaaS UI & Landing Page**: Polished, user-friendly design.
-- **AI Flashcards**: Instantly generate flashcards with OpenAI.
+- **AI Flashcards**: Instantly generate flashcards with GeminiAPI.
 - **Stripe Subscriptions**: Simple yearly and monthly payments.
+- **Gemini API**: For generating the flashcarding I used the GeminiAPI
 
 ## Installation
 
