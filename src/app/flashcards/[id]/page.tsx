@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { prisma } from "@/lib/db";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -29,18 +28,21 @@ export default function FlashcardSetPage() {
     if (id && isLoaded && user) {
       const fetchData = async () => {
         try {
-          const userId = user.id;
-          const fetchedFlashcards = await prisma.flashcard.findMany({
-            where: {
-              userId,
-              deckId: id as string,
-            },
-          });
-          const mappedFlashcards = fetchedFlashcards.map((card) => ({
+          // ✅ FIXED: Use API route instead of direct Prisma
+          const response = await fetch(`/api/flashcards/${id}`);
+          
+          if (!response.ok) {
+            throw new Error('Failed to fetch flashcards');
+          }
+          
+          const fetchedFlashcards = await response.json();
+          
+          const mappedFlashcards = fetchedFlashcards.map((card: any) => ({
             ...card,
             flashcardId: card.id,
             setId: card.deckId,
           }));
+          
           setFlashcards(mappedFlashcards);
         } catch (error) {
           console.error("Error fetching flashcards:", error);
@@ -69,6 +71,7 @@ export default function FlashcardSetPage() {
     setFlip(false);
   };
 
+  // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (event: { key: string }) => {
       if (event.key === "ArrowRight") {
@@ -81,30 +84,25 @@ export default function FlashcardSetPage() {
     };
 
     document.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  if (loading)
+  if (loading) {
     return (
       <div className="min-h-screen flex justify-center">
         <Loader2 className="w-16 h-16 animate-spin text-primary" />
       </div>
     );
+  }
 
   const handleDeleteSet = async () => {
     try {
-      if (isLoaded && user) {
-        const userId = user.id;
-        await prisma.flashcard.delete({
-          where: {
-            id: id as string,
-            userId,
-          },
-        });
+      // ✅ FIXED: Use API route for deletion
+      const response = await fetch(`/api/decks/${id}`, {
+        method: 'DELETE'
+      });
+      
+      if (response.ok) {
         router.push("/flashcards");
       }
     } catch (error) {

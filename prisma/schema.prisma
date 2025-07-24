@@ -1,4 +1,4 @@
-// schema.prisma
+// Fixed schema.prisma
 generator client {
   provider = "prisma-client-js"
 }
@@ -16,6 +16,8 @@ model User {
   lastName     String?
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
+  
+  // ✅ FIXED: Relations now point to clerkUserId
   flashcards   Flashcard[]
   decks        Deck[]
   studySessions StudySession[]
@@ -25,11 +27,13 @@ model Deck {
   id          String      @id @default(cuid())
   name        String
   description String?
-  userId      String
+  userId      String      // This stores clerkUserId
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   flashcards  Flashcard[]
-  user        User        @relation(fields: [userId], references: [id])
+  
+  // ✅ FIXED: Relation points to clerkUserId field
+  user        User        @relation(fields: [userId], references: [clerkUserId])
 
   @@index([userId])
 }
@@ -38,15 +42,17 @@ model Flashcard {
   id            String      @id @default(cuid())
   question      String
   answer        String
-  userId        String
+  userId        String      // This stores clerkUserId
   deckId        String
-  difficulty    String      @default("MEDIUM")
+  difficulty    Difficulty  @default(MEDIUM)
   lastReviewed  DateTime?
   nextReview    DateTime?
   repetitions   Int         @default(0)
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
-  user          User        @relation(fields: [userId], references: [id])
+  
+  // ✅ FIXED: Relations point to correct fields
+  user          User        @relation(fields: [userId], references: [clerkUserId])
   deck          Deck        @relation(fields: [deckId], references: [id])
   studyRecords  StudyRecord[]
 
@@ -56,11 +62,13 @@ model Flashcard {
 
 model StudySession {
   id          String        @id @default(cuid())
-  userId      String
+  userId      String        // This stores clerkUserId
   startTime   DateTime      @default(now())
   endTime     DateTime?
   records     StudyRecord[]
-  user        User          @relation(fields: [userId], references: [id])
+  
+  // ✅ FIXED: Relation points to clerkUserId
+  user        User          @relation(fields: [userId], references: [clerkUserId])
 }
 
 model StudyRecord {
@@ -74,6 +82,7 @@ model StudyRecord {
   studySession  StudySession @relation(fields: [sessionId], references: [id])
 }
 
+// ✅ FIXED: Use actual enum instead of String
 enum Difficulty {
   EASY
   MEDIUM

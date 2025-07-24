@@ -14,35 +14,100 @@ import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import getStripe from "@/utils/get-stripe"; // Import the getStripe utility
-import { useTheme } from "next-themes"; // Import useTheme for dark mode support
+import { loadRazorpay } from "@/utils/get-razorpay";
+import { useTheme } from "next-themes";
 
 const Page = () => {
   const { isSignedIn } = useAuth();
   const router = useRouter();
-  const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">(
-    "monthly"
-  );
-  const { theme } = useTheme(); // Get the current theme
+  const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">("monthly");
+  const { theme } = useTheme();
 
   const handleSignUp = async (plan: string) => {
     if (!isSignedIn) {
       router.push("/sign-in");
-    } else {
-      const stripe = await getStripe();
-      if (stripe) {
-        const response = await fetch("/api/checkout_sessions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ plan, billingCycle }),
-        });
-        const sessionId = await response.json();
+      return;
+    }
 
-        // Redirect to Stripe Checkout
-        await stripe.redirectToCheckout({ sessionId });
+    if (plan === "Free") {
+      router.push("/generate");
+      return;
+    }
+
+    try {
+      // Load Razorpay script
+      const isRazorpayLoaded = await loadRazorpay();
+      if (!isRazorpayLoaded) {
+        throw new Error('Razorpay failed to load');
       }
+
+      // Create order
+      const response = await fetch('/api/razorpay/create-order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ plan, billingCycle }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Payment setup failed');
+      }
+
+      const { orderId, amount, currency, keyId } = await response.json();
+
+      // Initialize Razorpay checkout
+      const options = {
+        key: keyId,
+        amount: amount,
+        currency: currency,
+        name: 'FlashFathom AI',
+        description: `${plan} Plan - ${billingCycle}`,
+        order_id: orderId,
+        handler: async function (response: any) {
+          try {
+            // Verify payment
+            const verifyResponse = await fetch('/api/razorpay/verify-payment', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                plan,
+                billingCycle,
+              }),
+            });
+
+            if (verifyResponse.ok) {
+              router.push('/result?payment=success');
+            } else {
+              throw new Error('Payment verification failed');
+            }
+          } catch (error) {
+            console.error('Payment verification error:', error);
+            router.push('/result?payment=failed');
+          }
+        },
+        prefill: {
+          name: '',
+          email: '',
+          contact: '',
+        },
+        theme: {
+          color: '#7C3AED', // Purple theme
+        },
+      };
+
+      const paymentObject = new window.Razorpay(options);
+      paymentObject.open();
+
+    } catch (error) {
+      console.error('Payment error:', error);
+      alert('Payment setup failed. Please try again.');
     }
   };
 
@@ -125,8 +190,7 @@ const Page = () => {
         },
         {
           text: "Premium-quality responses",
-          footnote:
-            "Top-tier algorithmic responses for optimal content quality",
+          footnote: "Top-tier algorithmic responses for optimal content quality",
         },
         {
           text: "24/7 Priority support",
@@ -184,10 +248,8 @@ const Page = () => {
                   className={cn(
                     "relative rounded-2xl bg-white shadow-lg dark:bg-gray-800",
                     {
-                      "border-2 border-purple-600 shadow-blue-200":
-                        plan === "Pro",
-                      "border border-gray-200 dark:border-gray-600":
-                        plan !== "Pro",
+                      "border-2 border-purple-600 shadow-blue-200": plan === "Pro",
+                      "border border-gray-200 dark:border-gray-600": plan !== "Pro",
                     }
                   )}
                 >
@@ -201,11 +263,9 @@ const Page = () => {
                     <h3 className="my-3 text-center font-display text-3xl font-bold">
                       {plan}
                     </h3>
-                    <p className="text-gray-500 dark:text-gray-400">
-                      {tagline}
-                    </p>
+                    <p className="text-gray-500 dark:text-gray-400">{tagline}</p>
                     <p className="my-5 font-display text-6xl font-semibold">
-                      ${price[billingCycle]}
+                      ₹{price[billingCycle]}
                     </p>
                     <p className="text-gray-500 dark:text-gray-400">
                       per {billingCycle}
@@ -217,7 +277,6 @@ const Page = () => {
                       <p className="dark:text-gray-400">
                         {quota.toLocaleString()} flashcard/mo included
                       </p>
-
                       <Tooltip delayDuration={300}>
                         <TooltipTrigger className="cursor-default ml-1.5">
                           <HelpCircle className="h-4 w-4 text-zinc-500" />
@@ -242,10 +301,9 @@ const Page = () => {
                         {footnote ? (
                           <div className="flex items-center space-x-1">
                             <p
-                              className={cn(
-                                "text-gray-600 dark:text-gray-400",
-                                { "text-gray-400 dark:text-gray-500": negative }
-                              )}
+                              className={cn("text-gray-600 dark:text-gray-400", {
+                                "text-gray-400 dark:text-gray-500": negative,
+                              })}
                             >
                               {text}
                             </p>
@@ -274,7 +332,7 @@ const Page = () => {
                   <div className="p-5">
                     {plan === "Free" ? (
                       <Link
-                        href="/sign-in"
+                        href="/generate"
                         className={`bg-purple-700 px-4 py-2 rounded-lg w-full text-center text-white`}
                       >
                         Get Started

@@ -1,40 +1,35 @@
 import { NextResponse } from "next/server";
-import axios from "axios";
+import { auth } from "@clerk/nextjs/server";
+import { flashcardService } from "@/lib/services/flashcard.service";
+import type { ApiError, FlashcardGenerationResponse } from "@/types";
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
-
-export async function POST(req: any) {
+export async function POST(req: Request) {
   try {
+    // Authentication
+    const { userId } = auth();
+    if (!userId) {
+      const error: ApiError = { error: "Unauthorized - Please sign in" };
+      return NextResponse.json(error, { status: 401 });
+    }
+
+    // Input validation
     const text = await req.text();
-    console.log("Received text:", text);
+    if (!text?.trim()) {
+      const error: ApiError = { error: "Text content is required" };
+      return NextResponse.json(error, { status: 400 });
+    }
 
-    const prompt = `Create 10 flashcards from this text: "${text}". 
-        Each flashcard should have a question and answer. 
-        Format your response as a JSON array like this:
-        {
-          "flashcards": [
-            {"question": "What is X?", "answer": "X is Y"},
-            // more cards...
-          ]
-        }`;
+    // Single Responsibility: Delegate to service
+    const flashcards = await flashcardService.generateFlashcards(text);
 
-    const response = await axios.post(GEMINI_API_URL, {
-      contents: [{ role: "user", parts: [{ text: prompt }] }],
-    });
+    const response: FlashcardGenerationResponse = { flashcards };
+    return NextResponse.json(response);
 
-    let content = response.data.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!content) throw new Error("Invalid response format from Gemini API");
-
-    // Fix JSON parsing issue by removing markdown code block markers
-    content = content.replace(/```json|```/g, "").trim();
-
-    return NextResponse.json(JSON.parse(content));
   } catch (error) {
     console.error("Error generating flashcards:", error);
-    return NextResponse.json(
-      { error: "Failed to generate flashcards" },
-      { status: 500 }
-    );
+    const errorResponse: ApiError = { 
+      error: error instanceof Error ? error.message : "Failed to generate flashcards" 
+    };
+    return NextResponse.json(errorResponse, { status: 500 });
   }
 }
