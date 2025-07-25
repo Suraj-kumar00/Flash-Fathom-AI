@@ -1,19 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
+import { ErrorBoundary } from "@/components/common/ErrorBoundary";
+import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import FlashcardGenerator from "@/components/flashcards/FlashcardGenerator";
 import FlashcardViewer from "@/components/flashcards/FlashcardViewer";
 import FlashcardSaveDialog from "@/components/flashcards/FlashcardSaveDialog";
+import { useLocalStorage } from "@/lib/hooks/useLocalStorage";
 import type { FlashcardInput } from "@/types";
 
-// Single Responsibility: Orchestrate flashcard workflow
 export default function Flashcard() {
   const { user } = useUser();
-  const [flashcards, setFlashcards] = useState<FlashcardInput[]>([]);
+  const [flashcards, setFlashcards] = useLocalStorage<FlashcardInput[]>('draft-flashcards', []);
   const [saveDialogOpen, setSaveDialogOpen] = useState(false);
 
   const handleFlashcardsGenerated = (newFlashcards: FlashcardInput[]) => {
@@ -21,8 +23,7 @@ export default function Flashcard() {
   };
 
   const handleSaveSuccess = () => {
-    // Could redirect to flashcards page or show success state
-    setFlashcards([]); // Clear current flashcards
+    setFlashcards([]); // Clear draft after successful save
   };
 
   return (
@@ -32,20 +33,21 @@ export default function Flashcard() {
           <CardTitle>Flashcard Generator</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* Step 1: Generate Flashcards */}
-          <FlashcardGenerator 
-            onFlashcardsGenerated={handleFlashcardsGenerated}
-          />
+          <ErrorBoundary>
+            <FlashcardGenerator 
+              onFlashcardsGenerated={handleFlashcardsGenerated}
+            />
+          </ErrorBoundary>
 
-          {/* Step 2: Preview Generated Flashcards */}
           {flashcards.length > 0 && (
-            <>
-              <FlashcardViewer 
-                flashcards={flashcards} 
-                title="Generated Flashcards"
-              />
+            <ErrorBoundary>
+              <Suspense fallback={<LoadingSpinner text="Loading flashcards..." />}>
+                <FlashcardViewer 
+                  flashcards={flashcards} 
+                  title="Generated Flashcards"
+                />
+              </Suspense>
               
-              {/* Step 3: Save Flashcards */}
               {user && (
                 <div className="space-y-4">
                   <Button
@@ -63,10 +65,9 @@ export default function Flashcard() {
                   />
                 </div>
               )}
-            </>
+            </ErrorBoundary>
           )}
 
-          {/* Navigation */}
           <Link href="/flashcards">
             <Button variant="outline" className="w-full">
               View Saved Flashcards

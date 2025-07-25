@@ -5,8 +5,8 @@ import type { ApiError, FlashcardGenerationResponse } from "@/types";
 
 export async function POST(req: Request) {
   try {
-    // Authentication
-    const { userId } = auth();
+    // ✅ FIXED: Authentication with await for Clerk v6
+    const { userId } = await auth();
     if (!userId) {
       const error: ApiError = { error: "Unauthorized - Please sign in" };
       return NextResponse.json(error, { status: 401 });
@@ -19,7 +19,7 @@ export async function POST(req: Request) {
       return NextResponse.json(error, { status: 400 });
     }
 
-    // Single Responsibility: Delegate to service
+    // ✅ CORRECT: Single Responsibility - Delegate to service
     const flashcards = await flashcardService.generateFlashcards(text);
 
     const response: FlashcardGenerationResponse = { flashcards };

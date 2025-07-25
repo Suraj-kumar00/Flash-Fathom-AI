@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react"; // ✅ ADDED: useCallback import
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RefreshCw, ArrowRight, ArrowLeft } from "lucide-react";
@@ -21,23 +21,22 @@ export default function FlashcardViewer({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [flip, setFlip] = useState(false);
 
-  const currentCard = flashcards[currentIndex];
+  // ✅ FIXED: Wrap event handlers in useCallback with proper dependencies
+  const handleFlip = useCallback(() => setFlip(!flip), [flip]);
 
-  const handleFlip = () => setFlip(!flip);
-
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % flashcards.length);
     setFlip(false);
-  };
+  }, [flashcards.length]);
 
-  const handlePrevious = () => {
+  const handlePrevious = useCallback(() => {
     setCurrentIndex(
       (prevIndex) => (prevIndex - 1 + flashcards.length) % flashcards.length
     );
     setFlip(false);
-  };
+  }, [flashcards.length]);
 
-  // Keyboard navigation
+  // ✅ FIXED: Keyboard navigation with proper dependencies
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "ArrowRight") {
@@ -52,7 +51,9 @@ export default function FlashcardViewer({
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [handleFlip, handleNext, handlePrevious]); // ✅ ADDED: Dependencies
+
+  const currentCard = flashcards[currentIndex];
 
   if (!currentCard) {
     return (

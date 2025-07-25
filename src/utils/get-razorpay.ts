@@ -16,6 +16,15 @@ export const loadRazorpay = (): Promise<boolean> => {
     script.src = 'https://checkout.razorpay.com/v1/checkout.js';
     script.onload = () => resolve(true);
     script.onerror = () => resolve(false);
-    document.head.appendChild(script);
+    
+    // Only append if not already added
+    if (!document.querySelector('script[src="https://checkout.razorpay.com/v1/checkout.js"]')) {
+      document.head.appendChild(script);
+    } else {
+      resolve(true);
+    }
   });
 };
+
+// Default export for easier importing
+export default loadRazorpay;

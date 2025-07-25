@@ -14,7 +14,6 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import type { FlashcardInput } from "@/types";
 
-// Single Responsibility: Handle saving flashcards with name input
 interface FlashcardSaveDialogProps {
   flashcards: FlashcardInput[];
   isOpen: boolean;
@@ -29,7 +28,7 @@ export default function FlashcardSaveDialog({
   onSaveSuccess
 }: FlashcardSaveDialogProps) {
   const [deckName, setDeckName] = useState("");
-  const [saving, setSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
   const handleSave = async () => {
@@ -42,13 +41,11 @@ export default function FlashcardSaveDialog({
       return;
     }
 
-    setSaving(true);
+    setIsLoading(true);
     try {
       const response = await fetch('/api/decks/save', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: deckName.trim(),
           flashcards: flashcards.map(card => ({
@@ -80,7 +77,7 @@ export default function FlashcardSaveDialog({
         description: error instanceof Error ? error.message : "Failed to save flashcards",
       });
     } finally {
-      setSaving(false);
+      setIsLoading(false);
     }
   };
 
@@ -91,32 +88,41 @@ export default function FlashcardSaveDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent>
+      <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Save Flashcard Set</DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          <div className="space-y-2">
-            <Label htmlFor="deckName">Set Name</Label>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="deckName" className="text-right">
+              Set Name
+            </Label>
             <Input
               id="deckName"
               value={deckName}
               onChange={(e) => setDeckName(e.target.value)}
               placeholder="Enter a name for your flashcard set"
-              disabled={saving}
+              disabled={isLoading}
+              className="col-span-3"
             />
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={handleClose} disabled={saving}>
+          <Button 
+            type="button" 
+            variant="outline" 
+            onClick={handleClose} 
+            disabled={isLoading}
+          >
             Cancel
           </Button>
-          <Button
+          <Button 
+            type="button"
             onClick={handleSave}
-            disabled={saving || !deckName.trim()}
+            disabled={isLoading || !deckName.trim()}
             className="bg-purple-600 hover:bg-purple-500"
           >
-            {saving ? "Saving..." : "Save"}
+            {isLoading ? "Saving..." : "Save Flashcards"}
           </Button>
         </DialogFooter>
       </DialogContent>

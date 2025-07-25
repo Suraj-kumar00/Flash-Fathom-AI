@@ -8,7 +8,6 @@ import type {
   ApiError 
 } from '@/types';
 
-// Input validation
 const saveFlashcardsSchema = z.object({
   name: z.string().min(1, 'Deck name is required').max(100, 'Name too long'),
   flashcards: z.array(z.object({
@@ -19,7 +18,9 @@ const saveFlashcardsSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
-    const { userId } = auth();
+    // ✅ FIXED: Add await for Clerk v6
+    const { userId } = await auth();
+    
     if (!userId) {
       const error: ApiError = { error: 'Unauthorized - Please sign in' };
       return NextResponse.json(error, { status: 401 });
@@ -28,7 +29,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const validatedData = saveFlashcardsSchema.parse(body);
 
-    // Single Responsibility: Delegate to service
+    // ✅ CORRECT: Use service layer
     const result = await flashcardService.createDeckWithFlashcards(userId, validatedData);
 
     return NextResponse.json(result, { status: 201 });

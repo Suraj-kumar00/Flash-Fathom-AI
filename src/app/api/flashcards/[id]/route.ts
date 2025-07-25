@@ -2,12 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 import { prisma } from '@/lib/database';
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
-    const { userId } = auth();
+    // ✅ FIXED: Add await before auth() - Clerk v6 requirement
+    const { userId } = await auth();
     
     if (!userId) {
       return NextResponse.json(
