@@ -3,11 +3,12 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
-import type { Deck } from "@/types";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Loader2, Plus } from "lucide-react";
+import DeckList from "@/components/decks/DeckList";
+import type { Deck } from "@/types";
 
+// Single Responsibility: Manage flashcards overview page
 export default function FlashcardsPage() {
   const [decks, setDecks] = useState<Deck[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -37,6 +38,10 @@ export default function FlashcardsPage() {
     }
   }, [user, isLoaded]);
 
+  const handleDeckDeleted = (deckId: string) => {
+    setDecks(prevDecks => prevDecks.filter(deck => deck.id !== deckId));
+  };
+
   if (!isLoaded || loading) {
     return (
       <div className="min-h-screen flex justify-center items-center">
@@ -48,7 +53,9 @@ export default function FlashcardsPage() {
   if (!user) {
     return (
       <div className="min-h-screen p-8 max-w-5xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6">Please sign in to view your flashcards</h1>
+        <h1 className="text-3xl font-bold mb-6">
+          Please sign in to view your flashcards
+        </h1>
       </div>
     );
   }
@@ -63,31 +70,8 @@ export default function FlashcardsPage() {
           </Button>
         </Link>
       </div>
-      {decks.length === 0 ? (
-        <div className="text-center py-10">
-          <p className="text-lg text-muted-foreground">No flashcards yet. Create your first set!</p>
-        </div>
-      ) : (
-        <ul className="space-y-4">
-          {decks.map((deck) => (
-            <li key={deck.id}>
-              <Link href={`/flashcards/${deck.id}`}>
-                <Card className="lg:hover:scale-[1.02] duration-200 transition ease-in-out">
-                  <CardContent className="p-4">
-                    <p className="text-xl text-primary">{deck.name}</p>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      Created: {new Date(deck.createdAt).toLocaleDateString()}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      Cards: {deck.flashcards?.length || 0}
-                    </p>
-                  </CardContent>
-                </Card>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
+      
+      <DeckList decks={decks} onDeckDeleted={handleDeckDeleted} />
     </div>
   );
 }

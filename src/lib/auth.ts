@@ -1,8 +1,8 @@
 import { auth } from "@clerk/nextjs/server";
-import { prisma } from "@/lib/db";
+import { prisma } from "@/lib/database";
 
 export async function getCurrentUser() {
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (!userId) {
     console.warn("No user ID found in session.");

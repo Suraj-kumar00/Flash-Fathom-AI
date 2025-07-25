@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/db'
+import { prisma } from '@/lib/database'
 import type { Flashcard, Deck } from '@prisma/client'
 
 export async function fetchFlashcardsBySet(userId: string, setId: string) {

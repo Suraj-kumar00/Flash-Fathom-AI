@@ -1,4 +1,4 @@
-// schema.prisma
+// Updated schema.prisma with Payment Gateway Support
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,22 +14,39 @@ model User {
   email        String       @unique
   firstName    String?
   lastName     String?
+  
+  // ✅ NEW: Subscription & Payment fields
+  subscriptionPlan     String?   @default("free") // "free", "basic", "pro"
+  subscriptionCycle    String?   // "monthly", "yearly"
+  subscriptionStatus   String?   @default("inactive") // "active", "inactive", "cancelled", "expired"
+  subscriptionId       String?   // Razorpay subscription ID (if using subscriptions)
+  paymentId            String?   // Last successful payment ID
+  subscriptionEndsAt   DateTime? // When current subscription expires
+  subscriptionStartedAt DateTime? // When subscription was activated
+  
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
-  flashcards   Flashcard[]
-  decks        Deck[]
+  
+  // ✅ EXISTING: Relations now point to clerkUserId
+  flashcards    Flashcard[]
+  decks         Deck[]
   studySessions StudySession[]
+  
+  // ✅ NEW: Payment relation
+  payments      Payment[]
 }
 
 model Deck {
   id          String      @id @default(cuid())
   name        String
   description String?
-  userId      String
+  userId      String      // This stores clerkUserId
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   flashcards  Flashcard[]
-  user        User        @relation(fields: [userId], references: [id])
+  
+  // ✅ EXISTING: Relation points to clerkUserId field
+  user        User        @relation(fields: [userId], references: [clerkUserId])
 
   @@index([userId])
 }
@@ -38,15 +55,17 @@ model Flashcard {
   id            String      @id @default(cuid())
   question      String
   answer        String
-  userId        String
+  userId        String      // This stores clerkUserId
   deckId        String
-  difficulty    String      @default("MEDIUM")
+  difficulty    Difficulty  @default(MEDIUM)
   lastReviewed  DateTime?
   nextReview    DateTime?
   repetitions   Int         @default(0)
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
-  user          User        @relation(fields: [userId], references: [id])
+  
+  // ✅ EXISTING: Relations point to correct fields
+  user          User        @relation(fields: [userId], references: [clerkUserId])
   deck          Deck        @relation(fields: [deckId], references: [id])
   studyRecords  StudyRecord[]
 
@@ -56,11 +75,13 @@ model Flashcard {
 
 model StudySession {
   id          String        @id @default(cuid())
-  userId      String
+  userId      String        // This stores clerkUserId
   startTime   DateTime      @default(now())
   endTime     DateTime?
   records     StudyRecord[]
-  user        User          @relation(fields: [userId], references: [id])
+  
+  // ✅ EXISTING: Relation points to clerkUserId
+  user        User          @relation(fields: [userId], references: [clerkUserId])
 }
 
 model StudyRecord {
@@ -74,8 +95,44 @@ model StudyRecord {
   studySession  StudySession @relation(fields: [sessionId], references: [id])
 }
 
+// ✅ NEW: Payment tracking model
+model Payment {
+  id                  String    @id @default(cuid())
+  userId              String    // References User.clerkUserId
+  razorpayOrderId     String    @unique
+  razorpayPaymentId   String?   @unique // Null until payment is completed
+  razorpaySignature   String?   // Payment signature for verification
+  amount              Int       // Amount in paise (₹1 = 100 paise)
+  currency            String    @default("INR")
+  plan                String    // "basic", "pro"
+  billingCycle        String    // "monthly", "yearly"
+  status              PaymentStatus @default(PENDING)
+  failureReason       String?   // If payment failed, store reason
+  refundId            String?   // If refunded, store refund ID
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  
+  // Relation to User
+  user                User      @relation(fields: [userId], references: [clerkUserId])
+  
+  @@index([userId])
+  @@index([razorpayOrderId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+// ✅ EXISTING: Difficulty enum
 enum Difficulty {
   EASY
   MEDIUM
   HARD
+}
+
+// ✅ NEW: Payment status enum
+enum PaymentStatus {
+  PENDING     // Order created, payment not completed
+  COMPLETED   // Payment successful and verified
+  FAILED      // Payment failed
+  REFUNDED    // Payment was refunded
+  CANCELLED   // Order was cancelled
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from "react";
+import { useRef, useState, type JSX } from "react";
 import { motion } from "framer-motion";
 
 interface FaqsCardProps {

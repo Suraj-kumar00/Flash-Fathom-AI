@@ -9,9 +9,9 @@ export const siteConfig: SiteConfig = {
   url: "site_url",
   ogImage: `${site_url}/_static/og.jpg`,
   links: {
-    twitter: "https://twitter.com/00tush_",
-    github: "https://github.com/tushcmd/ai-flashcards",
-    portfolio: "https://tushdev.co",
+    twitter: "",
+    github: "",
+    portfolio: "",
   },
-  mailSupport: "muturidavid854@gmail.com",
+  mailSupport: "",
 };
