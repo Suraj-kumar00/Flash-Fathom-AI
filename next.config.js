@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'standalone',
   transpilePackages: ['react-toastify'],
   // ✅ FIXED: Updated for Next.js 15 stable
   serverExternalPackages: ['@prisma/client'], // Moved from experimental

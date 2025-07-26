@@ -1,31 +1,57 @@
+version: '3.8'
+
 services:
-  frontend:
+  # ================================
+  # Flash Fathom AI Application
+  # ================================
+  app:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: flash_fathom_frontend
+      args:
+        # Build arguments from .env (public keys only)
+        - NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+        - NEXT_PUBLIC_RAZORPAY_KEY_ID=${NEXT_PUBLIC_RAZORPAY_KEY_ID}
+    container_name: flash_fathom_app
+    restart: unless-stopped
     env_file:
       - .env
     networks:
-      - flash_fathom
+      - flash_fathom_network
     ports:
-      - "3000:3000"
+      - "${APP_PORT:-3000}:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
 
+  # ================================
+  # PostgreSQL Database
+  # ================================
   postgres:
-    image: postgres:14
-    container_name: supabase_postgres
+    image: postgres:15-alpine
+    container_name: flash_fathom_postgres
+    restart: unless-stopped
     env_file:
       - .env
     networks:
-      - flash_fathom
+      - flash_fathom_network
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-flashfathom}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
+# ================================
+# Networks & Volumes
+# ================================
 networks:
-  flash_fathom:
+  flash_fathom_network:
     driver: bridge
 
 volumes:
   postgres_data:
+    driver: local

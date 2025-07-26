@@ -1,55 +1,85 @@
-# Stage 1: Build application
+# ================================
+# Stage 1: Build Stage
+# ================================
 FROM node:18-alpine AS builder
+
+# Install system dependencies
+RUN apk add --no-cache openssl libc6-compat postgresql-client
 
 WORKDIR /app
 
-# Install system dependencies for Prisma
-RUN apk add --no-cache openssl
+# Enable corepack and install pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
-# Copy package management files
+# Copy package files
 COPY package.json pnpm-lock.yaml* ./
-COPY prisma ./prisma  
+COPY prisma ./prisma
 
 # Install dependencies
-RUN npm install -g pnpm
+RUN pnpm install --frozen-lockfile
 
 # Generate Prisma client
 RUN npx prisma generate
 
-# Copy remaining source files
+# Copy source code
 COPY . .
 
-# Inject environment variables during build
-ARG GEMINI_API_KEY
-ARG DATABASE_URL
-ARG NEXT_PUBLIC_SUPABASE_URL
-ARG NEXT_PUBLIC_SUPABASE_ANON_KEY
-ENV GEMINI_API_KEY=${GEMINI_API_KEY}
-ENV DATABASE_URL=${DATABASE_URL}
-ENV NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
-ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+# ================================
+# ONLY PUBLIC BUILD-TIME VARIABLES
+# ================================
+ARG NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+ARG NEXT_PUBLIC_RAZORPAY_KEY_ID
 
-# Build application
+# Set only public environment variables for build
+ENV NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+ENV NEXT_PUBLIC_RAZORPAY_KEY_ID=${NEXT_PUBLIC_RAZORPAY_KEY_ID}
+
+# Create dummy values for build (will be overridden at runtime)
+ENV RAZORPAY_KEY_ID="dummy_for_build"
+ENV RAZORPAY_KEY_SECRET="dummy_for_build"
+ENV DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy"
+ENV CLERK_SECRET_KEY="dummy_for_build"
+ENV GEMINI_API_KEY="dummy_for_build"
+
+# Build the application
 RUN pnpm run build
 
-# Stage 2: Production image
+# ================================
+# Stage 2: Production Runtime
+# ================================
 FROM node:18-alpine AS runner
 
 WORKDIR /app
 
+# Set production environment
 ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
 
-# Install pnpm in the production image
-RUN npm install -g pnpm
+# Enable corepack and install pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
-# Copy built assets and production dependencies
-COPY --from=builder /app/package.json /app/pnpm-lock.yaml ./
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/prisma ./prisma
+# Install runtime dependencies INCLUDING postgresql-client for pg_isready
+RUN apk add --no-cache openssl libc6-compat postgresql-client
+
+# Create non-root user
+RUN addgroup --system --gid 1001 flashfathom \
+    && adduser --system --uid 1001 flashfathom
+
+# Copy built application from builder stage
+COPY --from=builder --chown=flashfathom:flashfathom /app/.next ./.next
+COPY --from=builder --chown=flashfathom:flashfathom /app/public ./public
+COPY --from=builder --chown=flashfathom:flashfathom /app/package.json ./package.json
+COPY --from=builder --chown=flashfathom:flashfathom /app/pnpm-lock.yaml ./pnpm-lock.yaml
+COPY --from=builder --chown=flashfathom:flashfathom /app/prisma ./prisma
+COPY --from=builder --chown=flashfathom:flashfathom /app/node_modules ./node_modules
+
+# Switch to non-root user
+USER flashfathom
 
 EXPOSE 3000
 
-# Ensure pnpm is available at runtime
-CMD ["pnpm", "start"]
+ENV PORT=3000
+ENV HOST=0.0.0.0
+
+# INLINE COMMAND: No separate startup script needed
+CMD ["sh", "-c", "echo 'Starting Flash Fathom AI...' && echo 'Waiting for database...' && while ! pg_isready -h postgres -p 5432 -U postgres; do echo 'Database unavailable - sleeping'; sleep 2; done && echo '✅ Database ready!' && echo 'Running Prisma migrations...' && npx prisma migrate deploy && echo 'Generating Prisma client...' && npx prisma generate && echo 'Starting application...' && pnpm start"]
