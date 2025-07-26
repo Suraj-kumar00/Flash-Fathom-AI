@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2, Plus } from "lucide-react";
 import DeckList from "@/components/decks/DeckList";
 import type { Deck } from "@/types";
+import  GlobalSearch  from '@/components/search/GlobalSearch'
 
 // Single Responsibility: Manage flashcards overview page
 export default function FlashcardsPage() {
@@ -62,6 +63,7 @@ export default function FlashcardsPage() {
 
   return (
     <div className="min-h-screen p-8 max-w-5xl mx-auto">
+      <GlobalSearch />
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Your Flashcards</h1>
         <Link href="/generate">
