@@ -100,7 +100,7 @@ export async function POST(req: NextRequest) {
     // ✅ IMPROVED: Update records in transaction with better error handling
     let result;
     try {
-      result = await prisma.$transaction(async (tx) => {
+      result = await prisma.$transaction(async (tx:any) => {
         // Update user subscription status
         const updatedUser = await tx.user.update({
           where: { clerkUserId: userId },

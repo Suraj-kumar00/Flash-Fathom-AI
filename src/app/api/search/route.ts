@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
     // Ensure user exists
     await userService.ensureUserExists(userId);
 
-    const results = [];
+    const results: any[] = [];
 
     // Search flashcards if enabled in filters
     if (filters.type.includes('flashcard')) {
@@ -52,7 +52,8 @@ export async function POST(request: NextRequest) {
         take: 20 // Limit results
       });
 
-      const flashcardResults = flashcards.map(card => ({
+      // Fix: Add explicit type annotation
+      const flashcardResults = flashcards.map((card: any) => ({
         id: card.id,
         type: 'flashcard' as const,
         title: card.question,
@@ -86,7 +87,8 @@ export async function POST(request: NextRequest) {
         take: 10
       });
 
-      const deckResults = decks.map(deck => ({
+      // Fix: Add explicit type annotation  
+      const deckResults = decks.map((deck: any) => ({
         id: deck.id,
         type: 'deck' as const,
         title: deck.name,
