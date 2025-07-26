@@ -11,10 +11,7 @@
     <img alt="Flash-Fathom-AI Release" src="https://img.shields.io/github/v/release/Suraj-kumar00/Flash-Fathom-AI?sort=semver"></img
                                                                                                        
 [![Build and Push flashfathom-ai Docker Image to DockerHub](https://github.com/Suraj-kumar00/Flash-Fathom-AI/actions/workflows/build-push-docker.yml/badge.svg?branch=main)](https://github.com/Suraj-kumar00/Flash-Fathom-AI/actions/workflows/build-push-docker.yml)
-
-<br>
 </div>
-<br>
 
 ## About Flash Fathom AI
 
