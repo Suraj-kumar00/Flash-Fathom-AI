@@ -11,131 +11,212 @@
     <img alt="Flash-Fathom-AI Release" src="https://img.shields.io/github/v/release/Suraj-kumar00/Flash-Fathom-AI?sort=semver"></img
                                                                                                        
 [![Build and Push Docker Image to DockerHub](https://github.com/Suraj-kumar00/Flash-Fathom-AI/actions/workflows/publish-to-dockerhub.yml/badge.svg?branch=main)](https://github.com/Suraj-kumar00/Flash-Fathom-AI/actions/workflows/publish-to-dockerhub.yml)
-                                                                                                      
-[![CI Pipeline of GCR](https://github.com/Suraj-kumar00/Flash-Fathom-AI/actions/workflows/pulish-to-gcr.yml/badge.svg)](https://github.com/Suraj-kumar00/Flash-Fathom-AI/actions/workflows/pulish-to-gcr.yml)
 
 <br>
 </div>
 <br>
 
-Introducing **FlashFathom AI** – the ultimate flashcard generator. Effortlessly create and study personalized flashcards with AI precision, while enjoying seamless user experiences and secure payments.
-[**Get started today**](https://flash-fathom-ai.vercel.app/), track your learning progress, and join a growing community of satisfied users. Would you be ready to elevate your study game? Sign up now and unlock your learning potential!
+## About Flash Fathom AI
+
+**Flash Fathom AI** is an intelligent flashcard learning platform that revolutionizes how you study and retain information. Powered by advanced AI technology, it combines personalized content generation, spaced repetition algorithms, and intuitive study modes to maximize your learning efficiency.
+
+### Why Choose Flash Fathom AI?
+
+- **AI-Powered Content Generation**: Instantly create flashcards using Gemini API
+- **Advanced Spaced Repetition**: Scientific learning algorithms that adapt to you
+- **Mobile-First Design**: Study anywhere with responsive UI and gestures
+- **Real-Time Search**: Instantly find cards and decks
+- **Flexible Subscriptions**: Plans for every learner's needs
+
+[Get Started](https://flash-fathom-ai.vercel.app/) • [🤝 Contribute](#quick-start)
 
 ## Demo
 
 <div align="center">
-  <img src="./public/Flash-Fathom-AI-Signin-And-Card.gif" alt="Tutorial to demonstrate signin and generating flash cards" width="1000" ></img>
+  <img src="" alt="Tutorial to generate flash cards" width="1000" ></img>
 </div>
 
-## Build with
+## 🛠️ Tech Stack
 
-- Next.js
-- Clerk
-- OpenAI
-- Stripe.
-- Supabase (BaaS)
-- PostgreSQL with Prisma ORM
+### Frontend
+- **Next.js 15**
+- **TypeScript**
+- **Tailwind CSS**
+- **shadcn/ui**
 
-## DevOps Practices
+### Backend & Database
+- **Next.js API Routes**
+- **PostgreSQL** (via **Supabase**)
+- **Prisma ORM**
 
-- Containerization(Docker)
-- Automation(CI/CD) using GitHub Actions
+### Authentication & Payments
+- **Clerk v6**
+- **Razorpay**
+
+### AI & APIs
+- **OpenAI API**
+- **Gemini API**
+
+### DevOps & Deployment
+- **Docker**
+- **Vercel**
+- **GitHub Actions**
 
 ## Project WorkFlow
 
-![](./public/Flash-Fathom-AI-WorkFlow.png)
+![](./public/FlashFathomAI-Architecture.png)
 
-## Features
 
-- **Clerk Authentication**: Secure, seamless user access.
-- **SaaS UI & Landing Page**: Polished, user-friendly design.
-- **AI Flashcards**: Instantly generate flashcards with GeminiAPI.
-- **Stripe Subscriptions**: Simple yearly and monthly payments.
-- **Gemini API**: For generating the flashcarding I used the GeminiAPI
+## ✨ Features
 
-## Installation
+###  Core Features
 
-For Installation on local machine follow bellow steps:
-First [fork the reqpository](https://github.com/Suraj-kumar00/Flash-Fathom-AI/fork)
+- Secure authentication (Clerk)
+- AI-based flashcard generation using Gemini API
+- Study modes with spaced repetition
+- Real-time global search
 
-```sh
-git clone https://github.com/your-username/Flash-Fathom-AI/
+### Study Experience
+
+- Touch gesture support
+- Difficulty tracking
+- Analytics and progress tracking
+- Fully responsive & mobile-friendly
+- Offline study mode
+
+### Subscription Management
+
+- Free, Basic (₹59/₹590), Pro (₹99/₹990), Org (₹159/₹1,590)
+- Monthly/Yearly with 2-month discount
+- Razorpay-secured payments
+- Learning stats & usage analytics
+
+### Advanced Features
+
+- Real-time search with filters
+- Export to PDF or Anki
+- Team/Org collaboration
+- In-depth performance analytics
+
+
+##  Quick Start
+
+### Prerequisites
+
+- Node.js 18+
+- `pnpm`
+- PostgreSQL (or Supabase)
+- Clerk account
+- Razorpay account
+- OpenAI API key
+
+### 1. Clone & Setup
+
+```bash
+git clone https://github.com/your-username/Flash-Fathom-AI
 cd Flash-Fathom-AI
-```
-
-## Install the dependencies
-
-**The package manager**
-
-```sh
 npm install -g pnpm
-```
-
-**Install pnpm pakcage manager**
-
-```sh
 pnpm install
 ```
 
-If required for you:
-**Installing clerk**
+### 2. Add Environment Variables
+
+Create `.env.local` with the .env.example file we have
+
+### 3. Setup Database
 
 ```bash
-pnpm add @clerk/clerk-sdk @clerk/nextjs
+pnpm prisma generate
+pnpm prisma db push
 ```
 
-**OpenAI**
+### 4. Start Development
 
 ```bash
-pnpm add openai
+pnpm run dev
+# Visit: http://localhost:3000
 ```
 
-**Stripe**
+---
 
-```bash
-pnpm add @stripe/stripe-js
-```
+## 🐳 Docker Deployment
 
-**Shadcn UI**
-
-```bash
-pnpm add @shadcn/ui
-```
-
-## Running the project using Docker
-
-First Install [**Docker Desktop**](https://www.docker.com/products/docker-desktop/)
-
-**Pull the image**
+### Quick Run
 
 ```bash
 docker pull surajkumar00/flashfathom-ai
-```
-
-**Run the Container**
-
-```bash
 docker run -it -p 3000:3000 surajkumar00/flashfathom-ai
 ```
 
-**Check localhost**
-[localhost:3000](localhost:3000)
+### Custom Build
 
-## Issue Reporting 🐛✨
+```bash
+docker build -t flashfathom-ai .
+docker run -it -p 3000:3000 --env-file .env.local flashfathom-ai
+```
+---
 
-If you encounter any bugs or have feature requests, please follow this format when opening an issue:
+## API Documentation
 
-- Issue Title: 📝 A concise and descriptive title.
-- Description: 🔍 Clear and detailed description of the issue or feature request.
-- Steps to Reproduce (if applicable): 🚶Detailed steps to reproduce the issue.
-- Expected Behavior: ✅What you expected to happen.
-- Actual Behavior: ❌What actually happened.
+### Auth
 
-## Development 👨‍💻
+- `GET /api/auth/user` – Get current user
+- `POST /api/auth/webhook` – Handle Clerk webhook
 
-Want to contribute? Great!
-We welcome contributions from the community! Please check our Contributing Guidelines for more details on how you can help improve us.
-[**Read the Contribution Guidlines**](https://github.com/Suraj-kumar00/Flash-Fathom-AI/blob/main/CONTRIBUTING.md)
+### Payments
+
+- `POST /api/razorpay/create-order`
+- `POST /api/razorpay/verify-payment`
+
+### Study
+
+- `POST /api/study/start`
+- `POST /api/study/record`
+- `POST /api/study/complete`
+
+### Content
+
+- `GET/POST /api/decks`
+- `GET/POST/PUT/DELETE /api/flashcards`
+- `GET /api/search`
+
+---
+
+## Issue Reporting
+
+Please include:
+- 🔍 **Issue Title**
+- 📝 **Description**
+- 🚶 **Steps to Reproduce**
+- ✅ **Expected vs ❌ Actual Behavior**
+- 🖥️ **Environment Info**
+
+[Open an issue](https://github.com/Suraj-kumar00/Flash-Fathom-AI/issues)
+
+---
+
+## 🤝 Contributing
+
+We welcome PRs! [**Read the Contribution Guidlines**](https://github.com/Suraj-kumar00/Flash-Fathom-AI/blob/main/CONTRIBUTING.md)
+
+### Steps:
+
+```bash
+# Fork & clone
+git checkout -b feature/your-feature
+# Make changes
+git commit -m "feat: add your feature"
+git push origin feature/your-feature
+# Open a Pull Request
+```
+
+### Standards
+
+- TypeScript
+- ESLint + Prettier 
+- Before raising PR locally build should pass all checks
+- Conventional commits
+- Add test coverage
 
 ## Contributors
 
@@ -216,11 +297,6 @@ We welcome contributions from the community! Please check our Contributing Guide
 </tr>
 </table>
 <br/>
-<br/>
-
-## 📬 Contact
-
-For questions or feedback, feel free to reach out via GitHub issues or contact the project maintainers. ✉️
 
 ## License
 
@@ -229,5 +305,3 @@ This project is licensed under the [MIT License!](https://github.com/Suraj-kumar
 ## Support via giving a ⭐ star
 
 If you like this project, please give it a ⭐ star. Your support means a lot to us!
-
-<h2 align="center"> Happy Coding🚀✨</h2>

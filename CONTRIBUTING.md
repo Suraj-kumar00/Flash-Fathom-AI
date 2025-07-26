@@ -1,280 +1,254 @@
-# Contributing Guidelines 🌍
+# Contributing Guidelines – Flash Fathom AI
 
-This documentation contains a set of guidelines to help you during the contribution process.  
-We are happy to welcome all the contributions from anyone willing to improve/add new projects (doesn't matter which language) to this Repository.
+This documentation contains a set of guidelines to help you during the contribution process for **Flash Fathom AI** — an intelligent flashcard learning platform with AI-powered content generation and spaced repetition study modes.
 
-<br>
+We welcome all contributions from anyone willing to improve this project!
 
-# Code of Conduct
+---
 
-Please read and follow our [Code of Conduct.](https://github.com/Suraj-kumar00/Flash-Fathom-AI/blob/main/CODE_OF_CONDUCT.md)
+## Code of Conduct
 
-<br>
+Please read and follow our [Code of Conduct](https://github.com/Suraj-kumar00/Flash-Fathom-AI/blob/main/CODE_OF_CONDUCT.md).
 
-# Need Help with the Basics? 🤔
+---
 
-If you're new to Git and GitHub, no worries! Here are some useful resources:
+## New to Git & GitHub?
+
+Here are some helpful resources:
 
 - [Forking a Repository](https://help.github.com/en/github/getting-started-with-github/fork-a-repo)
 - [Cloning a Repository](https://help.github.com/en/desktop/contributing-to-projects/creating-an-issue-or-pull-request)
 - [How to Create a Pull Request](https://opensource.com/article/19/7/create-pull-request-github)
-- [Getting Started with Git and GitHub](https://towardsdatascience.com/getting-started-with-git-and-github-6fcd0f2d4ac6)
+- [Getting Started with Git and GitHub](https://blog.devsuraj.me/getting-to-know-git-and-github-your-codes-best-friends)
 - [Learn GitHub from Scratch](https://docs.github.com/en/get-started/start-your-journey/git-and-github-learning-resources)
 
-<br>
+---
 
-# Project Structure 📂
+## Tech Stack
 
-```bash
+- **Frontend**: Next.js 15, TypeScript, Tailwind CSS
+- **UI Components**: shadcn/ui
+- **Authentication**: Clerk v6
+- **Database**: PostgreSQL + Prisma ORM
+- **Payments**: Razorpay
+- **AI**: Gemini API
+- **Deployment**: Vercel
+
+---
+
+## Project Structure
+
+```plaintext
 FLASH-FATHOM-AI/
-├── .github/                  # GitHub-related configurations such as workflows, issue templates, etc
-│
-├── public/                   # Contains some images for the public purpose
-│
-├── src/                      # Contains all the source components of the project
-│
-├── .env.example
-│
-├── .eslintrc.json
-│
-├── .gitignore
-│
-├── CODE_OF_CONDUCT.md         # Some rules for the contributors
-│
-├── CONTRIBUTING.md            # Instructions about how to contribute
-│
-├── Dockerfile
-│
-├── LICENSE                    # Basically a permission to do something
-│
-├── README.md                  # Some basic instructions to follow
-├──
-├── components.json
-├──
-├── docker-compose.yml
-├──
-├── next.config.mjs
-├──
-├── package.json
-├──
-├── pnpm-lock.yaml
-├──
-├── postcss.config.mjs
-├──
-├── tailwind.config.ts
-├──
-├── tsconfig.json
+├── .github/                  # GitHub workflows and templates
+├── public/                   # Static assets and images
+├── prisma/                   # Prisma DB schema and migrations
+├── src/
+│   ├── app/                  # Next.js App Router
+│   │   ├── api/              # API routes
+│   │   ├── flashcards/       # Flashcard pages
+│   │   ├── pricing/          # Pricing pages
+│   │   └── result/           # Payment result page
+│   ├── components/           # UI components
+│   │   ├── ui/               # shadcn/ui components
+│   │   ├── flashcards/       # Flashcard UI
+│   │   ├── study/            # Study UI
+│   │   └── search/           # Search UI
+│   ├── lib/                  # Business logic, hooks
+│   └── utils/                # Utility functions
+├── .env.example              # Env variables sample
+├── Dockerfile                # Docker build file
+├── docker-compose.yml        # Docker Compose setup
+├── README.md                 # Main documentation
 ```
 
-<br>
+---
 
-# Before contributing to the repository, here are a few steps you can follow to understand the project
+## 🚀 Local Development Setup
 
-## Installation
+### Prerequisites
 
-For Installation on local machine follow bellow steps:
-First [fork the reqpository](https://github.com/Suraj-kumar00/Flash-Fathom-AI/fork)
+- Node.js 18+
+- `pnpm`
+- PostgreSQL (or Supabase)
+
+### ⚙️ Setup
+
+1. **Fork & Clone**
 
 ```bash
-git clone https://github.com/your-username/Flash-Fathom-AI/
-```
-
-```bash
+git clone https://github.com/your-username/Flash-Fathom-AI.git
 cd Flash-Fathom-AI
 ```
 
-## Install the dependencies
-
-**The package manager**
+2. **Install pnpm (if not installed)**
 
 ```bash
 npm install -g pnpm
 ```
 
-**Install pnpm pakcage manager**
+3. **Install Dependencies**
 
 ```bash
 pnpm install
 ```
 
-If required for you:
-
-**Installing clerk**
+4. **Configure Environment**
 
 ```bash
-pnpm add @clerk/clerk-sdk @clerk/nextjs
+cp .env.example .env.local
 ```
 
-**OpenAI**
+Update `.env.local` the .env.example file we have
+
+5. **Database Setup**
 
 ```bash
-pnpm add openai
+pnpm prisma db push
+pnpm prisma generate
 ```
 
-**Stripe**
+6. **Run the Dev Server**
 
 ```bash
-pnpm add @stripe/stripe-js
+pnpm run dev
 ```
 
-**Shadcn UI**
+Open: [http://localhost:3000](http://localhost:3000)
 
-```bash
-pnpm add @shadcn/ui
-```
+---
 
-<br>
+## 🐳 Docker Setup
 
-# Running the project using Docker
-
-First Install [**Docker Desktop**](https://www.docker.com/products/docker-desktop/)
-
-**Pull the image**
+### Option 1: DockerHub
 
 ```bash
 docker pull surajkumar00/flashfathom-ai
+docker run -p 3000:3000 surajkumar00/flashfathom-ai
 ```
 
-**Run the Container**
+### Option 2: Local Build
 
 ```bash
-docker run -it -p 3000:3000 surajkumar00/flashfathom-ai
+docker-compose up --build
 ```
 
-**Check localhost**
+---
 
-[localhost:3000](localhost:3000)
+## 🤝 How to Contribute
 
-<br>
+### Steps:
 
-# Contributing 🫱🏼‍🫲🏻
-
-We welcome contributions to enhance the AI Customer Support system! To contribute:
-
-**Note:** To assign the issue to yourself type `.take` in the commant on the issue.
-
-1. **Star this repository**
-   Click on the top right corner marked as **Stars** at last.
-
-2. **Fork this repository**
-   Click on the top right corner marked as **Fork** at second last.
-
-3. **Clone the forked repository**
+1. ⭐ Star the repo
+2. 🍴 Fork it
+3. Clone your fork:
 
 ```bash
-git clone https://github.com/<your-github-username>/Flash-Fathom-AI.git
-```
-
-4. **Navigate to the project directory**
-
-```bash
+git clone https://github.com/your-username/Flash-Fathom-AI.git
 cd Flash-Fathom-AI
 ```
 
-5. **Create a new branch**
+4. Create a new branch:
 
 ```bash
-git checkout -b <your_branch_name>
+git checkout -b feature/your-feature
 ```
 
-6. **To make changes**
+5. Make your changes
+6. Commit and push:
 
 ```bash
 git add .
+git commit -m "feat: your meaningful commit"
+git push origin feature/your-feature
 ```
 
-7. **Now to commit**
+7. Open a Pull Request
 
-```bash
-git commit -m "add comment according to your changes or addition of features inside this"
+---
+
+## Issue Assignment Process
+
+To self-assign, comment:
+
+```
+.take
 ```
 
-8. **Push your local commits to the remote repository**
+1. Browse [open issues](https://github.com/Suraj-kumar00/Flash-Fathom-AI/issues)
+2. Comment `.take`
+3. Wait for assignment confirmation
 
-```bash
-git push -u origin <your_branch_name>
-```
+---
 
-9. **Create a Pull Request**
+## Coding Standards
 
-10. **Congratulations! 🎉 you've made your contribution**
+### TypeScript & Component Guidelines
 
-<br>
+- Avoid `any` type
+- Use React functional components and hooks
+- Use naming conventions: `camelCase`, `PascalCase`
+- Write meaningful comments for non-trivial logic
 
-# For Help And Support 💬
+### Database
 
-- Admin :- Suraj
-- Contact :- [Email](suraj.ukumar.p@gmail.com)
+- Use Prisma ORM only
+- Handle DB errors properly
+- Follow service structure patterns
 
-<br>
+### Code Style
 
-# For Open-Source And Git & Github Learning 🎯
+- **Lint**: ESLint
+- **Format**: Prettier
+- **Commits**: Conventional Commits (e.g., `feat:`, `fix:`)
 
-**Open-Source Blog** :- [Opensource](https://blog.devsuraj.me/what-is-open-source-beginners-guide-how-to-get-started)
+---
 
-**Git And Github** :- [Git and Github](https://blog.devsuraj.me/getting-to-know-git-and-github-your-codes-best-friends)
+## Pull Request Guidelines
 
-<br>
+### Before you submit:
 
-# Good Coding Practices 🧑‍💻
+- [ ] Self-reviewed
+- [ ] Tests added
+- [ ] Docs updated
+- [ ] No breaking changes (or documented)
+- [ ] Screenshots for UI changes
 
-1. **Follow the Project's Code Style**
+Use the PR template provided in the repo.
 
-   - Maintain consistency with the existing code style (indentation, spacing, comments).
-   - Use meaningful and descriptive names for variables, functions, and classes.
-   - Keep functions short and focused on a single task.
-   - Avoid hardcoding values; instead, use constants or configuration files when possible.
+---
 
-2. **Write Clear and Concise Comments**
+## Reporting Issues
 
-   - Use comments to explain why you did something, not just what you did.
-   - Avoid unnecessary comments that state the obvious.
-   - Document complex logic and functions with brief explanations to help others understand your thought -process.
+To report a bug:
 
-3. **Keep Code DRY (Don't Repeat Yourself)**
+1. Go to [Issues tab](https://github.com/Suraj-kumar00/Flash-Fathom-AI/issues)
+2. Click "New Issue"
+3. Choose a template
+4. Add:
+   - Steps to reproduce
+   - Expected vs actual result
+   - Screenshots
+   - OS/browser info
 
-   - Avoid duplicating code. Reuse functions, methods, and components whenever possible.
-   - If you find yourself copying and pasting code, consider creating a new function or component.
+---
 
-4. **Write Tests**
+## 💬 Getting Help
 
-   - Write unit tests for your functions and components.
-   - Ensure your tests cover both expected outcomes and edge cases.
-   - Run tests locally before making a pull request to make sure your changes don’t introduce new bugs.
+- **Maintainer**: Suraj
+- **Email**: [suraj.kumar.p@gmail.com](mailto:suraj.kumar.p@gmail.com)
+- **GitHub**: [@Suraj-kumar00](https://github.com/Suraj-kumar00)
 
-5. **Code Reviews and Feedback**
+### Extra Resources
 
-   - Be open to receiving constructive feedback from other contributors.
-   - Conduct code reviews for others and provide meaningful suggestions to improve the code.
-   - Always refactor your code based on feedback to meet the project's standards.
+- [Open Source Guide](https://blog.devsuraj.me/what-is-open-source-beginners-guide-how-to-get-started)
+- [GitHub for Beginners](https://blog.devsuraj.me/getting-to-know-git-and-github-your-codes-best-friends)
 
-<br>
+---
 
-# Pull Request Process 🚀
+## 🙏 Thank You!
 
-When submitting a pull request, please adhere to the following:
+Your contributions make Flash Fathom AI better.  
+Whether it's a bug fix, feature, or doc update — you're appreciated.
 
-1. **Self-review your code** before submission. 😀
-2. Include a detailed description of the functionality you’ve added or modified.
-3. Comment your code, especially in complex sections, to aid understanding.
-4. Add relevant screenshots to assist in the review process.
-5. Submit your PR using the provided template and hang tight; we'll review it as soon as possible! 🚀
-
-<br>
-
-# Issue Report Process 📌
-
-To report an issue, follow these steps:
-
-1. Navigate to the project's issues section :- [Issues](https://github.com/Suraj-kumar00/Flash-Fathom-AI/issues)
-2. Provide a clear and concise description of the issue.
-3. Wait until someone looks into your report.
-4. Begin working on the issue only after you have been assigned to it. 🚀
-
-<br>
-
-# Thank you for contributing 💗
-
-We truly appreciate your time and effort to help improve our project. Feel free to reach out if you have any questions or need guidance. Happy coding! 🚀
-
-##
+**Happy Coding! 💙**
