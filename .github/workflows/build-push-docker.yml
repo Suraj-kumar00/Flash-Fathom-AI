@@ -1,9 +1,10 @@
-name: Build and Push Docker Image to DockerHub
+name: Build and Push flashfathom-ai Docker Image to DockerHub
 
 on:
   push:
     branches:
-      - "**" # This triggers on every push to any branch
+      - main
+  workflow_dispatch:
 
 jobs:
   build:
@@ -19,7 +20,11 @@ jobs:
         run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
 
       - name: Build the Docker image
-        run: docker build -t surajkumar00/flashfathom-ai .
+        run: |
+          docker build \
+            --build-arg NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}" \
+            --build-arg NEXT_PUBLIC_RAZORPAY_KEY_ID="${{ secrets.NEXT_PUBLIC_RAZORPAY_KEY_ID }}" \
+            -t surajkumar00/flashfathom-ai .
 
       - name: Push the Docker image to DockerHub
         run: docker push surajkumar00/flashfathom-ai
