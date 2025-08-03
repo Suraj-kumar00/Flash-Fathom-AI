@@ -18,6 +18,7 @@ const nextConfig = {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
   },
   images: {
+    domains: ['randomuser.me'],
     remotePatterns: [
       {
         protocol: 'https',

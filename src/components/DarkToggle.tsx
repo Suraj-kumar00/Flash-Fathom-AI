@@ -3,38 +3,78 @@
 import * as React from "react"
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
-
+import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 
 export function ThemeToggle() {
-  const { setTheme } = useTheme()
+  const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = React.useState(false)
+
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return (
+      <Button variant="outline" size="icon" disabled>
+        <Sun className="h-4 w-4" />
+      </Button>
+    )
+  }
+
+  const isDark = theme === 'dark'
+
+  const toggleTheme = () => {
+    setTheme(isDark ? 'light' : 'dark')
+  }
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
-          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          <span className="sr-only">Toggle theme</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          System
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <motion.div
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.9 }}
+    >
+      <Button 
+        variant="outline" 
+        size="icon" 
+        onClick={toggleTheme}
+        className="relative overflow-hidden border border-gray-200 dark:border-gray-700 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all duration-300"
+        aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
+      >
+        <motion.div
+          animate={{
+            rotate: isDark ? 0 : 180,
+            scale: isDark ? 1 : 0,
+            opacity: isDark ? 1 : 0,
+          }}
+          transition={{
+            duration: 0.4,
+            ease: "easeInOut"
+          }}
+          className="absolute inset-0 flex items-center justify-center"
+        >
+          <Moon className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+        </motion.div>
+        
+        <motion.div
+          animate={{
+            rotate: isDark ? 180 : 0,
+            scale: isDark ? 0 : 1,
+            opacity: isDark ? 0 : 1,
+          }}
+          transition={{
+            duration: 0.4,
+            ease: "easeInOut"
+          }}
+          className="absolute inset-0 flex items-center justify-center"
+        >
+          <Sun className="h-4 w-4 text-orange-500" />
+        </motion.div>
+
+        {/* Invisible placeholder to maintain button size */}
+        <div className="h-4 w-4 opacity-0">
+          <Sun className="h-4 w-4" />
+        </div>
+      </Button>
+    </motion.div>
   )
 }

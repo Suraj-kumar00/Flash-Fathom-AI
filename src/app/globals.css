@@ -94,3 +94,60 @@
   background-color: black;
   color: white;
 } */
+
+/* Add these enhanced styles to your existing global.css */
+
+/* Enhanced button hover effects */
+.btn-enhanced {
+  @apply relative overflow-hidden transition-all duration-300;
+}
+
+.btn-enhanced::before {
+  content: '';
+  @apply absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 opacity-0 transition-opacity duration-300;
+}
+
+.btn-enhanced:hover::before {
+  @apply opacity-100;
+}
+
+/* Enhanced card hover effects */
+.card-hover {
+  @apply transition-all duration-300 hover:shadow-xl hover:scale-105;
+}
+
+/* Enhanced gradient text */
+.gradient-text {
+  @apply text-transparent bg-gradient-to-r from-purple-600 via-purple-500 to-blue-500 bg-clip-text;
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Enhanced backdrop blur */
+.backdrop-blur-enhanced {
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+}
+
+/* Custom animation for floating elements */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float 6s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+/* Enhanced focus states for accessibility */
+.focus-enhanced:focus {
+  @apply outline-none ring-2 ring-purple-500 ring-offset-2 ring-offset-white dark:ring-offset-gray-900;
+}
