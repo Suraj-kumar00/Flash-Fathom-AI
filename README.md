@@ -30,7 +30,7 @@
 ## Demo
 
 <div align="center">
-  <img src="" alt="Tutorial to generate flash cards" width="1000" ></img>
+  <img src="http://localhost:3000/animation.gif" alt="Tutorial to generate flash cards" width="1000" ></img>
 </div>
 
 ## 🛠️ Tech Stack
