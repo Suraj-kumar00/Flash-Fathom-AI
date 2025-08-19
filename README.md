@@ -28,9 +28,14 @@
 [Get Started](https://flash-fathom-ai.vercel.app/) • [🤝 Contribute](#quick-start)
 
 ## Demo
-
+### 🌙 Dark Mode Demo
 <div align="center">
-  <img src="" alt="Tutorial to generate flash cards" width="1000" ></img>
+  <img src=".\public\Flash-Fathom-AI-dark-mode.gif" alt="Dark Mode Demo of FlashFathom AI" width="1000" />
+</div>
+
+### ☀️light Mode Demo
+<div align="center">
+  <img src=".\public\Flash-Fathom-AI-Signin-And-Card.gif" alt="light Mode Demo of FlashFathom AI" width="1000" />
 </div>
 
 ## 🛠️ Tech Stack
