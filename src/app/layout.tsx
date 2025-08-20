@@ -6,9 +6,10 @@ import Navbar from "@/components/Navbar";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "../components/ThemeProvider";
 import Footer from "@/components/Footer";
-import 'react-toastify/dist/ReactToastify.css'
-import { ToastContainer } from 'react-toastify'
-import { Toaster } from "@/components/ui/toaster"
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+import { Toaster } from "@/components/ui/toaster";
+import BacktoTop from "@/components/BacktoTop";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,9 +28,10 @@ export default async function RootLayout({
   // const cookieStore = await cookies();
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={cn("min-h-screen font-sans antialiased", inter.className)}
+        suppressHydrationWarning
       >
         <ClerkProvider
           appearance={{
@@ -45,6 +47,7 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <BacktoTop />
             <Navbar />
             <Toaster />
             {children}
