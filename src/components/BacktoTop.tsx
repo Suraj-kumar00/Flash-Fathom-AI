@@ -30,7 +30,7 @@ const BacktoTop: React.FC = () => {
       {visible && (
         <button
           onClick={handleScrollTop}
-          className="hidden sm:flex fixed cursor-pointer z-[12] right-10 bottom-16 after:content-['scroll_to_top'] after:text-white after:absolute after:text-nowrap after:scale-0 hover:after:scale-100 transition-all ease-linear after:duration-200 w-16 h-16 rounded-full border-4 border-[#A557F7] dark:border-white bg-[#111827] dark:bg-[#A557F7] pointer items-center justify-center duration-300 hover:rounded-[50px] hover:w-36 group/button overflow-hidden active:scale-90"
+          className="flex fixed cursor-pointer z-[12] right-10 bottom-16 after:content-['scroll_to_top'] after:text-white after:absolute after:text-nowrap after:scale-0 hover:after:scale-100 transition-all ease-linear after:duration-200 w-16 h-16 rounded-full border-[3px] border-[#A557F7] dark:border-white bg-[#111827] dark:bg-[#A557F7] pointer items-center justify-center duration-300 hover:rounded-[50px] hover:w-36 group/button overflow-hidden active:scale-90"
         >
           <svg
             className="w-3 fill-white delay-50 duration-200 group-hover/button:-translate-y-12"
