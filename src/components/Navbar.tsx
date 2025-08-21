@@ -11,7 +11,6 @@ import { ThemeToggle } from "./DarkToggle";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
-
 const Navbar = () => {
   const { setTheme } = useTheme();
   const { isSignedIn, user } = useUser();
@@ -21,11 +20,11 @@ const Navbar = () => {
     { href: "/features", label: "Features" },
     { href: "/pricing", label: "Pricing" },
     { href: "/about", label: "About" },
-    { href: "/contact", label: "Contact" }
+    { href: "/contact", label: "Contact" },
   ];
 
   return (
-    <motion.nav 
+    <motion.nav
       className="sticky h-16 inset-x-0 top-0 z-50 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200/50 dark:border-gray-700/50 transition-all duration-300"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
@@ -34,14 +33,8 @@ const Navbar = () => {
       <MaxWidthWrapper>
         <div className="flex h-16 items-center justify-between">
           {/* Enhanced Logo Section */}
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Link
-              href="/"
-              className="flex items-center space-x-3 z-40 group"
-            >
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Link href="/" className="flex items-center space-x-3 z-40 group">
               <div className="relative">
                 <Image
                   src="/Flash-Fathom-AI-Logo.png"
@@ -113,7 +106,7 @@ const Navbar = () => {
 
             {/* User Profile Section - Enhanced */}
             {isSignedIn && (
-              <motion.div 
+              <motion.div
                 className="flex items-center space-x-3 bg-purple-50 dark:bg-purple-900/20 px-4 py-2 rounded-lg border border-purple-200 dark:border-purple-700"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -125,22 +118,20 @@ const Navbar = () => {
                     {user?.fullName || user?.username || "User"}
                   </span>
                 </div>
-                <UserButton 
-                  afterSignOutUrl="/" 
+                <UserButton
+                  afterSignOutUrl="/"
                   appearance={{
                     elements: {
-                      avatarBox: "w-8 h-8 ring-2 ring-purple-200 dark:ring-purple-700 hover:ring-purple-300 dark:hover:ring-purple-600 transition-all duration-200"
-                    }
+                      avatarBox:
+                        "w-8 h-8 ring-2 ring-purple-200 dark:ring-purple-700 hover:ring-purple-300 dark:hover:ring-purple-600 transition-all duration-200",
+                    },
                   }}
                 />
               </motion.div>
             )}
 
             {/* Theme Toggle */}
-            <motion.div
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-            >
+            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
               <ThemeToggle />
             </motion.div>
 
@@ -192,7 +183,7 @@ const Navbar = () => {
 
                 {/* Mobile Auth Buttons */}
                 {!isSignedIn && (
-                  <motion.div 
+                  <motion.div
                     className="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-3"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
