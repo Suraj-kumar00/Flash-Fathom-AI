@@ -10,6 +10,7 @@ import Footer from "@/components/Footer";
 import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer } from 'react-toastify'
 import { Toaster } from "@/components/ui/toaster"
+import BacktoTop from "@/components/BacktoTop";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -50,6 +51,7 @@ export default async function RootLayout({
             <Toaster />
             {children}
             <Footer />
+            <BacktoTop />
             <ToastContainer />
           </ThemeProvider>
           <Analytics />

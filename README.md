@@ -295,6 +295,10 @@ git push origin feature/your-feature
 </table>
 <br/>
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Suraj-kumar00/Flash-Fathom-AI&type=Date)](https://www.star-history.com/#Suraj-kumar00/Flash-Fathom-AI&Date)
+
 ## License
 
 This project is licensed under the [MIT License!](https://github.com/Suraj-kumar00/Flash-Fathom-AI/blob/main/LICENSE)
