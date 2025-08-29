@@ -41,28 +41,63 @@ export default function FlashcardSaveDialog({
       return;
     }
 
+    if (!flashcards || flashcards.length === 0) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "No flashcards to save. Please generate some flashcards first.",
+      });
+      return;
+    }
+
     setIsLoading(true);
+    console.log('💾 Starting flashcard save process...');
+    
     try {
+      const requestData = {
+        name: deckName.trim(),
+        flashcards: flashcards.map(card => ({
+          question: card.question,
+          answer: card.answer
+        }))
+      };
+
+      console.log('📋 Saving flashcards:', {
+        deckName: requestData.name,
+        flashcardCount: requestData.flashcards.length
+      });
+
       const response = await fetch('/api/decks/save', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: deckName.trim(),
-          flashcards: flashcards.map(card => ({
-            question: card.question,
-            answer: card.answer
-          }))
-        }),
+        body: JSON.stringify(requestData),
       });
 
+      console.log('📡 Response status:', response.status);
+
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Failed to save flashcards');
+        const errorData = await response.json().catch(() => ({}));
+        console.error('❌ Save failed:', errorData);
+        
+        const errorMessage = errorData.error || `HTTP ${response.status}: Failed to save flashcards`;
+        
+        // Show specific error details if available
+        if (errorData.details && Array.isArray(errorData.details)) {
+          const validationErrors = errorData.details.map((detail: any) => 
+            `${detail.field}: ${detail.message}`
+          ).join(', ');
+          throw new Error(`${errorMessage} (${validationErrors})`);
+        }
+        
+        throw new Error(errorMessage);
       }
+
+      const result = await response.json();
+      console.log('✅ Flashcards saved successfully:', result);
 
       toast({
         title: "Success",
-        description: "Flashcards saved successfully!",
+        description: `Flashcards saved successfully as "${deckName.trim()}"!`,
       });
 
       setDeckName("");
@@ -70,11 +105,27 @@ export default function FlashcardSaveDialog({
       onSaveSuccess();
       
     } catch (error) {
-      console.error("Error saving flashcards:", error);
+      console.error("❌ Error saving flashcards:", error);
+      
+      let errorMessage = "Failed to save flashcards";
+      
+      if (error instanceof Error) {
+        errorMessage = error.message;
+        
+        // Provide user-friendly messages for common errors
+        if (error.message.includes('Unauthorized')) {
+          errorMessage = "Please sign in to save flashcards";
+        } else if (error.message.includes('Validation failed')) {
+          errorMessage = "Invalid flashcard data. Please check your inputs.";
+        } else if (error.message.includes('fetch')) {
+          errorMessage = "Network error. Please check your connection and try again.";
+        }
+      }
+      
       toast({
         variant: "destructive",
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to save flashcards",
+        title: "Save Failed",
+        description: errorMessage,
       });
     } finally {
       setIsLoading(false);

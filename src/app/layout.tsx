@@ -29,7 +29,7 @@ export default async function RootLayout({
   // const cookieStore = await cookies();
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning={true}>
       <body
         className={cn("min-h-screen font-sans antialiased", inter.className)}
       >
