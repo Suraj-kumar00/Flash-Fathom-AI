@@ -30,7 +30,9 @@
 ## Demo
 
 <div align="center">
-  <img src="" alt="Tutorial to generate flash cards" width="1000" ></img>
+
+[![Watch the demo video](https://img.shields.io/badge/▶️%20Watch%20Demo%20Video-blue?style=for-the-badge)](https://1drv.ms/v/c/c417bd597351e688/EZspZVPs8ElDpyMpypfYDsAB37kwRx2BE7Z0vlIwUbLEfg?e=5bOEs4)
+
 </div>
 
 ## 🛠️ Tech Stack

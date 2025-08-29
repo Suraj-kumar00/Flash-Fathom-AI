@@ -8,9 +8,10 @@
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
-    "db:generate": "prisma generate",
-    "db:push": "prisma db push",
-    "db:migrate": "prisma migrate dev"
+    "prisma:generate": "dotenv -e .env -- prisma generate",
+    "prisma:push": "dotenv -e .env -- prisma db push",
+    "prisma:validate": "dotenv -e .env -- prisma validate",
+    "prisma:migrate": "prisma migrate dev"
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.36.0",
@@ -58,6 +59,7 @@
     "@types/node": "^20.17.24",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "dotenv-cli": "^10.0.0",
     "eslint": "^9.31.0",
     "eslint-config-next": "15.4.4",
     "postcss": "^8.5.3",
