@@ -31,7 +31,7 @@
 
 <div align="center">
 
-[![Watch the demo video](https://img.shields.io/badge/▶️%20Watch%20Demo%20Video-blue?style=for-the-badge)](https://1drv.ms/v/c/c417bd597351e688/EZspZVPs8ElDpyMpypfYDsAB37kwRx2BE7Z0vlIwUbLEfg?e=5bOEs4)
+https://github.com/user-attachments/assets/a2e99659-cf80-4d7f-8695-36500228dd50
 
 </div>
 
