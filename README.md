@@ -29,11 +29,10 @@
 
 ## Demo
 
-<div align="center">
 
-https://github.com/user-attachments/assets/a2e99659-cf80-4d7f-8695-36500228dd50
+https://github.com/user-attachments/assets/003a7f96-92eb-4448-ba58-7d671a578a33
 
-</div>
+
 
 ## 🛠️ Tech Stack
 
