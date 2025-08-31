@@ -57,8 +57,8 @@ export default function FlashcardSaveDialog({
       const requestData = {
         name: deckName.trim(),
         flashcards: flashcards.map(card => ({
-          question: card.question,
-          answer: card.answer
+          question: card.question.trim(),
+          answer: card.answer.trim()
         }))
       };
 
@@ -82,12 +82,16 @@ export default function FlashcardSaveDialog({
         const errorMessage = errorData.error || `HTTP ${response.status}: Failed to save flashcards`;
         
         // Show specific error details if available
-        if (errorData.details && Array.isArray(errorData.details)) {
-          const validationErrors = errorData.details.map((detail: any) => 
-            `${detail.field}: ${detail.message}`
-          ).join(', ');
-          throw new Error(`${errorMessage} (${validationErrors})`);
-        }
+        if (errorData.details) {
+          if (Array.isArray(errorData.details)) {
+            const validationErrors = errorData.details
+              .map((detail: any) => `${detail.field}: ${detail.message}`)
+              .join(', ');
+            throw new Error(`${errorMessage} (${validationErrors})`);
+          } else if (typeof errorData.details === 'string') {
+            throw new Error(`${errorMessage} (${errorData.details})`);
+          }
+          }
         
         throw new Error(errorMessage);
       }
