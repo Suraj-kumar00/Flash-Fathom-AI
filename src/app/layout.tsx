@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next"
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
@@ -53,6 +54,7 @@ export default async function RootLayout({
             <BacktoTop />
             <ToastContainer />
           </ThemeProvider>
+          <Analytics />
         </ClerkProvider>
       </body>
     </html>
