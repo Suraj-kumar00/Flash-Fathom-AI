@@ -30,8 +30,7 @@
 ## Demo
 
 
-https://github.com/user-attachments/assets/003a7f96-92eb-4448-ba58-7d671a578a33
-
+https://github.com/user-attachments/assets/48e44c2e-424f-4d0e-b851-02a9489ec26e
 
 
 ## 🛠️ Tech Stack
