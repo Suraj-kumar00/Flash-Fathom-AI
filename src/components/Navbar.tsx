@@ -24,6 +24,11 @@ const Navbar = () => {
     { href: "/contact", label: "Contact" }
   ];
 
+  // Navigation items only visible when signed in
+  const signedInNavigationLinks = [
+    { href: "/flashcards", label: "Saved Flashcards" }
+  ];
+
   return (
     <motion.nav 
       className="sticky h-16 inset-x-0 top-0 z-50 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200/50 dark:border-gray-700/50 transition-all duration-300"
@@ -70,6 +75,23 @@ const Navbar = () => {
                 <Link
                   href={link.href}
                   className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-lg transition-all duration-200"
+                >
+                  {link.label}
+                </Link>
+              </motion.div>
+            ))}
+            
+            {/* Signed-in only navigation items */}
+            {isSignedIn && signedInNavigationLinks.map((link, index) => (
+              <motion.div
+                key={link.href}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: (navigationLinks.length + index) * 0.1 }}
+              >
+                <Link
+                  href={link.href}
+                  className="px-4 py-2 text-sm font-medium text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-lg transition-all duration-200 border border-purple-200 dark:border-purple-700"
                 >
                   {link.label}
                 </Link>
@@ -183,6 +205,24 @@ const Navbar = () => {
                     <Link
                       href={link.href}
                       className="block px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-lg transition-all duration-200 font-medium"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      {link.label}
+                    </Link>
+                  </motion.div>
+                ))}
+
+                {/* Mobile Signed-in only navigation items */}
+                {isSignedIn && signedInNavigationLinks.map((link, index) => (
+                  <motion.div
+                    key={link.href}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: (navigationLinks.length + index) * 0.1 }}
+                  >
+                    <Link
+                      href={link.href}
+                      className="block px-4 py-3 text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-lg transition-all duration-200 font-medium border border-purple-200 dark:border-purple-700"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       {link.label}
