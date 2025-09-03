@@ -29,9 +29,9 @@
 
 ## Demo
 
-<div align="center">
-  <img src="" alt="Tutorial to generate flash cards" width="1000" ></img>
-</div>
+
+https://github.com/user-attachments/assets/48e44c2e-424f-4d0e-b851-02a9489ec26e
+
 
 ## 🛠️ Tech Stack
 
