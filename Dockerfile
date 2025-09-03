@@ -16,7 +16,7 @@ COPY package.json pnpm-lock.yaml* ./
 COPY prisma ./prisma
 
 # Install dependencies
-RUN pnpm install --frozen-lockfile
+RUN pnpm install
 
 # Generate Prisma client
 RUN npx prisma generate
