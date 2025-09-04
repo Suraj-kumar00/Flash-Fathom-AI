@@ -67,12 +67,18 @@ export default function Flashcard() {
               )}
             </ErrorBoundary>
           )}
-
-          <Link href="/flashcards">
-            <Button variant="outline" className="w-full">
-              View Saved Flashcards
-            </Button>
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-2">
+            <Link href="/flashcards" className="w-full">
+              <Button variant="outline" className="w-full">
+                View Saved Flashcards
+              </Button>
+            </Link>
+            <Link href="/analytics" className="w-full">
+              <Button variant="outline" className="w-full bg-blue-600 hover:bg-blue-500 text-white">
+                View Analytics
+              </Button>
+            </Link>
+          </div>
         </CardContent>
       </Card>
     </div>

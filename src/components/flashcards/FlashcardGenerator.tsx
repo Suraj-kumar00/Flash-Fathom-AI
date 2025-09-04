@@ -51,7 +51,8 @@ export default function FlashcardGenerator({
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorData = await response.json();
+        throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.error}`);
       }
 
       const data = await response.json();

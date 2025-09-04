@@ -3,8 +3,8 @@
 # ================================
 FROM node:18-alpine AS builder
 
-# Install system dependencies
-RUN apk add --no-cache openssl libc6-compat postgresql-client
+# Install system dependencies, including the required OpenSSL 1.1 library
+RUN apk add --no-cache openssl1.1-compat libc6-compat postgresql-client
 
 WORKDIR /app
 
@@ -58,8 +58,8 @@ ENV NEXT_TELEMETRY_DISABLED=1
 # Enable corepack and install pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
-# Install runtime dependencies INCLUDING postgresql-client for pg_isready
-RUN apk add --no-cache openssl libc6-compat postgresql-client
+# Install runtime dependencies, including the required OpenSSL 1.1 library
+RUN apk add --no-cache openssl1.1-compat libc6-compat postgresql-client
 
 # Create non-root user
 RUN addgroup --system --gid 1001 flashfathom \

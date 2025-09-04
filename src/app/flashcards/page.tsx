@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
-import { Loader2, Plus } from "lucide-react";
+import { Loader2, Plus, BarChart2 } from "lucide-react";
 import DeckList from "@/components/decks/DeckList";
 import type { Deck } from "@/types";
 import  GlobalSearch  from '@/components/search/GlobalSearch'
@@ -66,11 +66,18 @@ export default function FlashcardsPage() {
       <GlobalSearch />
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Your Flashcards</h1>
-        <Link href="/generate">
-          <Button size="icon" className="bg-purple-600 h-10 w-32 hover:bg-purple-500">
-            <Plus className="h-7 w-7" />
-          </Button>
-        </Link>
+        <div className="flex gap-2">
+          <Link href="/generate">
+            <Button size="icon" className="bg-purple-600 h-10 w-32 hover:bg-purple-500">
+              <Plus className="h-7 w-7" />
+            </Button>
+          </Link>
+          <Link href="/analytics">
+            <Button size="icon" className="bg-blue-600 h-10 w-32 hover:bg-blue-500">
+              <BarChart2 className="h-7 w-7" />
+            </Button>
+          </Link>
+        </div>
       </div>
       
       <DeckList decks={decks} onDeckDeleted={handleDeckDeleted} />

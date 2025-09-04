@@ -8,7 +8,6 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "../components/ThemeProvider";
 import Footer from "@/components/Footer";
 import 'react-toastify/dist/ReactToastify.css'
-import { ToastContainer } from 'react-toastify'
 import { Toaster } from "@/components/ui/toaster"
 import BacktoTop from "@/components/BacktoTop";
 
@@ -52,7 +51,6 @@ export default async function RootLayout({
             {children}
             <Footer />
             <BacktoTop />
-            <ToastContainer />
           </ThemeProvider>
           <Analytics />
         </ClerkProvider>
