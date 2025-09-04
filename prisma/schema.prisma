@@ -1,6 +1,7 @@
 // Updated schema.prisma with Payment Gateway Support
 generator client {
   provider = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
 }
 
 datasource db {
