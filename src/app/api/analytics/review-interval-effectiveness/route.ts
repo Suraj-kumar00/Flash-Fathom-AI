@@ -3,16 +3,15 @@ import { auth } from '@clerk/nextjs/server';
 import { prisma } from '@/lib/database';
 
 export async function GET(req: Request) {
-  const { userId } = auth();
-  if (!userId) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
   const { searchParams } = new URL(req.url);
   const subject = searchParams.get('subject');
   const dateRange = searchParams.get('dateRange');
 
   try {
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     const studyRecords = await prisma.studyRecord.findMany({
       where: {
         flashcard: {

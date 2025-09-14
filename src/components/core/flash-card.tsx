@@ -68,16 +68,16 @@ export default function Flashcard() {
             </ErrorBoundary>
           )}
           <div className="flex flex-col sm:flex-row gap-2">
-            <Link href="/flashcards" className="w-full">
-              <Button variant="outline" className="w-full">
+            <Button asChild variant="outline" className="w-full">
+              <Link href="/flashcards">
                 View Saved Flashcards
-              </Button>
-            </Link>
-            <Link href="/analytics" className="w-full">
-              <Button variant="outline" className="w-full bg-blue-600 hover:bg-blue-500 text-white">
+              </Link>
+            </Button>
+            <Button asChild variant="outline" className="w-full bg-blue-600 hover:bg-blue-500 text-white">
+              <Link href="/analytics">
                 View Analytics
-              </Button>
-            </Link>
+              </Link>
+            </Button>
           </div>
         </CardContent>
       </Card>

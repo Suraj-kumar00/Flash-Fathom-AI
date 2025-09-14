@@ -3,7 +3,7 @@ import { auth } from '@clerk/nextjs/server';
 import { prisma } from '@/lib/database';
 
 export async function GET(req: Request) {
-  const { userId } = auth();
+  const { userId } = await auth();
   if (!userId) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
@@ -17,13 +17,15 @@ export async function GET(req: Request) {
       where: {
         userId: userId,
         ...(dateRange && { startTime: { gte: new Date(dateRange) } }),
-        records: {
-          some: {
-            flashcard: {
-                ...(subject && { deck: { name: subject } }),
+        ...(subject && {
+          records: {
+            some: {
+              flashcard: {
+                deck: { name: subject }
+              }
             }
           }
-        }
+        })
       },
       include: {
         records: true,

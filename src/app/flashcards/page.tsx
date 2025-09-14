@@ -67,16 +67,16 @@ export default function FlashcardsPage() {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Your Flashcards</h1>
         <div className="flex gap-2">
-          <Link href="/generate">
-            <Button size="icon" className="bg-purple-600 h-10 w-32 hover:bg-purple-500">
+          <Button asChild size="icon" className="bg-purple-600 hover:bg-purple-500">
+            <Link href="/generate" aria-label="Create flashcard">
               <Plus className="h-7 w-7" />
-            </Button>
-          </Link>
-          <Link href="/analytics">
-            <Button size="icon" className="bg-blue-600 h-10 w-32 hover:bg-blue-500">
+            </Link>
+          </Button>
+          <Button asChild size="icon" className="bg-blue-600 hover:bg-blue-500">
+            <Link href="/analytics" aria-label="View analytics">
               <BarChart2 className="h-7 w-7" />
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </div>
       </div>
       
