@@ -19,20 +19,16 @@ export async function GET(req: NextRequest) {
     try {
       const parsedDate = new Date(dateRange);
       if (!isFinite(parsedDate.getTime())) {
-        return new NextResponse(
-          JSON.stringify({ 
-            error: "Invalid dateRange format. Use ISO date format (YYYY-MM-DD)" 
-          }), 
-          { status: 400 }
+        return NextResponse.json(
+          { error: "Invalid dateRange format. Use ISO date format (YYYY-MM-DD)" },
+          { status: 400, headers: { "cache-control": "no-store" } }
         );
       }
       validatedDate = parsedDate;
     } catch (error) {
-      return new NextResponse(
-        JSON.stringify({ 
-          error: "Invalid dateRange format. Use ISO date format (YYYY-MM-DD)" 
-        }), 
-        { status: 400 }
+      return NextResponse.json(
+        { error: "Invalid dateRange format. Use ISO date format (YYYY-MM-DD)" },
+        { status: 400, headers: { "cache-control": "no-store" } }
       );
     }
   }

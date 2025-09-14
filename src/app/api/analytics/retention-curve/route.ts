@@ -122,6 +122,10 @@ export async function GET(req: NextRequest) {
         createdAt: dateFilter,
       },
       orderBy: { createdAt: "asc" },
+      select: {
+        createdAt: true,
+        isCorrect: true,
+      },
     });
     const retentionData = studyRecords.reduce((acc: { [key: string]: { correct: number; total: number } }, record: { createdAt: Date; isCorrect: boolean }) => {
       const date = new Date(record.createdAt).toLocaleDateString();
