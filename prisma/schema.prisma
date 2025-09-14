@@ -1,6 +1,7 @@
 // Updated schema.prisma with Payment Gateway Support
 generator client {
   provider = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-1.1.x", "debian-openssl-3.0.x"]
 }
 
 datasource db {
@@ -49,6 +50,7 @@ model Deck {
   user        User        @relation(fields: [userId], references: [clerkUserId])
 
   @@index([userId])
+  @@index([name])
 }
 
 model Flashcard {
@@ -82,6 +84,8 @@ model StudySession {
   
   // ✅ EXISTING: Relation points to clerkUserId
   user        User          @relation(fields: [userId], references: [clerkUserId])
+
+  @@index([userId, startTime])
 }
 
 model StudyRecord {
@@ -93,6 +97,10 @@ model StudyRecord {
   createdAt     DateTime    @default(now())
   flashcard     Flashcard   @relation(fields: [flashcardId], references: [id])
   studySession  StudySession @relation(fields: [sessionId], references: [id])
+
+  @@index([flashcardId])
+  @@index([sessionId])
+  @@index([createdAt])
 }
 
 // ✅ NEW: Payment tracking model
