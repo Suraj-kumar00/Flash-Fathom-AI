@@ -1,9 +1,17 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2024-06-20",
-});
+function getStripeInstance() {
+  const secretKey = process.env.STRIPE_SECRET_KEY;
+  
+  if (!secretKey) {
+    throw new Error('Stripe configuration is missing. Please set STRIPE_SECRET_KEY environment variable.');
+  }
+  
+  return new Stripe(secretKey, {
+    apiVersion: "2024-06-20",
+  });
+}
 
 export async function POST(req: Request) {
   const { subscriptionType } = await req.json();
@@ -21,6 +29,7 @@ export async function POST(req: Request) {
   }
 
   try {
+    const stripe = getStripeInstance();
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       payment_method_types: ["card"],
@@ -53,6 +62,7 @@ export async function GET(req: Request) {
   }
 
   try {
+    const stripe = getStripeInstance();
     const session = await stripe.checkout.sessions.retrieve(session_id);
     return NextResponse.json(session);
   } catch (error) {

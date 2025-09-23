@@ -19,6 +19,9 @@ import { useTheme } from "next-themes";
 // ✅ ADDED: Import toast functionality
 import { useToast } from "@/components/ui/use-toast";
 
+// Disable static generation for this page since it uses Clerk
+export const dynamic = 'force-dynamic';
+
 // TypeScript interfaces
 interface Feature {
   text: string;

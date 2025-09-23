@@ -9,6 +9,9 @@ import DeckList from "@/components/decks/DeckList";
 import type { Deck } from "@/types";
 import  GlobalSearch  from '@/components/search/GlobalSearch'
 
+// Disable static generation for this page since it uses Clerk
+export const dynamic = 'force-dynamic';
+
 // Single Responsibility: Manage flashcards overview page
 export default function FlashcardsPage() {
   const [decks, setDecks] = useState<Deck[]>([]);

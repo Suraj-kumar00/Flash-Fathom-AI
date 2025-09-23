@@ -24,6 +24,9 @@ import { useUser } from "@clerk/nextjs";
 import StudyMode from "@/components/study/StudyMode";
 import { FlashcardSkeleton } from "@/components/ui/skeleton-cards";
 
+// Disable static generation for this page since it uses Clerk
+export const dynamic = 'force-dynamic';
+
 export default function FlashcardSetPage() {
   const [flashcards, setFlashcards] = useState<Flashcard[]>([]);
   const [loading, setLoading] = useState<boolean>(true);

@@ -7,15 +7,20 @@ import { RetentionCurve } from "@/components/analytics/RetentionCurve";
 import { SessionHeatmap } from "@/components/analytics/SessionHeatmap";
 import { SubjectProgress } from "@/components/analytics/SubjectProgress";
 
+// Disable static generation for this page since it uses Clerk
+export const dynamic = 'force-dynamic';
+
 export default async function AnalyticsPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const user = await currentUser();
   if (!user) {
     redirect("/sign-in");
   }
+
+  const resolvedSearchParams = await searchParams;
 
   return (
     <div className="container mx-auto px-4 py-8">

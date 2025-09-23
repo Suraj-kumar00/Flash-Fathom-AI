@@ -1,9 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  // Remove standalone output to avoid Windows symlink permission issues
+  // output: 'standalone',
   transpilePackages: ['react-toastify'],
   // ✅ FIXED: Updated for Next.js 15 stable
   serverExternalPackages: ['@prisma/client'], // Moved from experimental
+  // Disable static generation to avoid Clerk issues during build
+  trailingSlash: false,
+  generateEtags: false,
   turbopack: {
     // ✅ FIXED: Moved from experimental.turbo
     rules: {

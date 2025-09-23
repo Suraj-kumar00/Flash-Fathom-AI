@@ -9,6 +9,9 @@ import { Loader2, CreditCard, CheckCircle, XCircle } from 'lucide-react'
 import { Skeleton } from "@/components/ui/skeleton"
 import Link from 'next/link'
 
+// Disable static generation for this page since it uses Clerk
+export const dynamic = 'force-dynamic';
+
 interface Session {
     payment_status: string;
     // Add other session properties as needed
