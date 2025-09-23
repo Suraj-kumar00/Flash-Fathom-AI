@@ -8,9 +8,11 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "../components/ThemeProvider";
 import Footer from "@/components/Footer";
 import 'react-toastify/dist/ReactToastify.css'
-import { ToastContainer } from 'react-toastify'
 import { Toaster } from "@/components/ui/toaster"
 import BacktoTop from "@/components/BacktoTop";
+
+// Disable static generation globally to avoid Clerk issues during build
+export const dynamic = 'force-dynamic';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,12 +30,33 @@ export default async function RootLayout({
   // const headersList = await headers();
   // const cookieStore = await cookies();
 
+  // Validate Clerk publishable key
+  const clerkPublishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+  
+  if (!clerkPublishableKey) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error(
+        'NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY environment variable is required in production. ' +
+        'Please set this variable in your production environment.'
+      );
+    } else {
+      // Development/test fallback with warning
+      console.warn(
+        '⚠️  NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY is not set. Using development fallback. ' +
+        'Please set NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env.local file for proper authentication.'
+      );
+    }
+  }
+
+  const publishableKey = clerkPublishableKey || 'pk_dev_fallback_please_set_env_var';
+
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body
         className={cn("min-h-screen font-sans antialiased", inter.className)}
       >
         <ClerkProvider
+          publishableKey={publishableKey}
           appearance={{
             variables: {
               colorPrimary: "#3371ff",
@@ -52,7 +75,6 @@ export default async function RootLayout({
             {children}
             <Footer />
             <BacktoTop />
-            <ToastContainer />
           </ThemeProvider>
           <Analytics />
         </ClerkProvider>

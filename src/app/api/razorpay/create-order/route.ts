@@ -3,11 +3,20 @@ import { auth } from '@clerk/nextjs/server';
 import { prisma } from '@/lib/database';
 import Razorpay from 'razorpay';
 
-// Initialize Razorpay
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID!,
-  key_secret: process.env.RAZORPAY_KEY_SECRET!,
-});
+// Initialize Razorpay function
+function getRazorpayInstance() {
+  const keyId = process.env.RAZORPAY_KEY_ID;
+  const keySecret = process.env.RAZORPAY_KEY_SECRET;
+  
+  if (!keyId || !keySecret) {
+    throw new Error('Razorpay configuration is missing. Please set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET environment variables.');
+  }
+  
+  return new Razorpay({
+    key_id: keyId,
+    key_secret: keySecret,
+  });
+}
 
 // ✅ UPDATED: Complete pricing configuration
 const PRICING = {
@@ -123,6 +132,7 @@ export async function POST(req: NextRequest) {
     // ✅ FIXED: Create Razorpay order with better error handling
     let order;
     try {
+      const razorpay = getRazorpayInstance();
       order = await razorpay.orders.create({
         amount: amount,
         currency: 'INR',

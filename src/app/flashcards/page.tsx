@@ -4,10 +4,13 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
-import { Loader2, Plus } from "lucide-react";
+import { Loader2, Plus, BarChart2 } from "lucide-react";
 import DeckList from "@/components/decks/DeckList";
 import type { Deck } from "@/types";
 import  GlobalSearch  from '@/components/search/GlobalSearch'
+
+// Disable static generation for this page since it uses Clerk
+export const dynamic = 'force-dynamic';
 
 // Single Responsibility: Manage flashcards overview page
 export default function FlashcardsPage() {
@@ -66,11 +69,18 @@ export default function FlashcardsPage() {
       <GlobalSearch />
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Your Flashcards</h1>
-        <Link href="/generate">
-          <Button size="icon" className="bg-purple-600 h-10 w-32 hover:bg-purple-500">
-            <Plus className="h-7 w-7" />
+        <div className="flex gap-2">
+          <Button asChild size="icon" className="bg-purple-600 hover:bg-purple-500">
+            <Link href="/generate" aria-label="Create flashcard">
+              <Plus className="h-7 w-7" />
+            </Link>
           </Button>
-        </Link>
+          <Button asChild size="icon" className="bg-blue-600 hover:bg-blue-500">
+            <Link href="/analytics" aria-label="View analytics">
+              <BarChart2 className="h-7 w-7" />
+            </Link>
+          </Button>
+        </div>
       </div>
       
       <DeckList decks={decks} onDeckDeleted={handleDeckDeleted} />
