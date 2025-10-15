@@ -2,13 +2,23 @@ import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { prisma } from '@/lib/database';
 
+// Ensure this route is always handled at runtime and not during build
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 // Webhook secret from Razorpay dashboard
-const WEBHOOK_SECRET = process.env.RAZORPAY_WEBHOOK_SECRET!;
+// Note: Do NOT throw at module init; check inside the handler to avoid build-time failures
 
 export async function POST(req: NextRequest) {
   console.log('🔔 Razorpay webhook received');
   
   try {
+    const WEBHOOK_SECRET = process.env.RAZORPAY_WEBHOOK_SECRET;
+    if (!WEBHOOK_SECRET) {
+      console.error('❌ Missing RAZORPAY_WEBHOOK_SECRET');
+      return NextResponse.json({ error: 'Missing webhook secret' }, { status: 500 });
+    }
+
     const body = await req.text();
     const signature = req.headers.get('x-razorpay-signature');
     
@@ -74,6 +84,10 @@ async function handlePaymentCaptured(payment: any) {
     }
 
     // Update payment status
+    if (paymentRecord.status === 'COMPLETED') {
+        console.log('⚠️ Payment already processed:', payment.id);
+        return;
+    }
     await prisma.payment.update({
       where: { id: paymentRecord.id },
       data: {
@@ -93,12 +107,8 @@ async function handlePaymentCaptured(payment: any) {
       const now = new Date();
       const subscriptionStartedAt = new Date(now);
       const subscriptionEndsAt = new Date(now);
-      
-      if (order.billingCycle === 'monthly') {
-        subscriptionEndsAt.setMonth(subscriptionEndsAt.getMonth() + 1);
-      } else if (order.billingCycle === 'yearly') {
-        subscriptionEndsAt.setFullYear(subscriptionEndsAt.getFullYear() + 1);
-      }
+      const daysToAdd = order.billingCycle === 'monthly' ? 30 : 365;
+      subscriptionEndsAt.setDate(subscriptionEndsAt.getDate() + daysToAdd);
 
       // Update user subscription
       await prisma.user.update({

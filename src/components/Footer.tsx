@@ -99,7 +99,8 @@ export default function Footer() {
                   { href: "/features", label: "Features" },
                   { href: "/pricing", label: "Pricing" },
                   { href: "/demo", label: "Demo" },
-                  { href: isSignedIn ? (canAccessPro ? "/generate-pro" : "/generate") : "/generate", label: "Get Started" }
+                  { href: isSignedIn ? (canAccessPro ? "/generate-pro" : "/generate") : "/sign-up", label: "Get Started" }
+
                 ].map((link, index) => (
                   <li key={index}>
                     <Link

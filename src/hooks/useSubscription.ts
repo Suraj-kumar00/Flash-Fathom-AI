@@ -6,7 +6,7 @@ import { useUser } from '@clerk/nextjs';
 interface SubscriptionStatus {
   isActive: boolean;
   plan: string;
-  expiresAt: string | null;
+  expiresAt: Date | null;
   isExpired: boolean;
   canAccessPro: boolean;
   loading: boolean;
@@ -39,12 +39,13 @@ export function useSubscription() {
         const data = await response.json();
         setSubscription({
           ...data,
+          expiresAt: data.expiresAt ? new Date(data.expiresAt) : null,
           loading: false
         });
       } else {
         setSubscription(prev => ({ ...prev, loading: false }));
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error fetching subscription status:', error);
       setSubscription(prev => ({ ...prev, loading: false }));
     }

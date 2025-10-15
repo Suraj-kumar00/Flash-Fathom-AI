@@ -65,11 +65,11 @@ export default function Generate() {
                 title: "Flashcards generated successfully!",
                 description: `${generated.length} flashcards created.`,
             })
-        } catch (error: Error | any) {
+        } catch (error: Error | unknown) {
             console.error('Error generating flashcards:', error)
             toast({
                 title: "Error",
-                description: error.message,
+                description: error instanceof Error ? error.message : 'An unexpected error occurred',
                 variant: "destructive",
             });
         } finally {
