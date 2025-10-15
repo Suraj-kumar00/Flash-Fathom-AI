@@ -30,50 +30,50 @@ const FormSchema = z.object({
 })
 
 export default function Generate() {
-    // const [flashcards, setFlashcards] = useState([])
     const [flashcards, setFlashcards] = useState<Array<{ question: string, answer: string }>>([])
+    const [isSubmitting, setIsSubmitting] = useState(false)
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
     })
 
     const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+        if (isSubmitting) return
+        setIsSubmitting(true)
         try {
             const response = await fetch('/api/generate', {
                 method: 'POST',
+                headers: { 'Content-Type': 'text/plain' },
                 body: data.text,
             });
 
             if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || 'Failed to generate flashcards');
+                let errorMessage = 'Failed to generate flashcards';
+                try {
+                    const errorData = await response.json();
+                    errorMessage = errorData.details || errorData.error || errorMessage;
+                } catch {}
+                throw new Error(errorMessage);
             }
 
-
-            const flashcardsData = await response.json()
-            if (flashcardsData.flashcards && Array.isArray(flashcardsData.flashcards)) {
-                setFlashcards(flashcardsData.flashcards)
+            const { flashcards: generated } = await response.json()
+            if (generated && Array.isArray(generated)) {
+                setFlashcards(generated)
             } else {
                 throw new Error('Invalid flashcards data received')
             }
-
-            setFlashcards(flashcardsData.flashcards);
             toast({
                 title: "Flashcards generated successfully!",
-                description: (
-                    <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                        <code className="text-white">{JSON.stringify(flashcardsData, null, 2)}</code>
-                    </pre>
-                ),
+                description: `${generated.length} flashcards created.`,
             })
         } catch (error: Error | any) {
             console.error('Error generating flashcards:', error)
-            alert('An error occurred while generating flashcards. Please try again.')
-            // console.error('Error generating flashcards:', error);
             toast({
                 title: "Error",
                 description: error.message,
                 variant: "destructive",
             });
+        } finally {
+            setIsSubmitting(false)
         }
     }
 
@@ -98,8 +98,8 @@ export default function Generate() {
                         </FormItem>
                     )}
                 />
-                <Button type="submit" className="w-full" >
-                    Generate Flashcards
+                <Button type="submit" className="w-full" disabled={isSubmitting}>
+                    {isSubmitting ? 'Generating...' : 'Generate Flashcards'}
                 </Button>
             </form>
 

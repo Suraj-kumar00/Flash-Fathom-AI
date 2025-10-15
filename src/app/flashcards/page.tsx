@@ -8,12 +8,14 @@ import { Loader2, Plus } from "lucide-react";
 import DeckList from "@/components/decks/DeckList";
 import type { Deck } from "@/types";
 import  GlobalSearch  from '@/components/search/GlobalSearch'
+import { useSubscription } from "@/hooks/useSubscription";
 
 // Single Responsibility: Manage flashcards overview page
 export default function FlashcardsPage() {
   const [decks, setDecks] = useState<Deck[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const { user, isLoaded } = useUser();
+  const { canAccessPro } = useSubscription();
 
   useEffect(() => {
     const fetchDecks = async () => {
@@ -66,7 +68,7 @@ export default function FlashcardsPage() {
       <GlobalSearch />
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Your Flashcards</h1>
-        <Link href="/generate">
+        <Link href={canAccessPro ? "/generate-pro" : "/generate"}>
           <Button size="icon" className="bg-purple-600 h-10 w-32 hover:bg-purple-500">
             <Plus className="h-7 w-7" />
           </Button>

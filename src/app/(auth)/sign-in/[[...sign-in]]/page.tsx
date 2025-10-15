@@ -9,10 +9,11 @@ export default function Page() {
         appearance={{
           baseTheme: dark
         }}
+        redirectUrl="/"
         />
         </div>
         <div className='block dark:hidden'>
-        <SignIn />
+        <SignIn redirectUrl="/" />
         </div>
     </div>
   );

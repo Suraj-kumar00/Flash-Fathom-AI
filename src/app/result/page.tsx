@@ -1,7 +1,7 @@
 'use client'
 
 import { Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -9,44 +9,26 @@ import { Loader2, CreditCard, CheckCircle, XCircle } from 'lucide-react'
 import { Skeleton } from "@/components/ui/skeleton"
 import Link from 'next/link'
 
-interface Session {
-    payment_status: string;
-    // Add other session properties as needed
-}
+// Stripe is removed; keep only simple status via query param
 
 // ✅ FIXED: Separate component for search params logic
 function ResultContent() {
-    const router = useRouter()
     const searchParams = useSearchParams()
-    const session_id = searchParams.get('session_id')
+    const payment = searchParams.get('payment') // success | failed
     const [loading, setLoading] = useState(true)
-    const [session, setSession] = useState<Session | null>(null)
     const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
-        const fetchCheckoutSession = async () => {
-            if (!session_id) {
-                setError('No session ID provided')
-                setLoading(false)
-                return
-            }
-            
-            try {
-                const res = await fetch(`/api/checkout-sessions?session_id=${session_id}`)
-                const sessionData = await res.json()
-                if (res.ok) {
-                    setSession(sessionData)
-                } else {
-                    setError(sessionData.error)
-                }
-            } catch (err) {
-                setError('An error occurred while retrieving the session.')
-            } finally {
-                setLoading(false)
-            }
-        }
-        fetchCheckoutSession()
-    }, [session_id])
+    const resolveResult = () => {
+      if (payment === 'success' || payment === 'failed') {
+        setLoading(false)
+        return
+      }
+      setError('Missing payment status')
+      setLoading(false)
+    }
+    resolveResult()
+  }, [payment])
 
     if (loading) {
         return (
@@ -86,7 +68,7 @@ function ResultContent() {
                                 </Link>
                             </div>
                         </div>
-                    ) : session?.payment_status === 'paid' ? (
+                    ) : payment === 'success' ? (
                         <div className="text-center space-y-4">
                             <CheckCircle className="h-16 w-16 text-green-500 mx-auto" />
                             <div>
@@ -94,9 +76,6 @@ function ResultContent() {
                                     Thank you for your purchase! 🎉
                                 </h2>
                                 <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg mb-4">
-                                    <p className="text-sm sm:text-base mb-2 font-mono">
-                                        <strong>Session ID:</strong> {session_id}
-                                    </p>
                                     <p className="text-muted-foreground text-sm sm:text-base">
                                         We have received your payment successfully. You will receive an email with the order details shortly.
                                     </p>
@@ -122,9 +101,7 @@ function ResultContent() {
                                 <h2 className="text-xl sm:text-2xl text-red-600 font-semibold mb-4">
                                     Payment Failed
                                 </h2>
-                                <p className="text-muted-foreground mb-4">
-                                    Your payment was not successful. Please check your payment method and try again.
-                                </p>
+                             <p className="text-muted-foreground mb-4">Your payment failed. Please try again.</p>
                                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                                     <Link href="/pricing">
                                         <Button className="w-full sm:w-auto">Try Again</Button>

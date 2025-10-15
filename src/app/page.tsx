@@ -9,6 +9,8 @@ import FAQ from "@/components/FAQ";
 import Noise from "@/components/noise";
 import { ToastContainer } from "react-toastify";
 import { motion } from "framer-motion";
+import { useUser } from "@clerk/nextjs";
+import { useSubscription } from "@/hooks/useSubscription";
 
 
 const avatars = [
@@ -18,6 +20,9 @@ const avatars = [
 ];
 
 export default function Home() {
+    const { isSignedIn } = useUser();
+    const { canAccessPro } = useSubscription();
+    
     return (
         <div className="relative w-full min-h-screen overflow-hidden">
             {/* Toast Notification Container */}
@@ -102,11 +107,11 @@ export default function Home() {
                             className={`group relative overflow-hidden bg-gradient-to-r from-purple-700 to-purple-600 hover:from-purple-600 hover:to-purple-500 text-white dark:from-purple-600 dark:to-purple-500 dark:hover:from-purple-500 dark:hover:to-purple-400 px-8 py-4 rounded-xl font-semibold text-lg shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 ${buttonVariants({
                                 size: "lg",
                             })}`}
-                            href="/generate"
+                            href={isSignedIn ? (canAccessPro ? "/generate-pro" : "/generate") : "/sign-up"}
                             aria-label="Get started with FlashFathom AI"
                         >
                             <span className="relative z-10 flex items-center">
-                                Get started 
+                                {isSignedIn ? (canAccessPro ? "Go to Pro Generator" : "Generate Flashcards") : "Get started"}
                                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
                             </span>
                             <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" />

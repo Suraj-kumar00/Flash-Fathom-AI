@@ -10,12 +10,16 @@ import { UserButton, useUser } from "@clerk/nextjs";
 import { ThemeToggle } from "./DarkToggle";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSubscription } from "@/hooks/useSubscription";
+import { Badge } from "./ui/badge";
+import { Crown } from "lucide-react";
 
 
 const Navbar = () => {
   const { setTheme } = useTheme();
   const { isSignedIn, user } = useUser();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const { canAccessPro, loading } = useSubscription();
 
   const navigationLinks = [
     { href: "/features", label: "Features" },
@@ -119,11 +123,11 @@ const Navbar = () => {
                     whileTap={{ scale: 0.95 }}
                   >
                     <Link
-                      href="/sign-up"
+                      href={isSignedIn ? (canAccessPro ? "/generate-pro" : "/generate") : "/sign-up"}
                       className="group relative overflow-hidden bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-500 hover:to-purple-400 text-white px-6 py-2 rounded-lg font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-300 flex items-center"
                     >
                       <span className="relative z-10 flex items-center">
-                        Get Started
+                        {isSignedIn ? (canAccessPro ? "Go to Pro Generator" : "Generate Flashcards") : "Get Started"}
                         <ArrowRight className="ml-1.5 h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" />
                       </span>
                       <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -146,6 +150,13 @@ const Navbar = () => {
                   <span className="text-sm font-medium text-gray-900 dark:text-white hidden md:block">
                     {user?.fullName || user?.username || "User"}
                   </span>
+                  {/* Pro Badge */}
+                  {!loading && canAccessPro && (
+                    <Badge variant="secondary" className="bg-gradient-to-r from-purple-600 to-purple-500 text-white border-0">
+                      <Crown className="w-3 h-3 mr-1" />
+                      PRO
+                    </Badge>
+                  )}
                 </div>
                 <UserButton 
                   afterSignOutUrl="/" 
@@ -246,11 +257,11 @@ const Navbar = () => {
                       Sign in
                     </Link>
                     <Link
-                      href="/sign-up"
+                      href={isSignedIn ? (canAccessPro ? "/generate-pro" : "/generate") : "/sign-up"}
                       className="block w-full text-center bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-500 hover:to-purple-400 text-white px-4 py-3 rounded-lg font-semibold shadow-lg transition-all duration-300"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
-                      Get Started
+                      {isSignedIn ? (canAccessPro ? "Go to Pro Generator" : "Generate Flashcards") : "Get Started"}
                     </Link>
                   </motion.div>
                 )}
