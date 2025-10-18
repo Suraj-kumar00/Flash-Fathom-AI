@@ -4,7 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import { buttonVariants } from "./ui/button";
-import { ArrowRight, Menu, X, ChevronDown, Sparkles } from "lucide-react";
+import { ArrowRight, Menu, X, ChevronDown, Sparkles, BookOpen, Brain } from "lucide-react";
 import { useTheme } from "next-themes";
 import { UserButton, useUser } from "@clerk/nextjs";
 import { ThemeToggle } from "./DarkToggle";
@@ -26,7 +26,8 @@ const Navbar = () => {
 
   // Navigation items only visible when signed in
   const signedInNavigationLinks = [
-    { href: "/flashcards", label: "Saved Flashcards" }
+    { href: "/flashcards", label: "Flashcard Sets", icon: BookOpen },
+    { href: "/flashcards?mode=study", label: "Study Mode", icon: Brain }
   ];
 
   return (
@@ -82,21 +83,25 @@ const Navbar = () => {
             ))}
             
             {/* Signed-in only navigation items */}
-            {isSignedIn && signedInNavigationLinks.map((link, index) => (
-              <motion.div
-                key={link.href}
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: (navigationLinks.length + index) * 0.1 }}
-              >
-                <Link
-                  href={link.href}
-                  className="px-4 py-2 text-sm font-medium text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-lg transition-all duration-200 border border-purple-200 dark:border-purple-700"
+            {isSignedIn && signedInNavigationLinks.map((link, index) => {
+              const Icon = link.icon;
+              return (
+                <motion.div
+                  key={link.href}
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: (navigationLinks.length + index) * 0.1 }}
                 >
-                  {link.label}
-                </Link>
-              </motion.div>
-            ))}
+                  <Link
+                    href={link.href}
+                    className="group px-4 py-2 text-sm font-medium text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/30 rounded-lg transition-all duration-200 border border-purple-200 dark:border-purple-700 hover:border-purple-300 dark:hover:border-purple-600 flex items-center gap-2 hover:shadow-md"
+                  >
+                    <Icon className="h-4 w-4 group-hover:scale-110 transition-transform duration-200" />
+                    {link.label}
+                  </Link>
+                </motion.div>
+              );
+            })}
           </div>
 
           {/* Right Section */}
@@ -213,22 +218,26 @@ const Navbar = () => {
                 ))}
 
                 {/* Mobile Signed-in only navigation items */}
-                {isSignedIn && signedInNavigationLinks.map((link, index) => (
-                  <motion.div
-                    key={link.href}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.3, delay: (navigationLinks.length + index) * 0.1 }}
-                  >
-                    <Link
-                      href={link.href}
-                      className="block px-4 py-3 text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-lg transition-all duration-200 font-medium border border-purple-200 dark:border-purple-700"
-                      onClick={() => setIsMobileMenuOpen(false)}
+                {isSignedIn && signedInNavigationLinks.map((link, index) => {
+                  const Icon = link.icon;
+                  return (
+                    <motion.div
+                      key={link.href}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.3, delay: (navigationLinks.length + index) * 0.1 }}
                     >
-                      {link.label}
-                    </Link>
-                  </motion.div>
-                ))}
+                      <Link
+                        href={link.href}
+                        className="flex items-center gap-2 px-4 py-3 text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/30 rounded-lg transition-all duration-200 font-medium border border-purple-200 dark:border-purple-700 hover:border-purple-300 dark:hover:border-purple-600"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        <Icon className="h-4 w-4" />
+                        {link.label}
+                      </Link>
+                    </motion.div>
+                  );
+                })}
 
                 {/* Mobile Auth Buttons */}
                 {!isSignedIn && (
