@@ -151,3 +151,68 @@ html {
 .focus-enhanced:focus {
   @apply outline-none ring-2 ring-purple-500 ring-offset-2 ring-offset-white dark:ring-offset-gray-900;
 }
+
+/* Study Mode specific enhancements */
+.study-card {
+  @apply transition-all duration-300 hover:shadow-2xl;
+  transform-style: preserve-3d;
+}
+
+.study-card:hover {
+  transform: scale(1.02) translateY(-4px);
+}
+
+/* Smooth gradient backgrounds for light/dark mode */
+.gradient-bg-light {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+}
+
+.gradient-bg-dark {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%);
+}
+
+/* Button pulse animation */
+@keyframes pulse-scale {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.animate-pulse-scale {
+  animation: pulse-scale 2s ease-in-out infinite;
+}
+
+/* Smooth transitions for theme switching */
+* {
+  @apply transition-colors duration-200;
+}
+
+/* Enhanced navbar link hover effect */
+.nav-link-hover {
+  @apply relative;
+}
+
+.nav-link-hover::after {
+  content: '';
+  @apply absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-600 to-blue-600 transition-all duration-300;
+}
+
+.nav-link-hover:hover::after {
+  @apply w-full;
+}
+
+/* Progress bar animation */
+@keyframes progress-shine {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.progress-shine {
+  background: linear-gradient(
+    90deg,
+    rgba(168, 85, 247, 1) 0%,
+    rgba(59, 130, 246, 1) 50%,
+    rgba(168, 85, 247, 1) 100%
+  );
+  background-size: 200% auto;
+  animation: progress-shine 3s linear infinite;
+}
