@@ -6,15 +6,22 @@ import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import { RetentionCurve } from "@/components/analytics/RetentionCurve";
 import { SessionHeatmap } from "@/components/analytics/SessionHeatmap";
 import { SubjectProgress } from "@/components/analytics/SubjectProgress";
+import type { Metadata } from "next";
 
 // Disable static generation for this page since it uses Clerk
 export const dynamic = 'force-dynamic';
 
-export default async function AnalyticsPage({
-  searchParams,
-}: {
+export const metadata: Metadata = {
+  title: "Analytics - Flash Fathom AI",
+  description: "In-depth performance analytics for your flashcard learning",
+};
+
+// Explicit interface for Next.js 15 compatibility
+interface AnalyticsPageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}) {
+}
+
+export default async function AnalyticsPage({ searchParams }: AnalyticsPageProps) {
   const user = await currentUser();
   if (!user) {
     redirect("/sign-in");
