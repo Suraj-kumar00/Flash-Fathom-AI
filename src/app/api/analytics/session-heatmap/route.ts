@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/database";
 import { currentUser } from "@clerk/nextjs/server";
+import { getDayInTimezone, getHourInTimezone, isValidTimezone } from "@/lib/utils/timezone";
 
 export async function GET(req: NextRequest) {
   const user = await currentUser();
@@ -12,6 +13,22 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const subject = searchParams.get("subject")?.trim();
   const dateRange = searchParams.get("dateRange");
+  const timezone = searchParams.get("timezone") || "UTC";
+
+  // Validate timezone parameter
+  if (!isValidTimezone(timezone)) {
+    return NextResponse.json(
+      { 
+        error: "Invalid timezone. Must be a valid IANA timezone string (e.g., 'America/Los_Angeles', 'Europe/London', 'UTC')" 
+      }, 
+      { 
+        status: 400,
+        headers: { 
+          "cache-control": "no-store"
+        }
+      }
+    );
+  }
 
   // Parse and validate dateRange parameter
   let validatedDate: Date | undefined = undefined;
@@ -61,8 +78,9 @@ export async function GET(req: NextRequest) {
     const heatmapData = Array.from({ length: 7 }, () => Array(24).fill(0));
 
     studySessions.forEach((session: { startTime: Date }) => {
-      const day = new Date(session.startTime).getDay();
-      const hour = new Date(session.startTime).getHours();
+      // Get day and hour in the user's timezone to ensure correct heatmap placement
+      const day = getDayInTimezone(session.startTime, timezone);
+      const hour = getHourInTimezone(session.startTime, timezone);
       if (heatmapData[day]) {
         heatmapData[day][hour]++;
       }
@@ -76,8 +94,7 @@ export async function GET(req: NextRequest) {
     console.error("Failed to fetch session heatmap data:", error);
     return new NextResponse(
       JSON.stringify({ 
-        error: "Failed to fetch session heatmap data",
-        details: error instanceof Error ? error.message : "Unknown error"
+        error: "Failed to fetch session heatmap data"
       }), 
       { status: 500 }
     );

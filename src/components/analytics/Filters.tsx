@@ -4,10 +4,25 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useEffect } from 'react';
 
 export function Filters() {
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  // Automatically detect and set user's timezone only if not already set
+  useEffect(() => {
+    const currentTimezone = searchParams.get('timezone');
+    const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    
+    // Only set timezone if it's absent, preserving user selections on remounts
+    if (!currentTimezone) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set('timezone', userTimezone);
+      router.replace(`?${params.toString()}`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Run once on mount - intentionally empty to avoid infinite loops
 
   const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const params = new URLSearchParams(searchParams.toString());

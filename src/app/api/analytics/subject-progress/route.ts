@@ -1,4 +1,3 @@
-
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/database";
 import { currentUser } from "@clerk/nextjs/server";
@@ -69,18 +68,15 @@ export async function GET(req: NextRequest) {
   let dateFilter: { gte?: Date; lte?: Date } | undefined = undefined;
   if (dateRange) {
     try {
-      // Check if it's a single date or date range (comma-separated)
       const dates = dateRange.split(',').map(d => d.trim());
       
       if (dates.length === 1) {
-        // Single date - use as gte
         const date = new Date(dates[0]);
         if (isNaN(date.getTime())) {
           throw new Error("Invalid date format");
         }
         dateFilter = { gte: date };
       } else if (dates.length === 2) {
-        // Date range - use first as gte, second as lte
         const startDate = new Date(dates[0]);
         const endDate = new Date(dates[1]);
         
@@ -122,6 +118,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
+    // Fetch study records grouped by subject (deck name)
     const studyRecords = await prisma.studyRecord.findMany({
       where: {
         flashcard: {
@@ -138,39 +135,90 @@ export async function GET(req: NextRequest) {
         },
         createdAt: dateFilter,
       },
-      orderBy: { createdAt: "asc" },
-      select: {
-        createdAt: true,
-        isCorrect: true,
+      include: {
+        flashcard: {
+          include: {
+            deck: true,
+          }
+        },
       },
+      orderBy: { createdAt: "asc" },
     });
-    const retentionData = studyRecords.reduce((acc: { [key: string]: { correct: number; total: number } }, record: { createdAt: Date; isCorrect: boolean }) => {
+
+    // Group by deck and calculate progress over time
+    const subjectData: { [subject: string]: { [date: string]: { correct: number; total: number } } } = {};
+    
+    studyRecords.forEach((record) => {
+      const deckName = record.flashcard.deck.name;
       // Format date in the user's timezone to ensure correct date grouping
       const date = formatDateInTimezone(record.createdAt, timezone);
-      if (!acc[date]) {
-        acc[date] = { correct: 0, total: 0 };
+      
+      if (!subjectData[deckName]) {
+        subjectData[deckName] = {};
       }
-      acc[date].total++;
+      
+      if (!subjectData[deckName][date]) {
+        subjectData[deckName][date] = { correct: 0, total: 0 };
+      }
+      
+      subjectData[deckName][date].total++;
       if (record.isCorrect) {
-        acc[date].correct++;
+        subjectData[deckName][date].correct++;
       }
-      return acc;
-    }, {} as { [key: string]: { correct: number; total: number } });
+    });
 
-    const labels = Object.keys(retentionData);
-    const retention = Object.values(retentionData).map((d: { correct: number; total: number }) => (d.correct / d.total) * 100);
+    // Build lookup map for each subject: date -> accuracy
+    const subjectLookups = Object.entries(subjectData).map(([subject, dateData]) => {
+      const dateToAccuracy: { [date: string]: number } = {};
+      
+      Object.entries(dateData).forEach(([date, stats]) => {
+        const { correct, total } = stats;
+        dateToAccuracy[date] = total > 0 ? (correct / total) * 100 : 0;
+      });
+      
+      return {
+        label: subject,
+        dateToAccuracy,
+        dates: Object.keys(dateData),
+      };
+    });
 
-    return NextResponse.json({ labels, retention }, {
+    // If no data, return empty dataset
+    if (subjectLookups.length === 0) {
+      return NextResponse.json({
+        labels: [],
+        datasets: []
+      }, {
+        status: 200,
+        headers: { 
+          "Cache-Control": "no-cache, no-store, must-revalidate"
+        },
+      });
+    }
+
+    // Get all unique dates across all subjects
+    const allDates = [...new Set(subjectLookups.flatMap(d => d.dates))].sort();
+
+    // Build aligned datasets: each dataset.data has same length as allDates
+    const datasets = subjectLookups.map(({ label, dateToAccuracy }) => ({
+      label,
+      data: allDates.map(date => dateToAccuracy[date] ?? null),
+    }));
+
+    return NextResponse.json({
+      labels: allDates,
+      datasets,
+    }, {
       status: 200,
       headers: { 
         "Cache-Control": "no-cache, no-store, must-revalidate"
       },
     });
   } catch (error) {
-    console.error("Failed to compute retention curve:", error);
+    console.error("Failed to compute subject progress:", error);
     return NextResponse.json(
       { 
-        error: "Failed to compute retention"
+        error: "Failed to compute subject progress"
       }, 
       {
         status: 500,
@@ -181,3 +229,4 @@ export async function GET(req: NextRequest) {
     );
   }
 }
+

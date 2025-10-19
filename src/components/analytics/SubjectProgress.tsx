@@ -22,26 +22,70 @@ ChartJS.register(
   Legend
 );
 
-export function SubjectProgress() {
-  const data = {
-    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-    datasets: [
-      {
-        label: 'React',
-        data: [65, 75, 80, 85],
-        fill: false,
-        borderColor: 'rgb(75, 192, 192)',
-        tension: 0.1,
-      },
-      {
-        label: 'Next.js',
-        data: [70, 72, 78, 82],
-        fill: false,
-        borderColor: 'rgb(255, 99, 132)',
-        tension: 0.1,
-      },
-    ],
+interface SubjectProgressProps {
+  data: {
+    labels: string[];
+    datasets: Array<{
+      label: string;
+      data: number[];
+    }>;
+  };
+}
+
+// Color palette for different subjects
+const colors = [
+  'rgb(75, 192, 192)',
+  'rgb(255, 99, 132)',
+  'rgb(54, 162, 235)',
+  'rgb(255, 206, 86)',
+  'rgb(153, 102, 255)',
+  'rgb(255, 159, 64)',
+];
+
+export function SubjectProgress({ data }: SubjectProgressProps) {
+  // Transform data for chart
+  const chartData = {
+    labels: data.labels.length > 0 ? data.labels : ['No data'],
+    datasets: data.datasets.length > 0 
+      ? data.datasets.map((dataset, index) => ({
+          label: dataset.label,
+          data: dataset.data,
+          fill: false,
+          borderColor: colors[index % colors.length],
+          tension: 0.1,
+        }))
+      : [{
+          label: 'No data available',
+          data: [0],
+          fill: false,
+          borderColor: 'rgb(200, 200, 200)',
+          tension: 0.1,
+        }],
   };
 
-  return <Line data={data} />;
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top' as const,
+      },
+      title: {
+        display: true,
+        text: 'Subject Progress (Accuracy %)',
+      },
+    },
+    scales: {
+      y: {
+        min: 0,
+        max: 100,
+        ticks: {
+          callback: function(value: number | string) {
+            return value + '%';
+          }
+        }
+      }
+    }
+  };
+
+  return <Line data={chartData} options={options} />;
 }

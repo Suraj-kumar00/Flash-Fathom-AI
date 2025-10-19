@@ -22,19 +22,52 @@ ChartJS.register(
   Legend
 );
 
-export function RetentionCurve() {
-  const data = {
-    labels: ['1st Review', '2nd Review', '3rd Review', '4th Review', '5th Review'],
+interface RetentionCurveProps {
+  data: {
+    labels: string[];
+    retention: number[];
+  };
+}
+
+export function RetentionCurve({ data }: RetentionCurveProps) {
+  // Transform data for chart
+  const chartData = {
+    labels: data.labels.length > 0 ? data.labels : ['No data'],
     datasets: [
       {
         label: 'Retention Rate',
-        data: [90, 85, 80, 75, 70],
+        data: data.retention.length > 0 ? data.retention : [0],
         fill: false,
-        borderColor: 'rgb(75, 192, 192)',
+        borderColor: data.retention.length > 0 ? 'rgb(75, 192, 192)' : 'rgb(200, 200, 200)',
+        backgroundColor: 'rgba(75, 192, 192, 0.5)',
         tension: 0.1,
       },
     ],
   };
 
-  return <Line data={data} />;
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top' as const,
+      },
+      title: {
+        display: true,
+        text: 'Retention Rate Over Time',
+      },
+    },
+    scales: {
+      y: {
+        min: 0,
+        max: 100,
+        ticks: {
+          callback: function(value: number | string) {
+            return value + '%';
+          }
+        }
+      }
+    }
+  };
+
+  return <Line data={chartData} options={options} />;
 }
