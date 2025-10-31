@@ -27,13 +27,16 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'No signature' }, { status: 400 });
     }
 
-    // Verify webhook signature
+    // Verify webhook signature (constant-time)
     const expectedSignature = crypto
       .createHmac('sha256', WEBHOOK_SECRET)
       .update(body)
       .digest('hex');
 
-    if (signature !== expectedSignature) {
+    const providedBuf = Buffer.from(signature, 'hex');
+    const expectedBuf = Buffer.from(expectedSignature, 'hex');
+
+    if (providedBuf.length !== expectedBuf.length || !crypto.timingSafeEqual(providedBuf, expectedBuf)) {
       console.log('❌ Invalid webhook signature');
       return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
     }
@@ -140,14 +143,19 @@ async function handlePaymentFailed(payment: any) {
   console.log('❌ Payment failed:', payment.id);
   
   try {
-    // Find and update payment record
+    // Find and update payment record (fallback by order id)
     const paymentRecord = await prisma.payment.findFirst({
-      where: { razorpayPaymentId: payment.id }
+      where: {
+        OR: [
+          { razorpayPaymentId: payment.id },
+          { razorpayOrderId: payment.order_id }
+        ]
+      }
     });
 
     if (paymentRecord) {
-      await prisma.payment.update({
-        where: { id: paymentRecord.id },
+      await prisma.payment.updateMany({
+        where: { id: paymentRecord.id, status: { not: 'COMPLETED' } },
         data: {
           status: 'FAILED',
           failureReason: payment.error_description || 'Payment failed',
