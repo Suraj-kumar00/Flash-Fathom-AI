@@ -12,8 +12,8 @@ import { cn } from "@/lib/utils";
 import { ArrowRight, Check, HelpCircle, Minus, Zap, Crown, Building, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useEffect, Suspense } from "react";
 import { loadRazorpay } from "@/utils/get-razorpay";
 import { useTheme } from "next-themes";
 // ✅ ADDED: Import toast functionality
@@ -39,14 +39,29 @@ interface PricingItem {
   };
 }
 
-const Page = () => {
+const PricingContent = () => {
   const { isSignedIn } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">("monthly");
   const [loading, setLoading] = useState<string | null>(null);
   const { theme } = useTheme();
   // ✅ ADDED: Toast hook
   const { toast } = useToast();
+
+  // Check if user was redirected here for upgrade
+  const upgradeRequired = searchParams.get('upgrade') === 'required';
+  const redirectUrl = searchParams.get('redirect');
+
+  useEffect(() => {
+    if (upgradeRequired) {
+      toast({
+        title: "🔒 Pro Access Required",
+        description: "You need a Pro subscription to access this feature. Choose a plan below to continue.",
+        variant: "default",
+      });
+    }
+  }, [upgradeRequired, toast]);
 
   const handleSignUp = async (plan: string) => {
     if (!isSignedIn) {
@@ -152,7 +167,12 @@ const Page = () => {
               
               // Redirect after a short delay to show toast
               setTimeout(() => {
-                router.push('/result?payment=success');
+                // If user was redirected here for upgrade, go back to original page
+                if (redirectUrl) {
+                  router.push(redirectUrl);
+                } else {
+                  router.push('/result?payment=success');
+                }
               }, 2000);
             } else {
               const error = await verifyResponse.json();
@@ -574,6 +594,14 @@ const Page = () => {
         </div>
       </MaxWidthWrapper>
     </>
+  );
+};
+
+const Page = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <PricingContent />
+    </Suspense>
   );
 };
 

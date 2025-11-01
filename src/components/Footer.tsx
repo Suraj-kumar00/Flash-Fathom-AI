@@ -4,9 +4,13 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Github, Linkedin, Twitter, Heart, ExternalLink, Zap } from "lucide-react";
 import Image from "next/image";
+import { useUser } from "@clerk/nextjs";
+import { useSubscription } from "@/hooks/useSubscription";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const { isSignedIn } = useUser();
+  const { canAccessPro } = useSubscription();
 
   return (
     <footer className="relative py-20 px-4 md:px-6 bg-gradient-to-b from-transparent via-gray-50/50 to-gray-100/80 dark:via-gray-900/20 dark:to-gray-800/50 overflow-hidden">
@@ -95,7 +99,8 @@ export default function Footer() {
                   { href: "/features", label: "Features" },
                   { href: "/pricing", label: "Pricing" },
                   { href: "/demo", label: "Demo" },
-                  { href: "/generate", label: "Get Started" }
+                  { href: isSignedIn ? (canAccessPro ? "/generate-pro" : "/generate") : "/sign-up", label: "Get Started" }
+
                 ].map((link, index) => (
                   <li key={index}>
                     <Link
