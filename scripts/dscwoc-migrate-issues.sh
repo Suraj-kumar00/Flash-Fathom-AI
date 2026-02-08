@@ -42,7 +42,7 @@ create_label "dscwoc"        "DSC Winter of Code program"                      "
 create_label "level-1"       "Beginner-friendly tasks (10 points)"             "7057ff"
 create_label "level-2"       "Moderate complexity tasks (20 points)"           "ff9800"
 create_label "level-3"       "Advanced or complex tasks (30 points)"           "e11d48"
-create_label "feature"       "New functionality being added"                   "1d76db"
+create_label "feature"       "New functionality being added"                   "a2eeef"
 create_label "ui/ux"         "Interface or user experience improvements"       "f9d0c4"
 create_label "documentation" "README updates, guides, or written explanations" "0075ca"
 create_label "refactor"      "Code restructuring without behavior change"      "d4c5f9"
@@ -696,7 +696,7 @@ The project currently has no automated test suite. Adding tests is critical for 
 **What Needs to Be Done**
 
 ### 1. Setup Testing Infrastructure
-- Install testing dependencies: `vitest`, `@testing-library/react`, `@testing-library/jest-dom`
+- Install testing dependencies: `vitest`, `@vitejs/plugin-react`, `jsdom`, `@testing-library/react`, `@testing-library/jest-dom`
 - Configure `vitest.config.ts` for Next.js
 - Add test scripts to `package.json`: `"test": "vitest"`, `"test:coverage": "vitest --coverage"`
 
