@@ -1,0 +1,63 @@
+# DSCWoC Labels Configuration
+# =================================
+# This file defines the standard labels for the DSC Winter of Code program.
+# Use this as a reference for label management.
+#
+# To sync labels, run: gh label create <name> --description "<desc>" --color "<color>"
+
+# Program Label (Required on every PR)
+- name: dscwoc
+  description: "DSC Winter of Code program"
+  color: "0075ca"
+
+# Difficulty Labels (Exactly one per issue/PR)
+- name: level-1
+  description: "Beginner-friendly tasks (10 points)"
+  color: "7057ff"
+
+- name: level-2
+  description: "Moderate complexity tasks (20 points)"
+  color: "ff9800"
+
+- name: level-3
+  description: "Advanced or complex tasks (30 points)"
+  color: "e11d48"
+
+# Task-Based Labels (At least one per issue)
+- name: bug
+  description: "Incorrect behavior, crashes, or logical errors"
+  color: "d73a4a"
+
+- name: feature
+  description: "New functionality being added"
+  color: "a2eeef"
+
+- name: ui/ux
+  description: "Interface or user experience improvements"
+  color: "f9d0c4"
+
+- name: enhancement
+  description: "Improving or extending existing functionality"
+  color: "a2eeef"
+
+- name: documentation
+  description: "README updates, guides, or written explanations"
+  color: "0075ca"
+
+- name: refactor
+  description: "Code restructuring without behavior change"
+  color: "d4c5f9"
+
+- name: testing
+  description: "Adding or improving automated tests"
+  color: "bfd4f2"
+
+# Beginner-Friendly Label
+- name: good first issue
+  description: "Good for newcomers"
+  color: "7057ff"
+
+# General Labels
+- name: help wanted
+  description: "Extra attention is needed"
+  color: "008672"

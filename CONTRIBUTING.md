@@ -218,6 +218,49 @@ Use the PR template provided in the repo.
 
 ---
 
+## DSCWoC Scoring & Labels
+
+This project participates in **DSC Winter of Code (DSCWoC)**. All contributions are scored based on the following system.
+
+### PR Eligibility for Scoring
+
+For a PR to score points it must:
+- ✅ Have the `dscwoc` label
+- ✅ Have exactly one difficulty label: `level-1`, `level-2`, or `level-3`
+- ✅ Be reviewed and merged by a mentor or project admin
+
+> Points are awarded only after the PR is merged. If a PR is missing required labels, it receives **0 points**.
+
+### Difficulty Levels & Points
+
+| Difficulty | Description | Points |
+|------------|-------------|--------|
+| `level-1` | Beginner-friendly tasks | 10 |
+| `level-2` | Moderate complexity | 20 |
+| `level-3` | Advanced or complex work | 30 |
+
+### Task-Based Labels (Required)
+
+Every issue must include at least one task-based label:
+
+| Label | When to Use |
+|-------|-------------|
+| `bug` | Incorrect behavior, crashes, or logical errors |
+| `feature` | New functionality being added |
+| `ui/ux` | Interface or user experience improvements |
+| `enhancement` | Improving or extending existing functionality |
+| `documentation` | README updates, guides, or written explanations |
+| `refactor` | Code restructuring without behavior change |
+| `testing` | Adding or improving automated tests |
+
+### Bonus Points
+
+- Consistent weekly contributions: **+10**
+- Exceptional contribution (mentor-approved): **+10**
+- Helping others (verified): **+5**
+
+---
+
 ## Reporting Issues
 
 To report a bug:
