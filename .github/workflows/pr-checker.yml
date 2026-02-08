@@ -15,8 +15,9 @@ jobs:
 
       - name: Check PR Description
         id: check_pr_description
+        env:
+          PR_DESCRIPTION: ${{ github.event.pull_request.body }}
         run: |
-          PR_DESCRIPTION="${{ github.event.pull_request.body }}"
           if [[ -z "$PR_DESCRIPTION" ]]; then
             echo "PR description is missing."
             exit 1
