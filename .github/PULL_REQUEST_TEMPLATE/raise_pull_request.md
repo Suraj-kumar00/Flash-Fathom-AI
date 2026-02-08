@@ -39,11 +39,6 @@ Closes:[#issue-number]
 
 <br><br>
 
-## DSCWoC Labels (Mandatory for Scoring)
-<!-- Ensure the following labels are added to this PR by a mentor/admin: -->
-- [ ] `dscwoc` label is added
-- [ ] Exactly one difficulty label is added: `level-1`, `level-2`, or `level-3`
-
 ## Checklist
 <!-- Please mark the relevant options with an "x": -->
 - [ ] My code follows the style guidelines of this project

@@ -2,17 +2,41 @@
 # =============================================================================
 # DSCWoC Issue Migration Script for Flash-Fathom-AI
 # =============================================================================
-# This script:
+# This script does EVERYTHING in one run:
 #   1. Creates all required DSCWoC labels
 #   2. Removes hacktoberfest & gssoc2025 labels from all existing issues
 #   3. Replaces old Level labels with new level-* labels
 #   4. Adds task-based labels to each issue
 #   5. Updates issue descriptions with clear, project-aware context
 #   6. Creates new improvement issues for the project
+#   7. Deletes old labels
 #
-# PREREQUISITES:
-#   - GitHub CLI (gh) installed and authenticated
-#   - Run from the repository root: bash scripts/dscwoc-migrate-issues.sh
+# =============================================
+# HOW TO INSTALL & AUTHENTICATE GITHUB CLI (gh)
+# =============================================
+#
+# Official guide: https://cli.github.com/manual/
+#
+# Step 1: Install gh CLI
+#   macOS:    brew install gh
+#   Linux:    sudo apt install gh   (or see https://github.com/cli/cli/blob/trunk/docs/install_linux.md)
+#   Windows:  winget install --id GitHub.cli
+#
+# Step 2: Authenticate with GitHub
+#   Run:      gh auth login
+#   - Choose "GitHub.com"
+#   - Choose "HTTPS"
+#   - Choose "Login with a web browser" (recommended) or paste a token
+#   - Follow the browser prompt to authorize
+#
+# Step 3: Verify authentication
+#   Run:      gh auth status
+#   You should see: "Logged in to github.com as <your-username>"
+#
+# Step 4: Run this script
+#   bash scripts/dscwoc-migrate-issues.sh
+#
+# For full docs: https://cli.github.com/manual/gh_auth_login
 # =============================================================================
 
 set -euo pipefail
@@ -22,6 +46,40 @@ REPO="Suraj-kumar00/Flash-Fathom-AI"
 echo "============================================="
 echo " DSCWoC Issue Migration – Flash Fathom AI"
 echo "============================================="
+
+# ---------------------------------------------------------
+# PRE-CHECK: Verify gh CLI is installed and authenticated
+# ---------------------------------------------------------
+if ! command -v gh &> /dev/null; then
+  echo ""
+  echo "ERROR: GitHub CLI (gh) is not installed."
+  echo ""
+  echo "Install it first:"
+  echo "  macOS:   brew install gh"
+  echo "  Linux:   sudo apt install gh"
+  echo "  Windows: winget install --id GitHub.cli"
+  echo ""
+  echo "Official guide: https://cli.github.com/manual/"
+  exit 1
+fi
+
+if ! gh auth status &> /dev/null; then
+  echo ""
+  echo "ERROR: GitHub CLI is not authenticated."
+  echo ""
+  echo "Run:  gh auth login"
+  echo "  1. Choose 'GitHub.com'"
+  echo "  2. Choose 'HTTPS'"
+  echo "  3. Choose 'Login with a web browser'"
+  echo "  4. Follow the browser prompt"
+  echo ""
+  echo "Then re-run this script."
+  echo "Official guide: https://cli.github.com/manual/gh_auth_login"
+  exit 1
+fi
+
+echo ""
+echo "✅ gh CLI authenticated as: $(gh api user --jq .login 2>/dev/null || echo 'unknown')"
 
 # ---------------------------------------------------------
 # STEP 1: Create new DSCWoC labels

@@ -2,12 +2,10 @@
 name: Bug report
 about: Create a report to help us improve
 title: ''
-labels: 'bug, dscwoc'
+labels: ''
 assignees: ''
 
 ---
-
-> **DSCWoC Label Guide:** The project admin will assign a difficulty label (`level-1`, `level-2`, or `level-3`) after reviewing this issue.
 
 **Describe the bug**
 A clear and concise description of what the bug is.
